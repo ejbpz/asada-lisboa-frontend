@@ -5,17 +5,17 @@
 
 @font-face {
   font-family: Poppins;
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
   src: url("../public/assets/fonts/poppins/Poppins-Regular.ttf");
 }
 
 @theme {
   --font-poppins: "Poppins", "sans-serif";
+  --text-md: 1rem;
 }
 
 * {
   font-family: var(--font-poppins);
-  font-size: .95rem !important;
 }

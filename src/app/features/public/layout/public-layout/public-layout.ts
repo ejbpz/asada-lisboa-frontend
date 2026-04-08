@@ -9,7 +9,7 @@ import { PublicFooter } from "@public/components/public-footer/public-footer";
   templateUrl: './public-layout.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: "flex flex-col min-h-screen"
+    class: "flex flex-col h-screen min-h-screen"
   }
 })
 export default class PublicLayout { }

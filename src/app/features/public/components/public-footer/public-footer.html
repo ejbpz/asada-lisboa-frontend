@@ -1,1 +1,40 @@
-<footer class="footer sm:footer-horizontal bg-neutral text-neutral-content p-10"></footer>
+<footer class="footer footer-horizontal footer-center bg-neutral text-neutral-content rounded rounded-b-none p-10">
+  <div class="text-center">
+    <h3 class="font-semibold text-2xl">{{ 'Asada' | uppercase }}<span class="block font-medium text-xl">Urbanización Lisboa</span></h3>
+  </div>
+
+  <nav class="grid grid-flow-row lg:grid-flow-col gap-4">
+    @for (contact of contactLinks; track $index) {
+      <div>
+        <div class="flex justify-center items-center gap-1">
+          <svg class="w-6 h-6"><use class="w-full h-full" [attr.href]="contact.imageUrl"></use></svg>
+          <h5 class="text-md font-semibold">{{ contact.title }}</h5>
+        </div>
+        <a href="{{ contact.type }}{{ contact.link }}" target="_blank" rel="noopener noreferrer">{{ contact.description }}</a>
+      </div>
+    }
+  </nav>
+
+  <div class="text-center">
+    <div>
+      <div class="flex justify-center items-center gap-1">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/clock-icon.svg"></use></svg>
+        <h5 class="text-md font-semibold">Horario de atención</h5>
+      </div>
+      <p>Lunes a viernes: 8:00 a.m. - 12:00 p.m.</p>
+    </div>
+  </div>
+
+  <nav>
+    <div class="grid grid-flow-col justify-center items-center gap-4">
+      <a href="{{ facebookLink }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-end gap-1">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/facebook-icon.svg"></use></svg>
+        <span class="h-full">Facebook</span>
+      </a>
+    </div>
+  </nav>
+
+  <aside>
+    <p>&copy; {{ copyright }}</p>
+  </aside>
+</footer>
