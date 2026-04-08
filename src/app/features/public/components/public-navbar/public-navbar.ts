@@ -7,31 +7,13 @@ import { RouterLink } from "@angular/router";
   imports: [TitleCasePipe, RouterLink],
   templateUrl: './public-navbar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'w-screen fixed top-0 left-0 z-1 bg-neutral-content shadow-sm flex justify-center'
+  }
 })
 export class PublicNavbar {
-  logo: { image: string, alt: string } = {
-    image: 'logo/asada-logo.svg',
-    alt: 'ASADA Lisboa logo',
-  }
-
-      // <li>
-      //   <details>
-      //     <summary>Nosotros</summary>
-      //     <ul class="p-2 bg-base-100 w-40 mt-8 z-1">
-      //     <li><a>¿Quiénes somos?</a></li>
-      //     <li><a>Junta directiva</a></li>
-      //     </ul>
-      //   </details>
-      // </li>
-      // <li><a>Galería</a></li>
-      // <li><a>Documentos</a></li>
-      // <li><a>Noticias</a></li>
-      // <li><a>Contacto</a></li>
-      // <li><a>Recibos</a></li>
-      // <li><a>Iniciar Sesión</a></li>
-
-  navigation = [
-    { title: 'Nosotros', internal:
+  navigationLinks = [
+    { title: 'Nosotros', internalLinks:
       [
         { title: '¿Quiénes somos?', link: 'nosotros' },
         { title: 'Junta directiva', link: 'junta-directiva' }

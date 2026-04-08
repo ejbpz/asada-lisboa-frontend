@@ -1,18 +1,18 @@
-<div class="navbar container fixed top-0 left-0 z-1 bg-neutral-content shadow-sm w-full flex justify-center">
+<div class="navbar container">
   <div class="navbar-start">
     <a href="" class="cursor-pointer">
-      <img src="{{ logo.image }}" alt="{{ logo.alt }}" class="w-20 h-20">
+        <svg class="w-24 h-24"><use class="w-full h-full object-cover" href="logo/asada-logo.svg"></use></svg>
     </a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      @for(navi of navigation; track $index) {
+      @for(navigation of navigationLinks; track $index) {
         <li>
-          @if (navi?.internal) {
+          @if (navigation?.internalLinks) {
             <details>
-              <summary>{{ navi.title | titlecase }}</summary>
-              <ul class="p-2 bg-base-100 w-40 mt-2 z-1">
-                @for (inti of navi?.internal; track $index) {
+              <summary>{{ navigation.title | titlecase }}</summary>
+              <ul class="p-2 min-w-max bg-base-100 w-fit mt-2 z-1">
+                @for (inti of navigation?.internalLinks; track $index) {
                   <li>
                     <a [routerLink]="[inti.link]">{{ inti.title | titlecase }}</a>
                   </li>
@@ -20,7 +20,7 @@
               </ul>
             </details>
           } @else {
-            <a [routerLink]="[navi.link]">{{ navi.title | titlecase }}</a>
+            <a [routerLink]="[navigation.link]">{{ navigation.title | titlecase }}</a>
           }
         </li>
       }
@@ -28,28 +28,28 @@
   </div>
   <div class="navbar-end">
     <a class="btn btn-ghost">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.44 3a7.44 7.44 0 1 0 4.803 13.122c-.022.271.07.55.278.757l3.84 3.84a.96.96 0 1 0 1.358-1.358l-3.84-3.84a.96.96 0 0 0-.757-.278A7.44 7.44 0 0 0 10.44 3m-6 7.44a6 6 0 1 1 12 0a6 6 0 0 1-12 0"/></svg>
+        <svg class="w-6 h-6"><use class="w-full h-full object-cover" href="assets/icons/search-icon.svg"></use></svg>
     </a>
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"> <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" /> </svg>
+        <img src="assets/icons/menu-icon.svg" alt="Burger menu icon">
       </div>
       <ul
         tabindex="-1"
-        class="menu menu-sm dropdown-content bg-neutral-content rounded-box z-1 mt-7 w-screen p-2 shadow fixed left-0">
-        @for(navi of navigation; track $index) {
+        class="menu menu-sm dropdown-content bg-neutral-content rounded-box rounded-t-none z-1 mt-7 w-screen p-2 pt-0 shadow fixed left-0 flex gap-1 lg:hidden">
+        @for(navigation of navigationLinks; track $index) {
           <li>
-            @if (navi?.internal) {
-              <a>{{ navi.title | titlecase }}</a>
+            @if (navigation?.internalLinks) {
+              <a>{{ navigation.title | titlecase }}</a>
               <ul class="p-2">
-                @for (inti of navi?.internal; track $index) {
+                @for (inti of navigation?.internalLinks; track $index) {
                   <li>
                     <a [routerLink]="[inti.link]">{{ inti.title | titlecase }}</a>
                   </li>
                 }
               </ul>
             } @else {
-              <a [routerLink]="[navi.link]">{{ navi.title | titlecase }}</a>
+              <a [routerLink]="[navigation.link]">{{ navigation.title | titlecase }}</a>
             }
           </li>
         }
