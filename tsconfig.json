@@ -4,11 +4,12 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@environments/*": [ "./src/environments/*" ],
       "@account/*": [ "./src/app/features/account/*" ],
       "@public/*": [ "./src/app/features/public/*" ],
+      "@environments/*": [ "./src/environments/*" ],
       "@admin/*": [ "./src/app/features/admin/*" ],
       "@shared/*": [ "./src/app/shared/*" ],
+      "@root/*": [ "./src/app/*" ]
     },
     "strict": true,
     "noImplicitOverride": true,
