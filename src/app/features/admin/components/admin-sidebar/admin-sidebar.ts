@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
-import { AdminFooter } from '../admin-footer/admin-footer';
+import { GlobalFooter } from "@shared/components/global-footer/global-footer";
 
 @Component({
   selector: 'admin-sidebar',
-  imports: [RouterOutlet, AdminFooter, RouterLinkWithHref],
+  imports: [RouterOutlet, RouterLinkWithHref, GlobalFooter],
   templateUrl: './admin-sidebar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

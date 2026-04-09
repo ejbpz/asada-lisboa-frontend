@@ -13,6 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'cuenta',
+    loadComponent: () => import('@account/layout/account-layout/account-layout'),
     loadChildren: () => import('@account/account.routes')
   },
   {
