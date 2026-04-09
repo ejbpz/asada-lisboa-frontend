@@ -12,15 +12,19 @@
             <details>
               <summary>{{ navigation.title | titlecase }}</summary>
               <ul class="p-2 min-w-max bg-base-100 w-fit mt-2 z-1">
-                @for (inti of navigation?.internalLinks; track $index) {
+                @for (internal of navigation?.internalLinks; track $index) {
                   <li>
-                    <a [routerLink]="[inti.link]">{{ inti.title | titlecase }}</a>
+                    <a [routerLink]="[internal.link]"
+                      [routerLinkActive]="'bg-base-100'"
+                      [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
                   </li>
                 }
               </ul>
             </details>
           } @else {
-            <a [routerLink]="[navigation.link]">{{ navigation.title | titlecase }}</a>
+            <a [routerLink]="[navigation.link]"
+              [routerLinkActive]="'bg-base-100'"
+              [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
           }
         </li>
       }
@@ -44,15 +48,19 @@
               <details>
                 <summary class="text-sm">{{ navigation.title | titlecase }}</summary>
                 <ul class="p-2 min-w-max bg-nuetral-content w-fit mt-2 z-1">
-                  @for (inti of navigation?.internalLinks; track $index) {
+                  @for (internal of navigation?.internalLinks; track $index) {
                     <li>
-                      <a class="text-sm" [routerLink]="[inti.link]">{{ inti.title | titlecase }}</a>
+                      <a class="text-sm" [routerLink]="[internal.link]"
+                      [routerLinkActive]="'bg-base-100'"
+                      [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
                     </li>
                   }
                 </ul>
               </details>
             } @else {
-              <a class="text-sm" [routerLink]="[navigation.link]">{{ navigation.title | titlecase }}</a>
+              <a class="text-sm" [routerLink]="[navigation.link]"
+              [routerLinkActive]="'bg-base-100'"
+              [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
             }
           </li>
         }

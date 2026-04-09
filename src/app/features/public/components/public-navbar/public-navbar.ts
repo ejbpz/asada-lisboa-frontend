@@ -1,10 +1,10 @@
 import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: 'public-navbar',
-  imports: [TitleCasePipe, RouterLink],
+  imports: [TitleCasePipe, RouterLink, RouterLinkActive],
   templateUrl: './public-navbar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
