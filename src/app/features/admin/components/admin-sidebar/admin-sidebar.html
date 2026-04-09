@@ -1,0 +1,51 @@
+<div class="drawer lg:drawer-open relative">
+  <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+
+  <div class="drawer-content relative">
+    <!-- Page content here -->
+    <div class="flex flex-col min-h-screen">
+      <router-outlet class="flex-1"/>
+      <admin-footer/>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="w-fit h-fit z-1 fixed top-2 ml-2">
+      <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-circle btn-ghost bg-base-200">
+        <!-- Sidebar toggle icon -->
+        <svg class="w-5 h-5"><use class="w-full h-full" href="assets/icons/sidebar-icon.svg"></use></svg>
+      </label>
+    </nav>
+  </div>
+
+  <div class="drawer-side is-drawer-close:overflow-visible">
+    <label for="my-drawer-4" aria-label="close sidebar" class="drawer-overlay"></label>
+    <div class="flex min-h-full flex-col items-start justify-between bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+      <!-- Sidebar content here -->
+      <ul class="menu w-full grow flex flex-col content-center gap-2">
+        <!-- List item -->
+        <li class="w-full">
+          <a [routerLink]="['/admin']" class="is-drawer-close:hidden flex justify-center items-center w-full">
+            <!-- Home icon -->
+            <svg class="w-22 h-22"><use class="w-full h-full" href="logo/asada-logo.svg"></use></svg>
+          </a>
+        </li>
+
+        @for (navigation of navigationLinks; track $index) {
+          <li class="w-full">
+            <a [routerLink]="navigation.link" class="w-full is-drawer-close:px-0 is-drawer-close:flex is-drawer-close:justify-center is-drawer-close:tooltip is-drawer-close:tooltip-right" [attr.data-tip]="navigation.title">
+              <svg class="w-6 h-6"><use class="w-full h-full" [attr.href]="navigation.imageUrl"></use></svg>
+              <span class="is-drawer-close:hidden">{{navigation.title}}</span>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="w-full my-2 p-2">
+        <button class="btn btn-secondary w-full text-base-100 is-drawer-close:tooltip is-drawer-close:tooltip-right p-0 flex justify-center" data-tip="Cerrar Sesión">
+          <svg class="w-5 h-5"><use href="assets/icons/logout-icon.svg" class="w-full h-full"></use></svg>
+          <span class="is-drawer-close:hidden">Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

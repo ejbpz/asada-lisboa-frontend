@@ -8,6 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    loadComponent: () => import('@admin/layout/admin-layout/admin-layout'),
     loadChildren: () => import('@admin/admin.routes')
   },
   {
