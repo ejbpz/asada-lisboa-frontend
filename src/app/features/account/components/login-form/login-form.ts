@@ -1,7 +1,11 @@
 import { RouterLink } from '@angular/router';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
 import { FormUtils } from '@shared/utils/form-utils';
+import { AuthApi } from '@core/services/auth-api';
+import { LoginRequest } from '@account/interfaces/login-request.interface';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'login-form',
@@ -13,7 +17,10 @@ import { FormUtils } from '@shared/utils/form-utils';
   }
 })
 export class LoginForm {
+  private loginRequest = signal<LoginRequest | null>(null);
+
   private formBuilder = inject(FormBuilder);
+  private authApiService = inject(AuthApi);
 
   protected loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required]],
@@ -27,6 +34,7 @@ export class LoginForm {
     }
 
     let data = this.loginForm.value;
+    this.loginRequest.set(data);
 
     this.loginForm.reset();
   }
@@ -34,4 +42,14 @@ export class LoginForm {
   protected getErrors(errors: ValidationErrors): string | undefined | null {
     return FormUtils.getErrors(errors);
   }
+
+  private loginService = rxResource({
+    params: () => ({ query: this.loginRequest() }),
+    stream: ({ params }) => {
+      if(!params.query)
+        return of();
+
+      return this.authApiService.loginUser(params.query);
+    }
+  })
 }
