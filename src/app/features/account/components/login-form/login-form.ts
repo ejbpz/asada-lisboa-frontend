@@ -1,8 +1,8 @@
-import { Router, RouterLink } from '@angular/router';
-import { of } from 'rxjs';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
+import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthApi } from '@core/services/auth-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
@@ -18,12 +18,13 @@ import { LoginRequest } from '@account/interfaces/login-request.interface';
 })
 export class LoginForm {
   // Init
-  private loginRequest = signal<LoginRequest | null>(null);
+  isLoading = signal(false);
+  isError = signal<string | null>(null);
 
   // Injects
-  private formBuilder = inject(FormBuilder);
   private authApiService = inject(AuthApi);
-  private router = inject(Router);
+  private formBuilder = inject(FormBuilder);
+  private toastService = inject(HotToastService);
 
   // Form
   protected loginForm: FormGroup = this.formBuilder.group({
@@ -38,10 +39,7 @@ export class LoginForm {
       return;
     }
 
-    let data = this.loginForm.value;
-    this.loginRequest.set(data);
-
-    this.loginForm.reset();
+    this.loginService(this.loginForm.value);
   }
 
   // Get input errors
@@ -50,13 +48,38 @@ export class LoginForm {
   }
 
   // Calling login API
-  protected loginService = rxResource({
-    params: () => ({ query: this.loginRequest() }),
-    stream: ({ params }) => {
-      if(!params.query)
-        return of();
+  protected loginService(loginRequest: LoginRequest): void {
+    if(this.isLoading())
+      return;
 
-      return this.authApiService.loginUser(params.query);
-    }
-  })
+    this.isLoading.set(true);
+    this.isError.set(null);
+
+    this.authApiService.loginUser(loginRequest)
+      .subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.loginForm.reset();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isLoading.set(false);
+          this.isError.set(error.message);
+        }
+      })
+  }
+
+  // Toast error
+  protected showError = effect(() => {
+    const error = this.isError();
+
+    if(!error) return;
+
+    this.toastService.show(this.isError()!, {
+      icon: '❌',
+      theme: 'snackbar',
+      position: 'top-right',
+    });
+
+    this.isError.set(null);
+  });
 }

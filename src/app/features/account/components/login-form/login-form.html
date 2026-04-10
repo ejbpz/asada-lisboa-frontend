@@ -19,7 +19,11 @@
     }
   </fieldset>
 
-  <button type="submit" class="mt-1.5 btn btn-secondary w-fit text-base-100 text-sm font-medium">Iniciar Sesión</button>
+  <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-secondary w-fit text-base-100 text-sm font-medium">
+    @if(isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } Iniciar Sesión
+  </button>
 </form>
 
 <div class="text-center my-1.5">
