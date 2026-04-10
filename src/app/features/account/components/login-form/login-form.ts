@@ -1,4 +1,4 @@
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
@@ -22,6 +22,7 @@ export class LoginForm {
   isError = signal<string | null>(null);
 
   // Injects
+  private router = inject(Router);
   private authApiService = inject(AuthApi);
   private formBuilder = inject(FormBuilder);
   private toastService = inject(HotToastService);
@@ -57,9 +58,12 @@ export class LoginForm {
 
     this.authApiService.loginUser(loginRequest)
       .subscribe({
-        next: () => {
+        next: (isValid: boolean) => {
           this.isLoading.set(false);
           this.loginForm.reset();
+
+          if(isValid)
+            this.router.navigate(['/admin']);
         },
         error: (error: HttpErrorResponse) => {
           this.isLoading.set(false);

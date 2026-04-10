@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 import { LoginResponse } from '@account/interfaces/login-response.interface';
@@ -20,12 +20,12 @@ export class AuthApi {
   private httpClient = inject(HttpClient);
 
   // HTTP calls
-  public loginUser(loginRequest: LoginRequest): Observable<LoginResponse> {
+  public loginUser(loginRequest: LoginRequest): Observable<boolean> {
     return this.httpClient.post<LoginResponse>(`${this.env.API_URL_ACCOUNT}/cuenta/iniciar-sesion`, {
       email: loginRequest.email,
       password: loginRequest.password
     }).pipe(
-        tap((response: LoginResponse) => this.setUser(response)),
+        map((response: LoginResponse) => this.setUser(response)),
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al iniciar sesión.')))
       );
   }
@@ -38,11 +38,13 @@ export class AuthApi {
   }
 
   // Functions
-  private setUser(loginResponse: LoginResponse): void {
+  private setUser(loginResponse: LoginResponse): boolean {
     localStorage.setItem(this.TOKEN_KEY, loginResponse.token);
     localStorage.setItem(this.REFRESH_TOKEN_KEY, loginResponse.refreshToken);
     localStorage.setItem(this.TOKEN_EXPIRATION_KEY, loginResponse.expirationToken.toString());
     localStorage.setItem(this.REFRESH_TOKEN_EXPIRATION_KEY, loginResponse.refreshTokenExpiration.toString());
+
+    return true;
   }
 
   private removeUser(): void {
