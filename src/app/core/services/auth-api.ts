@@ -37,6 +37,23 @@ export class AuthApi {
       );
   }
 
+  // Getters
+  private getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  private getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+  }
+
+  private getTokenExpiration(): string | null {
+    return localStorage.getItem(this.TOKEN_EXPIRATION_KEY);
+  }
+
+  private getRefreshTokenExpiration(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN_EXPIRATION_KEY);
+  }
+
   // Functions
   private setUser(loginResponse: LoginResponse): boolean {
     localStorage.setItem(this.TOKEN_KEY, loginResponse.token);
@@ -52,5 +69,29 @@ export class AuthApi {
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.TOKEN_EXPIRATION_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_EXPIRATION_KEY);
+  }
+
+  private isTokenExpired(): boolean {
+    try {
+      let TokenDateLS: string | null = this.getTokenExpiration();
+
+      if(!TokenDateLS)
+        return true;
+
+      const tokenDate = new Date(TokenDateLS);
+      const dateNow = new Date(Date.now());
+
+      return (tokenDate < dateNow)
+    } catch {
+      return true;
+    }
+  }
+
+  public isUserAuthenticated(): boolean {
+    const token = this.getToken();
+
+    if(!token) return false;
+
+    return !this.isTokenExpired();
   }
 }
