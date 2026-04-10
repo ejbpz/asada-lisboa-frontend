@@ -1,0 +1,27 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLoginUser()" class="flex flex-col gap-3 w-[18rem] px-2 py-1 text-neutral">
+  <div class="flex justify-center">
+    <svg class="w-22 h-22"><use class="w-full h-full" href="logo/asada-logo.svg"></use></svg>
+  </div>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend font-normal text-sm">* Correo electrónico</legend>
+    <input formControlName="email" placeholder="mail@site.com" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+    @if (!!loginForm.controls['email'].errors && loginForm.controls['email'].touched) {
+      <span class="text-error text-[.75rem] font-light">{{ getErrors(loginForm.controls['email'].errors) }}</span>
+    }
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend font-normal text-sm">* Contraseña</legend>
+    <input formControlName="password" placeholder="Password" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+    @if (!!loginForm.controls['password'].errors && loginForm.controls['password'].touched) {
+      <span class="text-error text-[.75rem] font-light">{{ getErrors(loginForm.controls['password'].errors) }}</span>
+    }
+  </fieldset>
+
+  <button type="submit" class="mt-1.5 btn btn-secondary w-fit text-base-100 text-sm font-medium">Iniciar Sesión</button>
+</form>
+
+<div class="text-center my-1.5">
+  <a [routerLink]="['/cuenta/olvido-contrasena']" class="link text-xs">¿Olvidó su contraseña?</a>
+</div>
