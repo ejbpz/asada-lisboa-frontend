@@ -38,7 +38,7 @@ export class AuthApi {
   }
 
   // Getters
-  private getToken(): string | null {
+  public getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 

@@ -22,7 +22,9 @@ export class AdminSidebar {
   // Inject
   private authApiService = inject(AuthApi);
 
+  // Calling logout API
   protected onLogout() {
-    this.authApiService.logoutUser();
+    this.authApiService.logoutUser()
+      .subscribe();
   }
 }
