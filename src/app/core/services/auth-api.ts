@@ -9,13 +9,45 @@ import { LoginResponse } from '@account/interfaces/login-response.interface';
   providedIn: 'root'
 })
 export class AuthApi {
-  private httpClient = inject(HttpClient);
+  // Init
   private env = environment;
+  private TOKEN_KEY = 'token_key';
+  private REFRESH_TOKEN_KEY = 'refresh_token_key';
+  private TOKEN_EXPIRATION_KEY = 'token_expiration_key';
+  private REFRESH_TOKEN_EXPIRATION_KEY = 'refresh_token_expiration_key';
 
+  // Injection
+  private httpClient = inject(HttpClient);
+
+  // HTTP calls
   public loginUser(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${this.env.API_URL_ACCOUNT}/cuenta/iniciar-sesion`, {
       email: loginRequest.email,
       password: loginRequest.password
-    });
+    }).pipe(
+        tap((response: LoginResponse) => this.setUser(response)),
+      );
+  }
+
+  public logoutUser(): Observable<void> {
+    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/cerrar-sesion`, {})
+      .pipe(
+        tap(() => this.removeUser())
+      );
+  }
+
+  // Functions
+  private setUser(loginResponse: LoginResponse): void {
+    localStorage.setItem(this.TOKEN_KEY, loginResponse.token);
+    localStorage.setItem(this.REFRESH_TOKEN_KEY, loginResponse.refreshToken);
+    localStorage.setItem(this.TOKEN_EXPIRATION_KEY, loginResponse.expirationToken.toString());
+    localStorage.setItem(this.REFRESH_TOKEN_EXPIRATION_KEY, loginResponse.refreshTokenExpiration.toString());
+  }
+
+  private removeUser(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    localStorage.removeItem(this.TOKEN_EXPIRATION_KEY);
+    localStorage.removeItem(this.REFRESH_TOKEN_EXPIRATION_KEY);
   }
 }

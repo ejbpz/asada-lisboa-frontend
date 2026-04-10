@@ -13,7 +13,7 @@
 
   <fieldset class="fieldset">
     <legend class="fieldset-legend font-normal text-sm">* Contraseña</legend>
-    <input formControlName="password" placeholder="Password" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+    <input type="password" formControlName="password" placeholder="********" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
     @if (!!loginForm.controls['password'].errors && loginForm.controls['password'].touched) {
       <span class="text-error text-[.75rem] font-light">{{ getErrors(loginForm.controls['password'].errors) }}</span>
     }
