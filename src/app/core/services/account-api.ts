@@ -1,7 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
+import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
 import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-request.interface';
 
 @Injectable({
@@ -20,6 +21,17 @@ export class AccountApi {
       email: forgotPasswordRequest.email
     }).pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al enviar email.')))
+      );
+  }
+
+  public resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<void> {
+    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/restaurar-contrasena`, {
+      email: resetPasswordRequest.email,
+      token: resetPasswordRequest.token,
+      password: resetPasswordRequest.password,
+      confirmPassword: resetPasswordRequest.confirmPassword,
+    }).pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al validar token.')))
       );
   }
 }

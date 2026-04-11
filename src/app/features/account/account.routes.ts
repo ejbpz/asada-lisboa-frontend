@@ -11,10 +11,10 @@ const authRoutes: Routes = [
     path: 'olvido-contrasena',
     loadComponent: () => import('@account/pages/forgot-password-page/forgot-password-page')
   },
-  // {
-  //   path: 'restaurar-contrasena',
-  //   // loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'restaurar-contrasena',
+    loadComponent: () => import('@account/pages/reset-password-page/reset-password-page')
+  },
 ]
 
 export default authRoutes;
