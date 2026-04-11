@@ -7,18 +7,14 @@ const authRoutes: Routes = [
     loadComponent: () => import('@account/pages/login-page/login-page'),
     canActivate: [nonAuthenticatedUserGuard]
   },
-  // {
-  //   path: 'olvido-contrasena',
-  //   // loadComponent: () => import('') // TODO
-  // },
-  // {
-  //   path: 'cambio-contrasena',
-  //   // loadComponent: () => import('') // TODO
-  // },
   {
-    path: '**',
-    redirectTo: 'iniciar-sesion'
-  }
+    path: 'olvido-contrasena',
+    loadComponent: () => import('@account/pages/forgot-password-page/forgot-password-page')
+  },
+  // {
+  //   path: 'restaurar-contrasena',
+  //   // loadComponent: () => import('') // TODO
+  // },
 ]
 
 export default authRoutes;

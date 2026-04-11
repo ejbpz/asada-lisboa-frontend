@@ -78,7 +78,7 @@ export class LoginForm {
 
     if(!error) return;
 
-    this.toastService.show(this.isError()!, {
+    this.toastService.show(error, {
       icon: '❌',
       theme: 'snackbar',
       position: 'top-right',
