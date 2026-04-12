@@ -6,6 +6,7 @@ import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
 import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
 import { ActivatedRoute, Router } from '@angular/router';
+import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
 
 @Component({
   selector: 'reset-password-form',
@@ -36,6 +37,8 @@ export class ResetPasswordForm implements AfterViewInit {
   protected resetPasswordForm: FormGroup = this.formBuilder.group({
     password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(FormUtils.passwordPattern)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern(FormUtils.passwordPattern)]]
+  }, {
+    validators: confirmPasswordValidator('password', 'confirmPassword')
   });
 
   // OnInit

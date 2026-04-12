@@ -10,6 +10,8 @@ export class FormUtils {
       switch(errorKey) {
         case 'required':
           return 'Este campo es requerido.';
+        case 'passwordMismatch':
+          return 'Ambas contraseñas deben ser idénticas.';
         case 'minlength':
           return `Debe contener mínimo ${errors[errorKey].requiredLength} caracteres.`;
         case 'pattern':
