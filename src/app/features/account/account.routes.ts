@@ -15,6 +15,10 @@ const authRoutes: Routes = [
     path: 'restaurar-contrasena',
     loadComponent: () => import('@account/pages/reset-password-page/reset-password-page')
   },
+  {
+    path: '**',
+    redirectTo: 'iniciar-sesion'
+  }
 ]
 
 export default authRoutes;
