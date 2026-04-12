@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AccountApi } from '@core/services/account-api';
-import { HotToastService } from '@ngxpert/hot-toast';
+import { ToastMessage } from '@shared/services/toast-message';
 import { FormUtils } from '@shared/utils/form-utils';
 
 @Component({
@@ -24,7 +24,7 @@ export class ForgotPasswordForm {
   // Injects
   private formBuilder = inject(FormBuilder);
   private accountService = inject(AccountApi);
-  private toastService = inject(HotToastService);
+  private toastService = inject(ToastMessage);
 
   // Form
   protected forgotPasswordForm: FormGroup = this.formBuilder.group({
@@ -69,31 +69,13 @@ export class ForgotPasswordForm {
   }
 
   // Toast error
-  protected showError = effect(() => {
-    const error = this.isError();
-
-    if(!error) return;
-
-    this.toastService.show(error, {
-      icon: '❌',
-      theme: 'snackbar',
-      position: 'top-right',
-    });
+  private showToast = effect(() => {
+    this.toastService.showToast(
+      this.isError() ? this.isError() : this.isSuccess(),
+      this.isError() ? '❌' : '✔'
+    );
 
     this.isError.set(null);
-  });
-
-  protected showSuccess = effect(() => {
-    const success = this.isSuccess();
-
-    if(!success) return;
-
-    this.toastService.show(success, {
-      icon: '✔',
-      theme: 'snackbar',
-      position: 'top-right',
-    });
-
     this.isSuccess.set(null);
   });
 }

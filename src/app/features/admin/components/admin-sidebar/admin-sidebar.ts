@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLinkWithHref, Router } from '@angular/router';
 import { AuthApi } from '@core/services/auth-api';
 import { GlobalFooter } from "@shared/components/global-footer/global-footer";
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'admin-sidebar',
@@ -28,8 +27,10 @@ export class AdminSidebar {
   // Calling logout API
   protected onLogout() {
     this.authApiService.logoutUser()
-      .subscribe();
-
-    this.router.navigate(['/cuenta/iniciar-sesion']);
+      .subscribe({
+        complete: () => {
+          this.router.navigate(['/cuenta/iniciar-sesion']);
+        }
+      });
   }
 }

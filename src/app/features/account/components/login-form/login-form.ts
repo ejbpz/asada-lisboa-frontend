@@ -2,9 +2,9 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
-import { HotToastService } from '@ngxpert/hot-toast';
 import { AuthApi } from '@core/services/auth-api';
 import { FormUtils } from '@shared/utils/form-utils';
+import { ToastMessage } from '@shared/services/toast-message';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 
 @Component({
@@ -25,7 +25,7 @@ export class LoginForm {
   private router = inject(Router);
   private authApiService = inject(AuthApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(HotToastService);
+  private toastService = inject(ToastMessage);
 
   // Form
   protected loginForm: FormGroup = this.formBuilder.group({
@@ -73,16 +73,11 @@ export class LoginForm {
   }
 
   // Toast error
-  protected showError = effect(() => {
-    const error = this.isError();
-
-    if(!error) return;
-
-    this.toastService.show(error, {
-      icon: '❌',
-      theme: 'snackbar',
-      position: 'top-right',
-    });
+  private showToast = effect(() => {
+    this.toastService.showToast(
+      this.isError(),
+      this.isError() ? '❌' : '✔'
+    );
 
     this.isError.set(null);
   });

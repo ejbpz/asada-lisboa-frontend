@@ -1,12 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { HotToastService } from '@ngxpert/hot-toast';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
-import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ToastMessage } from '@shared/services/toast-message';
 import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
+import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
 
 @Component({
   selector: 'reset-password-form',
@@ -30,7 +30,7 @@ export class ResetPasswordForm implements AfterViewInit {
   private router = inject(Router);
   private formBuilder = inject(FormBuilder);
   private accountService = inject(AccountApi);
-  private toastService = inject(HotToastService);
+  private toastService = inject(ToastMessage);
   private activatedRoute = inject(ActivatedRoute);
 
   // Form
@@ -94,31 +94,13 @@ export class ResetPasswordForm implements AfterViewInit {
   }
 
   // Toast error
-  protected showError = effect(() => {
-    const error = this.isError();
-
-    if(!error) return;
-
-    this.toastService.show(error, {
-      icon: '❌',
-      theme: 'snackbar',
-      position: 'top-right',
-    });
+  private showToast = effect(() => {
+    this.toastService.showToast(
+      this.isError() ? this.isError() : this.isSuccess(),
+      this.isError() ? '❌' : '✔'
+    );
 
     this.isError.set(null);
-  });
-
-  protected showSuccess = effect(() => {
-    const success = this.isSuccess();
-
-    if(!success) return;
-
-    this.toastService.show(success, {
-      icon: '✔',
-      theme: 'snackbar',
-      position: 'top-right',
-    });
-
     this.isSuccess.set(null);
   });
 }
