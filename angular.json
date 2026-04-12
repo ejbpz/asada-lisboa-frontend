@@ -22,6 +22,7 @@
               }
             ],
             "styles": [
+              "@ngxpert/hot-toast/styles.css",
               "src/styles.css"
             ],
             "server": "src/main.server.ts",
@@ -63,7 +64,7 @@
         "serve": {
           "options": {
             "host": "0.0.0.0",
-            "allowedHosts": ["localhost", "127.0.0.1", "0.0.0.0", "192.168.0.31"]
+            "allowedHosts": ["localhost", "127.0.0.1", "0.0.0.0", "192.168.0.31", "192.168.0.14"]
           },
           "builder": "@angular/build:dev-server",
           "configurations": {

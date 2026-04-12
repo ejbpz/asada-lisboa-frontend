@@ -9,6 +9,7 @@
       "@environments/*": [ "./src/environments/*" ],
       "@admin/*": [ "./src/app/features/admin/*" ],
       "@shared/*": [ "./src/app/shared/*" ],
+      "@core/*": [ "./src/app/core/*" ],
       "@root/*": [ "./src/app/*" ]
     },
     "strict": true,

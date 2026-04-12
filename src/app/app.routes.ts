@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authenticatedUserGuard } from '@core/guards/authenticated-user-guard';
 
 export const routes: Routes = [
   {
@@ -9,7 +10,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadComponent: () => import('@admin/layout/admin-layout/admin-layout'),
-    loadChildren: () => import('@admin/admin.routes')
+    loadChildren: () => import('@admin/admin.routes'),
+    canActivate: [authenticatedUserGuard],
   },
   {
     path: 'cuenta',
