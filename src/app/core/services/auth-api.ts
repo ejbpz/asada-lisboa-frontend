@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 import { LoginResponse } from '@account/interfaces/login-response.interface';
@@ -15,6 +15,9 @@ export class AuthApi {
   private REFRESH_TOKEN_KEY = 'refresh_token_key';
   private TOKEN_EXPIRATION_KEY = 'token_expiration_key';
   private REFRESH_TOKEN_EXPIRATION_KEY = 'refresh_token_expiration_key';
+
+  private isRefreshing = false;
+  private refresh$: Observable<boolean> | null = null;
 
   // Injection
   private httpClient = inject(HttpClient);
@@ -35,6 +38,34 @@ export class AuthApi {
       .pipe(
         tap(() => this.removeUser())
       );
+  }
+
+  public refreshToken(): Observable<boolean> {
+    const token = this.getToken();
+    const refreshToken = this.getRefreshToken();
+
+    if(!token || !refreshToken)
+      return throwError(() => new Error('Sin tokens para refrescar.'));
+
+    if(this.isRefreshing && this.refresh$)
+      return this.refresh$;
+
+    this.isRefreshing = true;
+
+    this.refresh$ = this.httpClient.post<LoginResponse>(`${this.env.API_URL_ACCOUNT}/cuenta/refrescar-token`, {
+      token: token,
+      refreshToken: refreshToken,
+    }).pipe(
+        map((response: LoginResponse) => this.setUser(response)),
+        shareReplay(1),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al refrescar token.'))),
+        finalize(() => {
+          this.isRefreshing = false;
+          this.refresh$ = null;
+        })
+      );
+
+    return this.refresh$;
   }
 
   // Getters
