@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
 
 const publicRoutes: Routes = [
-  // {
-  //   path: '',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: '',
+    loadComponent: () => import('@public/pages/main-page/main-page')
+  },
   // {
   //   path: 'nosotros',
   //   //loadComponent: () => import('') // TODO
