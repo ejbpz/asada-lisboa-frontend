@@ -11,11 +11,24 @@
   src: url("../public/assets/fonts/poppins/Poppins-Regular.ttf");
 }
 
+@font-face {
+  font-family: "Hepta Slab";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../public/assets/fonts/hepta_slab/HeptaSlab-VariableFont_wght.ttf");
+}
+
 @theme {
   --font-poppins: "Poppins", "sans-serif";
+  --font-hepta-slab: "Hepta Slab", "sans-serif";
   --text-md: 1rem;
 }
 
 * {
   font-family: var(--font-poppins);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-hepta-slab);
 }
