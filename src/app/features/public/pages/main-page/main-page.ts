@@ -1,10 +1,9 @@
-import { RouterLink } from "@angular/router";
-import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { PublicHero } from "@public/components/public-hero/public-hero";
 
 @Component({
   selector: 'main-page',
-  imports: [UpperCasePipe , TitleCasePipe, RouterLink],
+  imports: [PublicHero],
   templateUrl: './main-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
