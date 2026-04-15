@@ -1,0 +1,19 @@
+<div class="container">
+  <title-section [link]="'/documentos'">
+    <h3 class="text-xl font-bold mb-0.5" section-title>Documentos importantes</h3>
+    <p class="text-sm" section-description>Encuentra formularios, reportes de pago y documentos necesarios para trámites y consultas relacionadas con la ASADA.</p>
+  </title-section>
+
+  <!-- @for (newsData of news; track newsData.id) {
+    <news [data]="newsData"/>
+  } -->
+
+  <div class="grid grid-cols-1 grid-rows-auto gap-3 sm:grid-cols-2">
+    <documents-card/>
+    <documents-card/>
+    <documents-card/>
+    <documents-card/>
+    <documents-card/>
+    <documents-card/>
+  </div>
+</div>
