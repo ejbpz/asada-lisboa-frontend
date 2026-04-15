@@ -1,0 +1,15 @@
+<div class="container">
+  <title-section [link]="'/galeria'">
+    <h3 class="text-xl font-bold mb-0.5" section-title>Galería de imágenes</h3>
+    <p class="text-sm" section-description>Explora imágenes de trabajos recientes, mejoras en la infraestructura y acciones realizadas para mantener el servicio en óptimas condiciones.</p>
+  </title-section>
+
+  <div class="grid grid-cols-1 sm:grid-cols-4 sm:grid-rows-2 gap-2 w-full sm:aspect-4/2">
+    <img [src]="imagesSources[0]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-1 sm:row-start-1">
+    <img [src]="imagesSources[1]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-1 sm:row-start-2">
+    <img [src]="imagesSources[2]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-2 sm:row-start-1 sm:row-span-2">
+    <img [src]="imagesSources[3]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-3 sm:row-start-1">
+    <img [src]="imagesSources[4]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-3 sm:row-start-2">
+    <img [src]="imagesSources[5]" class="w-full h-auto sm:h-full object-cover rounded-lg sm:col-start-4 sm:row-start-1 sm:row-span-2">
+  </div>
+</div>

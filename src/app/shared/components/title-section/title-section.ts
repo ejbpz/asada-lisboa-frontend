@@ -5,6 +5,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   imports: [],
   templateUrl: './title-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'block mb-5 w-full md:w-1/2'
+  }
 })
 export class TitleSection {
   public link = input.required<string>();
