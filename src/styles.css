@@ -25,6 +25,10 @@
   --text-md: 1rem;
 }
 
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
 * {
   font-family: var(--font-poppins);
 }
