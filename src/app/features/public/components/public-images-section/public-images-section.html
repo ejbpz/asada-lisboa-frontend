@@ -1,6 +1,10 @@
 <div class="container">
-  <title-section [link]="'/galeria'">
-    <h3 class="text-xl font-bold mb-0.5" section-title>Galería de imágenes</h3>
+  <title-section>
+    <a [routerLink]="['/galeria']" section-title>
+      <h3 class="text-xl font-bold mb-0.5 before:content-['#'] hover:underline">
+        Galería de imágenes
+      </h3>
+    </a>
     <p class="text-sm" section-description>Explora imágenes de trabajos recientes, mejoras en la infraestructura y acciones realizadas para mantener el servicio en óptimas condiciones.</p>
   </title-section>
 

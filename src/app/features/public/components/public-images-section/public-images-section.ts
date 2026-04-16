@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
 import { TitleSection } from "@shared/components/title-section/title-section";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'public-images-section',
-  imports: [TitleSection],
+  imports: [TitleSection, RouterLink],
   templateUrl: './public-images-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CarouselNews } from "../carousel-news/carousel-news";
 import { TitleSection } from "@shared/components/title-section/title-section";
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'public-news-section',
-  imports: [CarouselNews, TitleSection],
+  imports: [CarouselNews, TitleSection, RouterLink],
   templateUrl: './public-news-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

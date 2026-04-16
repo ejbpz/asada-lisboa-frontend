@@ -10,8 +10,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   }
 })
 export class TitleSection {
-  public link = input.required<string>();
-
   public hasReturn = input(false, {
     transform: (value: boolean | string) => {
       return typeof value === 'string' ? value === '' : false;

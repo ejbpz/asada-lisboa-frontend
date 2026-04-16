@@ -1,3 +1,4 @@
+import { RouterLink } from "@angular/router";
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TitleSection } from "@shared/components/title-section/title-section";
 import { DocumentsCard } from "@shared/components/documents-card/documents-card";
@@ -5,7 +6,7 @@ import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-res
 
 @Component({
   selector: 'public-documents-section',
-  imports: [TitleSection, DocumentsCard],
+  imports: [TitleSection, DocumentsCard, RouterLink],
   templateUrl: './public-documents-section.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
