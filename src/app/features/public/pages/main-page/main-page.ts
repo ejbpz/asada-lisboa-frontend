@@ -23,7 +23,7 @@ export default class MainPage implements AfterViewInit {
   // Injects
   private principalService = inject(PrincipalApi);
 
-  // OnInit
+  // AfterViewInit
   ngAfterViewInit(): void {
     this.principalApiService();
   }

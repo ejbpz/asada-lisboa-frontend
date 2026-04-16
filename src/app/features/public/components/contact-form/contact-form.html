@@ -1,0 +1,51 @@
+<div class="w-[80%] md:shadow-sm md:rounded md:py-3 md:px-7">
+  <form [formGroup]="contactForm" (ngSubmit)="oncontactForm()" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Nombre completo</legend>
+      <input formControlName="fullName" placeholder="Karla Sánchez" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!contactForm.controls['fullName'].errors && contactForm.controls['fullName'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['fullName'].errors) }}</span>
+      }
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Correo electrónico</legend>
+      <input formControlName="email" placeholder="ejemplo@correo.com" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!contactForm.controls['email'].errors && contactForm.controls['email'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['email'].errors) }}</span>
+      }
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">Teléfono celular</legend>
+      <input formControlName="phoneNumber" placeholder="8888-8888" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!contactForm.controls['phoneNumber'].errors && contactForm.controls['phoneNumber'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['phoneNumber'].errors) }}</span>
+      }
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Asunto</legend>
+      <input formControlName="subject" placeholder="Información sobre recibo" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!contactForm.controls['subject'].errors && contactForm.controls['subject'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['subject'].errors) }}</span>
+      }
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Mensaje</legend>
+      <textarea formControlName="message" placeholder="El recibo del pasado mes de..." class="input w-full min-h-37.5 py-2 px-3 placeholder:text-neutral placeholder:text-xs"></textarea>
+      @if (!!contactForm.controls['message'].errors && contactForm.controls['message'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['message'].errors) }}</span>
+      }
+    </fieldset>
+
+    <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+      @if(isLoading()) {
+        <span class="loading loading-spinner"></span>
+      } Enviar
+    </button>
+  </form>
+</div>
+
+<script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>

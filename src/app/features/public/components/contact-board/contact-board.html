@@ -1,0 +1,23 @@
+<div class="w-[80%] shadow-sm rounded py-3 px-7 bg-base-300 text-neutral">
+  <h2 class="text-xl font-bold mb-4">Información de contacto</h2>
+
+  <div class="w-full h-full overflow-x-clip flex flex-col justify-between gap-6">
+    @if (isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } @else if(contactData()) {
+      @for (contact of contactData(); track contact.id) {
+        <div class="h-full w-full ml-2">
+          <div class="flex justify-start gap-1">
+            <svg class="w-6 h-6"><use class="w-full h-full" [attr.href]="contactIcon(contact.value)"></use></svg>
+            <h4 class="text-md font-semibold">{{ contact.contactType }}</h4>
+          </div>
+          @if (!!contactLink(contact.value)) {
+            <a [href]="contactLink(contact.value)" target="_blank" rel="noopener noreferrer" class="ml-2 text-sm hover:underline">{{ contactTextMessage(contact.value, contact.contactType) }}</a>
+          } @else {
+            <p class="ml-2 text-sm">{{ contact.value }}</p>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

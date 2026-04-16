@@ -10,7 +10,7 @@
           <svg class="w-6 h-6"><use class="w-full h-full" [attr.href]="contact.imageUrl"></use></svg>
           <h5 class="text-md font-semibold">{{ contact.title }}</h5>
         </div>
-        <a href="{{ contact.type }}{{ contact.link }}" target="_blank" rel="noopener noreferrer">{{ contact.description }}</a>
+        <a href="{{ contact.type }}{{ contact.link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">{{ contact.description }}</a>
       </div>
     }
   </nav>
@@ -27,7 +27,7 @@
 
   <nav>
     <div class="grid grid-flow-col justify-center items-center gap-4">
-      <a href="{{ facebookLink }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-end gap-1">
+      <a href="{{ facebookLink }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-end gap-1 hover:underline">
         <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/facebook-icon.svg"></use></svg>
         <span class="h-full">Facebook</span>
       </a>

@@ -39,7 +39,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'contacto',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/contact-page/contact-page')
   },
   {
     path: 'recibos',

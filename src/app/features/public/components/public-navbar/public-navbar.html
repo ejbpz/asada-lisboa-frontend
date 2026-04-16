@@ -15,16 +15,18 @@
                 @for (internal of navigation?.internalLinks; track $index) {
                   <li>
                     <a [routerLink]="[internal.link]"
-                      [routerLinkActive]="'bg-base-100'"
-                      [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
+                      [routerLinkActive]="'underline'"
+                      [routerLinkActiveOptions]="{ exact: true }"
+                      class="hover:underline">{{ internal.title | titlecase }}</a>
                   </li>
                 }
               </ul>
             </details>
           } @else {
             <a [routerLink]="[navigation.link]"
-              [routerLinkActive]="'bg-base-100'"
-              [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
+              [routerLinkActive]="'underline'"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="hover:underline">{{ navigation.title | titlecase }}</a>
           }
         </li>
       }

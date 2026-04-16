@@ -3,6 +3,12 @@
   themes: nord --default;
 }
 
+@plugin "daisyui/theme" {
+  name: "nord";
+  default: true;
+  --color-primary: '#0A98E6';
+}
+
 @font-face {
   font-family: Poppins;
   font-weight: 500;

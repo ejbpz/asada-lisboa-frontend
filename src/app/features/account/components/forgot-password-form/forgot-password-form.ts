@@ -2,9 +2,9 @@ import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-reque
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
 import { ToastMessage } from '@shared/services/toast-message';
-import { FormUtils } from '@shared/utils/form-utils';
 
 @Component({
   selector: 'forgot-password-form',
@@ -65,7 +65,7 @@ export class ForgotPasswordForm {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }
-      })
+      });
   }
 
   // Toast error
