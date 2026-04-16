@@ -3,9 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { PublicNavbar } from "@public/components/public-navbar/public-navbar";
 import { PublicFooter } from "@public/components/public-footer/public-footer";
 
+
 @Component({
   selector: 'public-layout',
-  imports: [RouterOutlet, PublicNavbar, PublicFooter],
+  imports: [RouterOutlet, PublicNavbar, PublicFooter ],
   templateUrl: './public-layout.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
