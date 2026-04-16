@@ -6,4 +6,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './about-us.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AboutUs { }
+export default class AboutUs {
+
+ }
