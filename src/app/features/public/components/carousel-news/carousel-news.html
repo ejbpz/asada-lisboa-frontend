@@ -1,0 +1,15 @@
+<div #carousel class="flex gap-5 overflow-x-scroll mb-2 text-neutral no-scrollbar">
+  @for (newData of news(); track newData.id) {
+    <news-card [newData]="newData"/>
+  }
+
+</div>
+
+<div class="flex justify-end">
+  <button class="cursor-pointer" (click)="scrollLeft()" [disabled]="minIndex()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24"><path [attr.fill]="minIndex() ? '#8C9CA7' : '#FFFFFF'" d="M14 17.308L8.692 12L14 6.692l.708.708l-4.6 4.6l4.6 4.6z"/></svg>
+  </button>
+  <button class="cursor-pointer" (click)="scrollRight()" [disabled]="maxIndex()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24"><path fill="none" [attr.stroke]="maxIndex() ? '#8C9CA7' : '#FFFFFF'" stroke-linecap="round" stroke-linejoin="round" d="m10 17l5-5l-5-5" stroke-width="1"/></svg>
+  </button>
+</div>

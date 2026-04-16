@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="hero">
+    <div class="hero-content flex flex-col justify-between items-center gap-5 gap-y-8 md:flex-row">
+      <div class="w-full md:w-1/2">
+        <div>
+          <h1 class="text-5xl font-bold">{{ title | uppercase }}</h1>
+          <h2 class="text-3xl font-medium">{{ subtitle | titlecase }}</h2>
+        </div>
+        <p class="py-6" [innerHTML]="description"></p>
+        <a [routerLink]="cta.link" class="btn btn-primary text-base-100">{{ cta.title | titlecase }}</a>
+      </div>
+      <div class="grid grid-cols-2 grid-rows-5 gap-3 w-full aspect-4/5 max-h-[60vh] transform -scale-x-100 md:w-1/2 md:scale-x-100">
+        @for (image of data(); track image.id; let i = $index) {
+          <img
+          [src]="imageFile(image?.filePath)"
+          [class]="getImageClasses(i)"/>
+        }
+      </div>
+    </div>
+  </div>
+</div>

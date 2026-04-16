@@ -1,0 +1,14 @@
+<div class="container">
+  <title-section [link]="'/galeria'">
+    <h3 class="text-xl font-bold mb-0.5" section-title>Galería de imágenes</h3>
+    <p class="text-sm" section-description>Explora imágenes de trabajos recientes, mejoras en la infraestructura y acciones realizadas para mantener el servicio en óptimas condiciones.</p>
+  </title-section>
+
+  <div class="grid grid-cols-1 sm:grid-cols-4 sm:grid-rows-2 gap-2 w-full sm:aspect-4/2">
+    @for (image of images(); track image.id; let i = $index) {
+      <img
+        [src]="imageFile(image?.filePath)"
+        [class]="getImageClasses(i)"/>
+    }
+  </div>
+</div>

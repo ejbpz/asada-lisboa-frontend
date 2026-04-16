@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, finalize, map, Observable, shareReplay, tap, throwError } from 'rxjs';
+import { StorageBrowser } from './storage-browser';
 import { environment } from '@environments/environment.development';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 import { LoginResponse } from '@account/interfaces/login-response.interface';
@@ -21,6 +22,7 @@ export class AuthApi {
 
   // Injection
   private httpClient = inject(HttpClient);
+  private storage = inject(StorageBrowser);
 
   // HTTP calls
   public loginUser(loginRequest: LoginRequest): Observable<boolean> {
@@ -70,36 +72,36 @@ export class AuthApi {
 
   // Getters
   public getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return this.storage.get(this.TOKEN_KEY);
   }
 
   private getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    return this.storage.get(this.REFRESH_TOKEN_KEY);
   }
 
   private getTokenExpiration(): string | null {
-    return localStorage.getItem(this.TOKEN_EXPIRATION_KEY);
+    return this.storage.get(this.TOKEN_EXPIRATION_KEY);
   }
 
   private getRefreshTokenExpiration(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_EXPIRATION_KEY);
+    return this.storage.get(this.REFRESH_TOKEN_EXPIRATION_KEY);
   }
 
   // Functions
   private setUser(loginResponse: LoginResponse): boolean {
-    localStorage.setItem(this.TOKEN_KEY, loginResponse.token);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, loginResponse.refreshToken);
-    localStorage.setItem(this.TOKEN_EXPIRATION_KEY, loginResponse.expirationToken.toString());
-    localStorage.setItem(this.REFRESH_TOKEN_EXPIRATION_KEY, loginResponse.refreshTokenExpiration.toString());
+    this.storage.set(this.TOKEN_KEY, loginResponse.token);
+    this.storage.set(this.REFRESH_TOKEN_KEY, loginResponse.refreshToken);
+    this.storage.set(this.TOKEN_EXPIRATION_KEY, loginResponse.expirationToken.toString());
+    this.storage.set(this.REFRESH_TOKEN_EXPIRATION_KEY, loginResponse.refreshTokenExpiration.toString());
 
     return true;
   }
 
   private removeUser(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.TOKEN_EXPIRATION_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_EXPIRATION_KEY);
+    this.storage.remove(this.TOKEN_KEY);
+    this.storage.remove(this.REFRESH_TOKEN_KEY);
+    this.storage.remove(this.TOKEN_EXPIRATION_KEY);
+    this.storage.remove(this.REFRESH_TOKEN_EXPIRATION_KEY);
   }
 
   private isTokenExpired(): boolean {

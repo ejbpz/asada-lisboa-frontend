@@ -1,0 +1,16 @@
+<div class="card-body flex-row w-full justify-between">
+  <div class="flex gap-3">
+    <div class="flex justify-center items-center">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/document-icon.svg"></use></svg>
+    </div>
+    <div>
+      <h4 class="card-title text-md h-5 max-h-5 line-clamp-1 text-ellipsis">{{ document()?.title | titlecase }}</h4>
+      <p class="font-light h-5 max-h-5 line-clamp-1 text-ellipsis">{{ document()?.description }}</p>
+    </div>
+  </div>
+  <div class="card-actions flex items-center justify-between">
+    <a [href]="imageFile(document()?.filePath)" target="_blank" rel="noopener noreferrer">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/navigation-icon.svg"></use></svg>
+    </a>
+  </div>
+</div>
