@@ -1,16 +1,17 @@
-<figure>
+<figure class="h-40 max-h-40 overflow-hidden">
   <img
-    src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-    alt="Shoes" />
+    [src]="imageFile(newData()?.imageUrl)"
+    [alt]="newData()?.title"
+    class="w-full h-full object-cover"/>
 </figure>
 <div class="card-body">
-  <h4 class="card-title text-md">Card Title</h4>
-  <p class="font-light h-20 max-h-20 line-clamp-4 text-ellipsis mb-2">A card component has a figure, a body part, and inside body there are title and actions parts. A card component has a figure, a body part, and inside body there are title and actions partsA card component has a figure, a body part, and inside body there are title and actions partsA card component has a figure, a body part, and inside body there are title and actions partsA card component has a figure, a body part, and inside body there are title and actions parts</p>
+  <h4 class="card-title text-md h-12.5 max-h-12.5 line-clamp-2 text-ellipsis">{{ newData()?.title | titlecase }}</h4>
+  <div class="font-light h-20 max-h-20 overflow-hidden line-clamp-4 text-ellipsis mb-2" [innerHTML]="newData()?.description"></div>
   <div class="card-actions flex items-center justify-between">
     <div class="flex h-full justify-center items-center gap-1">
       <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/calendar-icon.svg"></use></svg>
-      <span>{{ '1698028800000' | date:'dd/MM/yyyy' }}</span>
+      <span>{{ newData()?.lastEditionDate | date:'dd/MM/yyyy' }}</span>
     </div>
-    <a [routerLink]="['']" class="btn btn-primary text-base-100">Saber más</a>
+    <a [routerLink]="['/noticia', newData()?.slug]" class="btn btn-primary text-base-100">Saber más</a>
   </div>
 </div>

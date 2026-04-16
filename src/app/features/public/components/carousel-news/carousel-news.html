@@ -1,15 +1,8 @@
 <div #carousel class="flex gap-5 overflow-x-scroll mb-2 text-neutral no-scrollbar">
-  <!-- @for (newsData of news; track newsData.id) {
-    <news [data]="newsData"/>
-  } -->
+  @for (newData of news(); track newData.id) {
+    <news-card [newData]="newData"/>
+  }
 
-  <news-card/>
-  <news-card/>
-  <news-card/>
-  <news-card/>
-  <news-card/>
-  <news-card/>
-  <news-card/>
 </div>
 
 <div class="flex justify-end">
