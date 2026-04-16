@@ -40,6 +40,8 @@
       }
     </fieldset>
 
+    <re-captcha-validator (resolved)="onCaptchaResolved($event)"/>
+
     <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
       @if(isLoading()) {
         <span class="loading loading-spinner"></span>

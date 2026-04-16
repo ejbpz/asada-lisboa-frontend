@@ -53,7 +53,7 @@
                   @for (internal of navigation?.internalLinks; track $index) {
                     <li>
                       <a class="text-sm" [routerLink]="[internal.link]"
-                      [routerLinkActive]="'bg-base-100'"
+                      [routerLinkActive]="'underline'"
                       [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
                     </li>
                   }
@@ -61,7 +61,7 @@
               </details>
             } @else {
               <a class="text-sm" [routerLink]="[navigation.link]"
-              [routerLinkActive]="'bg-base-100'"
+              [routerLinkActive]="'underline'"
               [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
             }
           </li>

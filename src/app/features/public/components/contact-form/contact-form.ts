@@ -6,10 +6,11 @@ import { ContactApi } from '@core/services/contact-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 import { environment } from '@environments/environment.development';
+import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
 
 @Component({
   selector: 'contact-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ReCaptchaValidator],
   templateUrl: './contact-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -20,6 +21,7 @@ export class ContactForm {
   // Init
   protected env = environment;
   protected isLoading = signal(false);
+  private captchaToken: string | null = null;
   protected isError = signal<string | null>(null);
   protected isSuccess = signal<string | null>(null);
 
@@ -30,11 +32,11 @@ export class ContactForm {
 
   // Form
   protected contactForm: FormGroup = this.formBuilder.group({
+    phoneNumber: ['', [Validators.pattern(FormUtils.phonePattern)]],
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
-    phoneNumber: ['', [Validators.required, Validators.pattern(FormUtils.phonePattern)]],
-    subject: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
-    message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(600)]],
-    fullName: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(50), Validators.pattern(FormUtils.textPattern)]]
+    subject: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
+    message: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(320)]],
+    fullName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(FormUtils.textPattern)]]
   });
 
   // OnSubmit form
@@ -44,7 +46,29 @@ export class ContactForm {
       return;
     }
 
-    this.contactApiService(this.contactForm.value);
+    if (!this.captchaToken) {
+      this.isError.set('ReCAPTCHA obligatorio.');
+      return;
+    }
+
+    this.contactService.recaptchaValidation(this.captchaToken)
+      .subscribe({
+        next: (isValid: boolean) => {
+          if(!isValid)
+            this.isError.set('ReCAPTCHA fallido.');
+
+          this.contactApiService(this.contactForm.value);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isError.set(error.message);
+        }
+      });
+
+  }
+
+  // Captcha resolve
+  protected onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
   }
 
   // Contact service

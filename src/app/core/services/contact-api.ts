@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@public/interfaces/page-response.interface';
 import { ContactResponse } from '@public/interfaces/contact-response.interface';
@@ -36,11 +36,11 @@ export class ContactApi {
       );
   }
 
-  public recaptchaValidation(reCaptchaRequest: string): Observable<boolean> {
+  public recaptchaValidation(reCaptchdaRequest: string): Observable<boolean> {
     return this.httpClient.post<boolean>(`${this.env.API_URL_ACCOUNT}/email/re-captcha`, {
-      reCaptchaRequest: reCaptchaRequest,
+      reCaptchaRequest: reCaptchdaRequest,
     }).pipe(
-        catchError(() => throwError(() => 'Error al validar el ReCAPTCHA.'))
+        catchError(() => throwError(() => new Error('Error al validar el ReCAPTCHA.')))
       );
   }
 }
