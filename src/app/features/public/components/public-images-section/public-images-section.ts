@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
-import { TitleSection } from "@shared/components/title-section/title-section";
+import { TitleSection } from "@public/components/title-section/title-section";
 import { RouterLink } from "@angular/router";
 
 @Component({

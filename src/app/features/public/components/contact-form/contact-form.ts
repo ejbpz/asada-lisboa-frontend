@@ -14,7 +14,7 @@ import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-c
   templateUrl: './contact-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full flex justify-center md:w-1/2'
+    class: 'w-full flex justify-center'
   }
 })
 export class ContactForm {

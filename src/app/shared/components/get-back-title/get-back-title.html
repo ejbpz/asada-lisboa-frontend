@@ -1,0 +1,14 @@
+<div class="w-[70%]">
+  <div>
+    <a [routerLink]="!link()
+          ? (isAdmin() ? ['/admin'] : ['/'])
+          : link()"
+        class="flex gap-1">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/return-icon.svg"></use></svg>
+      <h3 class="text-[1.125rem] font-semibold">{{ title() | titlecase }}</h3>
+    </a>
+  </div>
+  <div>
+    <ng-content select="[section-description]"></ng-content>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { RouterLink } from "@angular/router";
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { TitleSection } from "@shared/components/title-section/title-section";
+import { TitleSection } from "@public/components/title-section/title-section";
 import { DocumentsCard } from "@shared/components/documents-card/documents-card";
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
 
