@@ -7,9 +7,16 @@
   <div class="w-full flex flex-col gap-5 p-5">
     <div class="flex flex-col items-center">
       <div class="w-full max-w-300">
-        <search-bar/>
-        <documents-list/>
-        <pagination-list/>
+        @if(documentsResource.isLoading()) {
+          <div class="my-10 w-full flex items-center justify-center">
+            <span class="loading loading-spinner loading-md"></span>
+          </div>
+        }
+        @else if(documentsResource.hasValue()) {
+          <search-bar/>
+          <documents-list [documents]="documentsResource.value().data"/>
+          <pagination-list/>
+        }
       </div>
     </div>
   </div>

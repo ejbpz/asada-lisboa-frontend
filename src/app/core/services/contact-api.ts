@@ -16,7 +16,7 @@ export class ContactApi {
   // Inject
   private httpClient = inject(HttpClient);
 
-  // HttpCalls
+  // Http calls
   public getContactInformation(): Observable<ContactResponse[]> {
     return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_CLIENT}/contactos`)
       .pipe(
