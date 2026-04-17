@@ -42,30 +42,31 @@
       </div>
       <ul
         tabindex="-1"
-        class="menu menu-sm dropdown-content bg-neutral-content rounded-box rounded-t-none z-1 mt-8 w-screen fixed left-0 p-2 shadow">
-
-        @for(navigation of navigationLinks; track $index) {
-          <li>
-            @if (navigation?.internalLinks) {
-              <details>
-                <summary class="text-sm">{{ navigation.title | titlecase }}</summary>
-                <ul class="p-2 min-w-max bg-nuetral-content w-fit mt-2 z-1">
-                  @for (internal of navigation?.internalLinks; track $index) {
-                    <li>
-                      <a class="text-sm" [routerLink]="[internal.link]"
-                      [routerLinkActive]="'underline'"
-                      [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
-                    </li>
-                  }
-                </ul>
-              </details>
-            } @else {
-              <a class="text-sm" [routerLink]="[navigation.link]"
-              [routerLinkActive]="'underline'"
-              [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
-            }
-          </li>
-        }
+        class="menu items-center menu-sm dropdown-content bg-neutral-content rounded-box rounded-t-none z-1 mt-8 w-screen fixed left-0 p-2 shadow">
+        <div class="container lg:hidden">
+          @for(navigation of navigationLinks; track $index) {
+            <li>
+              @if (navigation?.internalLinks) {
+                <details>
+                  <summary class="text-sm">{{ navigation.title | titlecase }}</summary>
+                  <ul class="p-2 min-w-max bg-nuetral-content w-fit mt-2 z-1">
+                    @for (internal of navigation?.internalLinks; track $index) {
+                      <li>
+                        <a class="text-sm" [routerLink]="[internal.link]"
+                        [routerLinkActive]="'underline'"
+                        [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
+                      </li>
+                    }
+                  </ul>
+                </details>
+              } @else {
+                <a class="text-sm" [routerLink]="[navigation.link]"
+                [routerLinkActive]="'underline'"
+                [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
+              }
+            </li>
+          }
+        </div>
       </ul>
     </div>
   </div>
