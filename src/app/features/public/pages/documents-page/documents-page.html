@@ -13,9 +13,9 @@
           </div>
         }
         @else if(documentsResource.hasValue()) {
-          <search-bar/>
+          <search-bar [stateValue]="filters()" [sortBy]="sortBy" [filterBy]="filterBy" (emitSearch)="onSearchSortForm($event)"/>
           <documents-list [documents]="documentsResource.value().data"/>
-          <pagination-list/>
+          <pagination-list [offset]="filters().offset ?? 0" [total]="documentsResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
         }
       </div>
     </div>

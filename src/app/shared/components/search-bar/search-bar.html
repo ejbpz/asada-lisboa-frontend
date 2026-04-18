@@ -1,52 +1,38 @@
-<div class="flex gap-3 items-center">
-  <div class="input">
-    <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
-    <input type="search" class="grow" placeholder="Search" />
+<form [formGroup]="searchForm" class="flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
+  <div class="flex gap-3 items-center">
+    <div class="input">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
+      <input formControlName="search" type="search" class="grow" placeholder="Search" autofocus/>
+    </div>
+
+    <div>
+      <select formControlName="filterBy" class="select select-md w-fit">
+        <option disabled selected value="">Filtrar</option>
+        @for (filter of filterBy(); track $index) {
+          <option value="{{ filter.value | lowercase }}">{{ filter.name | titlecase }}</option>
+        }
+      </select>
+    </div>
   </div>
 
-  <div>
-    <ul class="menu menu-horizontal px-1">
-      <li class="bg-base-300 rounded-sm">
-        <details>
-          <summary>Por</summary>
-          <ul class="bg-base-100 rounded-t-none m-0 z-1 min-w-full right-0">
-            <li><a>Nombre</a></li>
-            <li><a>Fecha</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-</div>
+  <div class="flex gap-3 items-center">
+    <button type="button" (click)="toggleSort()" class="btn btn-ghost btn-circle cursor-pointer">
+      <svg class="w-6 h-6">
+        <use [attr.href]="
+          stateValue().sortDirection === SortDirection.ASC
+            ? 'assets/icons/down-icon.svg'
+            : 'assets/icons/up-icon.svg'
+        "></use>
+      </svg>
+    </button>
 
-<div class="flex gap-3 items-center">
-  <div>
-    <ul class="menu menu-horizontal px-1">
-      <li class="bg-base-300 rounded-sm">
-        <details>
-          <summary>Ordernar</summary>
-          <ul class="bg-base-100 rounded-t-none m-0 z-1 min-w-full">
-            <li><a>Nombre</a></li>
-            <li><a>Fecha</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
+    <div>
+      <select formControlName="sortBy" class="select select-md">
+        <option disabled selected value="">Ordenar</option>
+        @for (sort of sortBy(); track $index) {
+          <option value="{{ sort.value | lowercase }}">{{ sort.name | titlecase }}</option>
+        }
+      </select>
+    </div>
   </div>
-
-  <div>
-    <ul class="menu menu-horizontal px-1">
-      <li class="bg-base-300 rounded-sm">
-        <details>
-          <summary>
-            <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/down-icon.svg"></use></svg>
-          </summary>
-          <ul class="bg-base-100 rounded-t-none m-0 z-1 min-w-full">
-            <li><a>Nombre</a></li>
-            <li><a>Fecha</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-</div>
+</form>
