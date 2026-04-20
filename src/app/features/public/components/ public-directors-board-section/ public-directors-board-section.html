@@ -1,9 +1,46 @@
-<section>
+<section class= "relative">
+ <div class="w-[80%] shadow-sm rounded py-3 px-7 bg-base-300 text-neutral">
+  <h2 class="text-xl font-bold mb-4">Junta Directiva</h2>>
+   
+  <div> 
+
+    @if (isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } @else if(directorBoardData()) {
+       @for (director of directorBoardData(); track director.id) {
+        
+         <div class="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center text-center hover:shadow-lg transition">
+
+             <!-- Nombre -->
+            <h3 class="text-lg font-bold text-gray-800">
+                {{ director.name }}
+            </h3>
+
+            <!-- Cargo -->
+            <p class="text-sm text-gray-500">
+                {{ director.name }}
+            </p>
+
+            </div>
+       }
 
 
 
 
 
+    }
+
+
+
+  </div>
+
+
+ 
+
+
+
+
+ </div>
 
 
 
