@@ -1,60 +1,21 @@
-<section class="relavite min-h-screen py-16 px-6"> 
- <div clas="max-w-5xl mx-auto">
+
+ <div class="max-w-5xl mx-auto">
     <div class="py-16 px-6 sm:py-24 lg:px-8">
+      @if(aboutUsData()) 
+      {
+        @for(aboutUs of aboutUsData(); track aboutUs.id) 
+        {
 
-      <!-- Contenedor Principal de la Línea -->
-      <div class="relative container">
-        
-        <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-4 md:left-1/2 transform md:-translate-x-1/2 "></div>
-
-         <!-- 1. MISIÓN (Derecha) -->
-         <div class="mb-12 flex justify-between items-center container w-full right-timeline">
-            <div class="order-1 md:w-5/12"></div>
-            <div class=" absolute flex items-center order-1 bg-blue-600 shadow-xl w-10 h-10 rounded-full left-0 md:relative md:left-auto"></div>
-              <div class="order-1 bg-blue-50 rounded-lg shadow-md w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-5/12 p-5">
-                <h3 class="mb-2 font-bold text-blue-800 text-xl">Misión</h3>
-                <p class="text-sm leading-snug tracking-wide text-gray-700 text-opacity-100">
-                  
-                </p>
-              </div>
-          </div>
-
-          <!-- 2. VISIÓN (Izquierda) -->
-          <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
-            <div class="order-1 md:w-5/12"></div>
-            <div class="absolute flex items-center order-1 bg-blue-600 shadow-xl w-10 h-10 rounded-full left-0 md:relative md:left-auto"></div>
-            <div class="order-1 bg-blue-50 rounded-lg shadow-xl w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-5/12 p-5">
-              <h3 class="mb-2 font-bold text-blue-800 text-xl">Visión</h3>
-              <p class="text-sm md:text-right leading-snug tracking-wide text-gray-700 text-opacity-100">
-                
-              </p>
-            </div>
-          </div>
-
-          <!-- 3. HISTORIA (Derecha) -->
-          <div class="mb-12 flex justify-between items-center w-full right-timeline">
-            <div class="order-1 md:w-5/12"></div>
-            <div class="absolute flex items-center order-1 bg-blue-600 shadow-xl w-10 h-10 rounded-full left-0 md:relative md:left-auto"></div>
-            <div class="order-1 bg-blue-50 rounded-lg shadow-xl w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-5/12 p-5">
-              <h3 class="mb-2 font-bold text-blue-800 text-xl">Historia</h3>
-              <p class="text-sm leading-snug tracking-wide text-gray-700 text-opacity-100">
-                
-              </p>
-            </div>
-          </div>
-
-          <!-- 4. FUNCIONES (Izquierda) -->
-            <div class="mb-12 flex justify-between flex-row-reverse items-center w-full left-timeline">
-                <div class="order-1 md:w-5/12"></div>
-                <div class="absolute flex items-center order-1 bg-blue-600 shadow-xl w-10 h-10 rounded-full left-0 md:relative md:left-auto"></div>
-                <div class="order-1 bg-blue-50 rounded-lg shadow-xl w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-5/12 p-5">
-                <h3 class="mb-2 font-bold text-blue-800 text-xl">Funciones</h3>
-                <p class="text-sm md:text-right leading-snug tracking-wide text-gray-700 text-opacity-100">
+            <!-- Contenedor Principal de la Línea -->
+                  <div class="relative container">
                     
-                </p>
-                </div>
-            </div>
-    </div>
+                    <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-4 md:left-1/2 transform md:-translate-x-1/2 "></div>
+                        
+                    <h3 class="text-lg font-semibold">{{ aboutUs.sectionType }}</h3>
+                    <p class="text-gray-700">{{ aboutUs.content }}</p>
+                    
+                  </div>
+        }
+      }
+    </div> 
   </div> 
-</div> 
-</section>
