@@ -5,11 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class DocumentTypeIcon {
   // Methods
-  public documentIcon(filePath: string | undefined | null): string {
+  public documentIcon(fileName: string | undefined | null): string {
     let extension = '';
 
-    if(filePath) {
-      const pathSplit: string[] = filePath.split('.');
+    if(fileName) {
+      const pathSplit: string[] = fileName.split('.');
       extension = pathSplit.reverse()[0];
     }
 

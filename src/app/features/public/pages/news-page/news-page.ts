@@ -1,28 +1,25 @@
 import { HttpParams } from '@angular/common/http';
+import { NewsApi } from '@core/services/news-api';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { DocumentsApi } from '@core/services/documents-api';
+import { NewsList } from '@public/components/news-list/news-list';
 import { SearchBar } from "@shared/components/search-bar/search-bar";
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
-import { DocumentsList } from "@public/components/documents-list/documents-list";
 import { PaginationList } from "@shared/components/pagination-list/pagination-list";
 import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interface';
 
 @Component({
-  selector: 'documents-page',
-  imports: [GetBackTitle, DocumentsList, SearchBar, PaginationList],
-  templateUrl: './documents-page.html',
+  selector: 'news-page',
+  imports: [GetBackTitle, SearchBar, PaginationList, NewsList],
+  templateUrl: './news-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'bg-base-100 flex flex-col justify-center items-center w-full h-full'
-  }
 })
-export default class DocumentsPage {
-  // Injection
+export default class NewsPage {
+    // Injection
   private router = inject(Router);
-  private documentsApi = inject(DocumentsApi);
+  private newsApi = inject(NewsApi);
   private activatedRoute = inject(ActivatedRoute);
 
   // Document service
@@ -37,7 +34,7 @@ export default class DocumentsPage {
       if(params.filters.filterBy) httpParams = httpParams.set('filterBy', params.filters.filterBy);
       if(params.filters.sortDirection) httpParams = httpParams.set('sortDirection', params.filters.sortDirection);
 
-      return this.documentsApi.getPublicDocuments(httpParams)
+      return this.newsApi.getPublicNews(httpParams);
     }
   });
 

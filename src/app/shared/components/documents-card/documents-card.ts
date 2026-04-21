@@ -24,11 +24,11 @@ export class DocumentsCard {
   public document = input.required<DocumentMinimalResponse | undefined>();
 
   // Template methods
-  protected imageFile(imagePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${imagePath ?? ''}`;
+  protected imageFile(fileName: string | undefined): string {
+    return `${this.env.API_URL_CONTENT}/${fileName ?? ''}`;
   }
 
-  protected iconType(pathFile: string | undefined): string {
-    return this.documentType.documentIcon(pathFile);
+  protected iconType(fileName: string | undefined): string {
+    return this.documentType.documentIcon(fileName);
   }
 }

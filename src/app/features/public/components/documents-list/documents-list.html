@@ -13,7 +13,7 @@
       @for (document of documents(); track document.id) {
         <tr class="flex justify-center items-center w-full h-24 max-h-24">
           <td class="h-full flex items-center">
-            <svg class="w-7 h-7"><use class="w-full h-full" [attr.href]="iconType(document.filePath)"></use></svg>
+            <svg class="w-7 h-7"><use class="w-full h-full" [attr.href]="iconType(document.fileName)"></use></svg>
           </td>
           <td class="flex-1 w-full h-full flex flex-col gap-2">
             <div>
@@ -22,12 +22,12 @@
             </div>
             <div class="flex gap-1.5">
               @for (category of document.categories; track $index) {
-                <span (click)="searchCategory(category)" class="badge badge-soft badge-secondary cursor-pointer">{{ category | lowercase }}</span>
+                <span (click)="searchCategory(category)" class="badge badge-soft badge-secondary cursor-pointer min-w-fit select-none">{{ category | lowercase }}</span>
               }
             </div>
           </td>
           <td class="h-full flex items-center">
-            <a [href]="generateUrl(document.filePath)" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-base-100 flex gap-1">
+            <a [href]="generateUrl(document.fileName)" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-base-100 flex gap-1">
               <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/download-icon.svg"></use></svg>
               <span class="hidden sm:inline">Descargar</span>
             </a>

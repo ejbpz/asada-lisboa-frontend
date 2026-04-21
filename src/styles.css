@@ -35,6 +35,16 @@
   @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }
 
+@utility scrollbar-thin {
+  @apply
+    [scrollbar-width:thin]
+    [scrollbar-color:rgba(100,100,100,0.4)_transparent]
+    [&::-webkit-scrollbar]:h-1.5
+    [&::-webkit-scrollbar-track]:bg-white
+    [&::-webkit-scrollbar-thumb]:bg-white
+    [&::-webkit-scrollbar-thumb]:rounded-full;
+}
+
 * {
   font-family: var(--font-poppins);
 }

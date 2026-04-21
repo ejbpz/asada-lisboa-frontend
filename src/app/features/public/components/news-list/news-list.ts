@@ -1,37 +1,31 @@
 import { Router } from '@angular/router';
-import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { NewsCard } from "@shared/components/news-card/news-card";
 import { environment } from '@environments/environment.development';
-import { DocumentTypeIcon } from '@shared/services/document-type-icon';
-import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
+import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
-  selector: 'documents-list',
-  imports: [TitleCasePipe, LowerCasePipe],
-  templateUrl: './documents-list.html',
+  selector: 'news-list',
+  imports: [NewsCard],
+  templateUrl: './news-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full flex justify-center'
+    class: 'my-5 px-2 grid  gap-3 grid-cols-1 justify-items-center md:grid-cols-2 xl:grid-cols-3'
   }
 })
-export class DocumentsList {
+export class NewsList {
   // Init
   private env = environment;
 
   // Injection
   private router = inject(Router);
-  private documentType = inject(DocumentTypeIcon);
 
   // Input signal
-  public documents = input.required<DocumentMinimalResponse[]>();
+  public news = input.required<NewMinimalResponse[]>();
 
   // Helper methods
   protected generateUrl(fileName: string): string {
     return `${this.env.API_URL_CONTENT}/${fileName}`;
-  }
-
-  protected iconType(fileName: string | undefined): string {
-    return this.documentType.documentIcon(fileName);
   }
 
   // Search category
