@@ -1,10 +1,10 @@
+import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule }from "@angular/forms";
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs';
+import { debounceTime, distinctUntilChanged, skip } from 'rxjs';
 import { SortDirection } from '@shared/enums/sort-direction.enum';
 import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interface';
-import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'search-bar',
@@ -36,12 +36,11 @@ import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 
   // Constructor
   constructor() {
+    let previousRequest: SearchSortRequest | null = null;
+
     this.searchForm.valueChanges.pipe(
       skip(1),
-      debounceTime(300),
-      filter((value: SearchSortRequest) => {
-        return !!value.search?.trim();
-      }),
+      debounceTime(400),
       distinctUntilChanged((a, b) =>
         a.search === b.search &&
         a.sortBy === b.sortBy &&
@@ -50,7 +49,30 @@ import { LowerCasePipe, TitleCasePipe } from '@angular/common';
       ),
       takeUntilDestroyed(),
     ).subscribe((value: SearchSortRequest) => {
-      this.emitSearch.emit(value);
+      if(!previousRequest) {
+        previousRequest = value;
+        this.emitSearch.emit(value);
+        return;
+      }
+
+      const searchChanged = value.search !== previousRequest.search;
+      const sortByChanged = value.sortBy !== previousRequest.sortBy;
+      const filterByChanged = value.filterBy !== previousRequest.filterBy;
+      const sortDirectionChanged = value.sortDirection !== previousRequest.sortDirection;
+
+      if(searchChanged) {
+        this.emitSearch.emit(value);
+      }
+      else if(filterByChanged) {
+        if(value.search?.trim()) {
+          this.emitSearch.emit(value);
+        }
+      }
+      else if(sortByChanged || sortDirectionChanged) {
+        this.emitSearch.emit(value);
+      }
+
+      previousRequest = value;
     });
   }
 
