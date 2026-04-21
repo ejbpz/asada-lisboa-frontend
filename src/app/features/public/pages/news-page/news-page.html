@@ -7,15 +7,15 @@
   <div class="w-full flex flex-col gap-5 p-5">
     <div class="flex flex-col items-center">
       <div class="w-full max-w-300">
-        @if(documentsResource.isLoading()) {
+        @if(newsResource.isLoading()) {
           <div class="my-10 w-full flex items-center justify-center">
             <span class="loading loading-spinner loading-md"></span>
           </div>
         }
-        @else if(documentsResource.hasValue()) {
+        @else if(newsResource.hasValue()) {
           <search-bar [stateValue]="filters()" [sortBy]="sortBy" [filterBy]="filterBy" (emitSearch)="onSearchSortForm($event)"/>
-          <news-list [news]="documentsResource.value().data"/>
-          <pagination-list [offset]="filters().offset ?? 0" [total]="documentsResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
+          <news-list [news]="newsResource.value().data"/>
+          <pagination-list [offset]="filters().offset ?? 0" [total]="newsResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
         }
       </div>
     </div>

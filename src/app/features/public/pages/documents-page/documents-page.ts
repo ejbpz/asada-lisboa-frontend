@@ -1,14 +1,14 @@
 import { HttpParams } from '@angular/common/http';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map } from 'rxjs';
 import { DocumentsApi } from '@core/services/documents-api';
 import { SearchBar } from "@shared/components/search-bar/search-bar";
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { DocumentsList } from "@public/components/documents-list/documents-list";
+import { BaseSearchPage } from '@shared/pages/base-search-page/base-search-page';
 import { PaginationList } from "@shared/components/pagination-list/pagination-list";
-import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interface';
+import { PageResponse } from '@shared/interfaces/page-response.interface';
+import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
 
 @Component({
   selector: 'documents-page',
@@ -19,73 +19,22 @@ import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interf
     class: 'bg-base-100 flex flex-col justify-center items-center w-full h-full'
   }
 })
-export default class DocumentsPage {
-  // Injection
-  private router = inject(Router);
-  private documentsApi = inject(DocumentsApi);
-  private activatedRoute = inject(ActivatedRoute);
-
-  // Document service
-  protected documentsResource = rxResource({
-    params: () => ({ filters: this.filters() }),
-    stream: ({ params }) => {
-      let httpParams = new HttpParams();
-
-      if(params.filters.search) httpParams = httpParams.set('search', params.filters.search);
-      if(params.filters.sortBy) httpParams = httpParams.set('sortBy', params.filters.sortBy);
-      if(params.filters.offset) httpParams = httpParams.set('offset', params.filters.offset);
-      if(params.filters.filterBy) httpParams = httpParams.set('filterBy', params.filters.filterBy);
-      if(params.filters.sortDirection) httpParams = httpParams.set('sortDirection', params.filters.sortDirection);
-
-      return this.documentsApi.getPublicDocuments(httpParams)
-    }
-  });
-
-  // Set data from search bar
-  onSearchSortForm(event: SearchSortRequest | undefined) {
-    this.router.navigate([], {
-      queryParams: this.toQuery(event),
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
+export default class DocumentsPage extends BaseSearchPage<DocumentsApi, DocumentMinimalResponse> {
+  // Constructor
+  constructor() {
+    super(
+      inject(Router),
+      inject(DocumentsApi),
+      inject(ActivatedRoute),
+    )
   }
 
-  onOffsetChange(offset: number) {
-  this.router.navigate([], {
-    queryParams: { offset: offset },
-    queryParamsHandling: 'merge',
-    replaceUrl: true
-  });
-}
-
-  private toQuery(request: SearchSortRequest | undefined) {
-    return {
-      search: request?.search || null,
-      sortBy: request?.sortBy || null,
-      offset: request?.offset || null,
-      filterBy: request?.filterBy || null,
-      sortDirection: request?.sortDirection || null,
-    };
+  // Base class implementation
+  protected override fetch(service: DocumentsApi, params: HttpParams) {
+    return service.getPublicDocuments(params);
   }
 
-  // Get query params
-  protected filters = toSignal(
-    this.activatedRoute.queryParams.pipe(
-      map(params => this.fromQuery(params))
-    ), {
-      initialValue: this.fromQuery(this.activatedRoute.snapshot.queryParams)
-    }
-  );
-
-  private fromQuery(params: Params): SearchSortRequest {
-    return {
-      search: params['search'] ?? '',
-      sortBy: params['sortBy'] ?? '',
-      offset: params['offset'] ?? '',
-      filterBy: params['filterBy'] ?? '',
-      sortDirection: params['sortDirection'] ?? 'asc',
-    }
-  }
+  protected documentsResource = this.resource;
 
   // Search filters
   protected filterBy = [
@@ -97,5 +46,5 @@ export default class DocumentsPage {
   protected sortBy = [
     { value: 'date', name: 'Fecha' },
     { value: 'title', name: 'Título' },
-  ]
+  ];
 }
