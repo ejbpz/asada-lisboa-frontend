@@ -1,25 +1,31 @@
+<div class="relavite max-w-7xl mx-auto py-16 px-6">
+  <div class="relative wrap overflow-hidden p-10 h-full">
+    <!-- Línea vertical central -->
+    <div class="absolute border-opacity-20 border-gray-700 h-full border left-10 md:left-1/2 transform md:-translate-x-1/2"></div>
 
- <div class="max-w-5xl mx-auto">
-    <div class="py-16 px-6 sm:py-24 lg:px-8">
-      @if(aboutUsData()) 
-      {
-        @for(aboutUs of aboutUsData(); track aboutUs.id) 
-        {
+    @if(aboutUsData()) { 
+      @for(aboutUs of aboutUsData(); track aboutUs.id; let i = $index) {
+        
+        <!-- Contenedor del Item -->
+         <div class="mb-8 flex justify-between items-center w-full"
+             [class.md:flex-row-reverse]="i % 2 === 0">
+          
+          <!-- Espaciador para el lado vacío -->
+          <div class="order-1 md:w-5/12 hidden md:block"></div>
 
-            <!-- Contenedor Principal de la Línea -->
-                  <div class="relative container">
-                    
-                    <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-4 md:left-1/2 transform md:-translate-x-1/2 "></div>
-                    
-                    <div class=" absolute flex items-center order-1 bg-blue-600 shadow-xl w-10 h-10 rounded-full left-0 md:relative md:left-auto"></div>
-                    
-                    <div class="order-1 bg-blue-50 rounded-lg shadow-md w-[calc(100%-3rem)] ml-12 md:ml-0 md:w-5/12 p-5">
-                    
-                      <h3 class="text-lg font-semibold">{{ aboutUs.sectionType }}</h3>
-                    <p class="text-gray-700">{{ aboutUs.content }}</p>
-                    </div>
-                  </div>
-        }
+          <!-- Círculo indicador -->
+          <div class="flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
+          </div>
+
+          <!-- Bloque de Contenido -->
+          <div class="order-1 bg-blue-50 rounded-lg shadow-xl w-full ml-4 md:ml-0 md:w-5/12 px-6 py-4">
+            <h3 class="mb-1 font-bold text-gray-800 text-xl">{{ aboutUs.sectionType }}</h3>
+            <p class="text-sm leading-snug tracking-wide text-gray-900 text-opacity-100">
+              {{ aboutUs.content }}
+            </p>
+          </div>
+        </div>
       }
-    </div> 
-  </div> 
+    }
+  </div>
+</div>
