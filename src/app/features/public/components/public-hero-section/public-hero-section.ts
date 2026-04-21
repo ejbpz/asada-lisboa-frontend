@@ -37,8 +37,8 @@ export class PublicHeroSection {
   };
 
   // Template methods
-  protected imageFile(fileName: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${fileName ?? ''}`;
+  protected imageFile(filePath: string | undefined): string {
+    return `${this.env.API_URL_CONTENT}/${filePath ?? ''}`;
   }
 
   protected getImageClasses(index: number): string {

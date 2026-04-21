@@ -11,7 +11,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-4 sm:grid-rows-2 gap-2 w-full sm:aspect-4/2">
     @for (image of images(); track image.id; let i = $index) {
       <img
-        [src]="imageFile(image?.fileName)"
+        [src]="imageFile(image?.filePath)"
         [class]="getImageClasses(i)"/>
     }
   </div>

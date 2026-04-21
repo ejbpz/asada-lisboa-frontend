@@ -10,7 +10,7 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   templateUrl: './news-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'card bg-base-100 w-68.5 min-w-68.5 sm:w-92 sm:min-w-92 shadow-sm'
+    class: 'w-full min-w-68.5 max-w-68.5 card bg-base-100 shadow-sm sm:max-w-92'
   }
 })
 export class NewsCard {
@@ -25,8 +25,8 @@ export class NewsCard {
   public categories = input<boolean>(false);
 
   // Template methods
-  protected imageFile(fileName: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${fileName ?? ''}`;
+  protected imageFile(filePath: string | undefined): string {
+    return `${this.env.API_URL_CONTENT}/${filePath ?? ''}`;
   }
 
   protected searchCategory(category: string | null | undefined) {

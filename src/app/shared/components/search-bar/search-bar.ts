@@ -1,7 +1,7 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule }from "@angular/forms";
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { debounceTime, distinctUntilChanged, skip } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs';
 import { SortDirection } from '@shared/enums/sort-direction.enum';
 import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interface';
 import { LowerCasePipe, TitleCasePipe } from '@angular/common';
@@ -16,9 +16,9 @@ import { LowerCasePipe, TitleCasePipe } from '@angular/common';
   protected SortDirection = SortDirection;
 
   // Input signals
+  public stateValue = input.required<SearchSortRequest>();
   public sortBy = input.required<{ value: string, name: string }[]>();
   public filterBy = input.required<{ value: string, name: string }[]>();
-  public stateValue = input.required<SearchSortRequest>();
 
   // Output signal
   public emitSearch = output<SearchSortRequest | undefined>();
@@ -39,6 +39,9 @@ import { LowerCasePipe, TitleCasePipe } from '@angular/common';
     this.searchForm.valueChanges.pipe(
       skip(1),
       debounceTime(300),
+      filter((value: SearchSortRequest) => {
+        return !!value.search?.trim();
+      }),
       distinctUntilChanged((a, b) =>
         a.search === b.search &&
         a.sortBy === b.sortBy &&

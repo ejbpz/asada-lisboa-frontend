@@ -1,7 +1,7 @@
 <div class="card-body flex-row w-full justify-between">
   <div class="flex gap-3">
     <div class="flex justify-center items-center">
-      <svg class="w-7 h-7"><use class="w-full h-full" [attr.href]="iconType(document()?.fileName)"></use></svg>
+      <svg class="w-7 h-7"><use class="w-full h-full" [attr.href]="iconType(document()?.filePath)"></use></svg>
     </div>
     <div>
       <h4 class="card-title text-md h-5 max-h-5 line-clamp-1 text-ellipsis">{{ document()?.title | titlecase }}</h4>
@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="card-actions flex items-center justify-between">
-    <a [href]="imageFile(document()?.fileName)" target="_blank" rel="noopener noreferrer">
+    <a [href]="imageFile(document()?.filePath)" target="_blank" rel="noopener noreferrer">
       <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/navigation-icon.svg"></use></svg>
     </a>
   </div>

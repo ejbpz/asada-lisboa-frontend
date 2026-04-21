@@ -10,7 +10,7 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   templateUrl: './news-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'my-5 px-2 grid  gap-3 grid-cols-1 justify-items-center md:grid-cols-2 xl:grid-cols-3'
+    class: 'my-5 px-2 grid gap-3 grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3'
   }
 })
 export class NewsList {
@@ -22,11 +22,6 @@ export class NewsList {
 
   // Input signal
   public news = input.required<NewMinimalResponse[]>();
-
-  // Helper methods
-  protected generateUrl(fileName: string): string {
-    return `${this.env.API_URL_CONTENT}/${fileName}`;
-  }
 
   // Search category
   protected searchCategory(category: string | null | undefined) {

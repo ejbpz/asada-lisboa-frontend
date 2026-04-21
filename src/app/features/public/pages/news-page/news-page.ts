@@ -86,7 +86,6 @@ export default class NewsPage {
 
   // Search filters
   protected filterBy = [
-    { value: 'type', name: 'Tipo' },
     { value: 'category', name: 'Categoría' },
     { value: 'title', name: 'Título' },
   ];

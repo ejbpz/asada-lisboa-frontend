@@ -26,8 +26,8 @@ export class DocumentsList {
   public documents = input.required<DocumentMinimalResponse[]>();
 
   // Helper methods
-  protected generateUrl(fileName: string): string {
-    return `${this.env.API_URL_CONTENT}/${fileName}`;
+  protected generateUrl(filePath: string): string {
+    return `${this.env.API_URL_CONTENT}/${filePath}`;
   }
 
   protected iconType(fileName: string | undefined): string {
