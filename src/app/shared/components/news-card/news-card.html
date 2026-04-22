@@ -17,13 +17,6 @@
   @if(categories()) {
     <div class="divider m-0"></div>
 
-
-
-
-    <div class="flex gap-1.5 overflow-x-auto w-full scrollbar-thin select-none cursor-grab active:cursor-grabbing">
-      @for (category of newData()?.categories; track $index) {
-        <span (click)="searchCategory(category)" class="badge badge-soft badge-secondary cursor-pointer min-w-fit">{{ category | lowercase }}</span>
-      }
-    </div>
+    <badges-carousel [badges]="newData()?.categories"/>
   }
 </div>

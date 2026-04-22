@@ -1,7 +1,5 @@
-import { Router } from '@angular/router';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NewsCard } from "@shared/components/news-card/news-card";
-import { environment } from '@environments/environment.development';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
@@ -14,21 +12,6 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   }
 })
 export class NewsList {
-  // Init
-  private env = environment;
-
-  // Injection
-  private router = inject(Router);
-
   // Input signal
   public news = input.required<NewMinimalResponse[]>();
-
-  // Search category
-  protected searchCategory(category: string | null | undefined) {
-    this.router.navigate([], {
-      queryParams: { search: category, filterBy: 'category' },
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
-  }
 }

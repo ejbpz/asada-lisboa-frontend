@@ -1,0 +1,24 @@
+<section class="w-full h-full relative">
+  @if(hasOverflow()) {
+    <button
+      (click)="scrollBackward()"
+      [disabled]="isAtStart()"
+      class="h-full flex justify-center items-center bg-base-100 absolute left-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30"><</button>
+  }
+
+  <div #container
+    (scroll)="onScroll()"
+    class="h-full flex gap-1.5 overflow-x-auto w-full no-scrollbar scroll-smooth snap-x snap-mandatory"
+    [class.px-6]="hasOverflow()">
+    @for (badge of badges(); track $index) {
+      <span (click)="searchBadge(badge)" class="badge badge-soft badge-secondary cursor-pointer min-w-fit">{{ badge | lowercase }}</span>
+    }
+  </div>
+
+  @if(hasOverflow()) {
+    <button
+      (click)="scrollForward()"
+      [disabled]="isAtEnd()"
+      class="h-full flex justify-center items-center bg-base-100 absolute right-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30">></button>
+  }
+</section>

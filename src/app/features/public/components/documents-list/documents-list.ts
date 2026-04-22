@@ -1,13 +1,14 @@
 import { Router } from '@angular/router';
-import { LowerCasePipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { DocumentTypeIcon } from '@shared/services/document-type-icon';
+import { BadgesCarousel } from "@shared/components/badges-carousel/badges-carousel";
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
 
 @Component({
   selector: 'documents-list',
-  imports: [TitleCasePipe, LowerCasePipe],
+  imports: [TitleCasePipe, BadgesCarousel],
   templateUrl: './documents-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

@@ -20,11 +20,8 @@
               <h3 class="text-md font-semibold line-clamp-1 text-ellipsis">{{ document.title | titlecase }}</h3>
               <p class="text-sm font-light line-clamp-1 text-ellipsis">{{ document.description }}</p>
             </div>
-            <div class="flex gap-1.5">
-              @for (category of document.categories; track $index) {
-                <span (click)="searchCategory(category)" class="badge badge-soft badge-secondary cursor-pointer min-w-fit select-none">{{ category | lowercase }}</span>
-              }
-            </div>
+
+            <badges-carousel [badges]="document.categories"/>
           </td>
           <td class="h-full flex items-center">
             <a [href]="generateUrl(document.filePath)" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-base-100 flex gap-1">
