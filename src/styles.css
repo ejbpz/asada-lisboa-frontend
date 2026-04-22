@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: nord --default;
+  themes: "nord" --default;
 }
 
 @plugin "daisyui/theme" {
@@ -26,9 +26,9 @@
 }
 
 @theme {
+  --text-md: 1rem;
   --font-poppins: "Poppins", "sans-serif";
   --font-hepta-slab: "Hepta Slab", "sans-serif";
-  --text-md: 1rem;
 }
 
 @utility no-scrollbar {
@@ -43,6 +43,10 @@
     [&::-webkit-scrollbar-track]:bg-white
     [&::-webkit-scrollbar-thumb]:bg-white
     [&::-webkit-scrollbar-thumb]:rounded-full;
+}
+
+:root {
+  color-scheme: light;
 }
 
 * {
