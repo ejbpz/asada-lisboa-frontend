@@ -12,7 +12,7 @@
       <div class="grid grid-cols-2 grid-rows-5 gap-3 w-full aspect-4/5 max-h-[60vh] transform -scale-x-100 md:w-1/2 md:scale-x-100">
         @for (image of data(); track image.id; let i = $index) {
           <img
-          [src]="imageFile(image?.filePath)"
+          [src]="generateContent.url(image?.url)"
           [class]="getImageClasses(i)"/>
         }
       </div>

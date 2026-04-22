@@ -1,7 +1,7 @@
 import { RouterLink } from "@angular/router";
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { environment } from "@environments/environment.development";
+import { GenerateContent } from "@shared/utils/generate-content";
 import { BadgesCarousel } from "../badges-carousel/badges-carousel";
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
@@ -16,14 +16,9 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
 })
 export class NewsCard {
   // Init
-  private env = environment;
+  protected generateContent = GenerateContent;
 
   // Input signal
-  public newData = input.required<NewMinimalResponse | undefined>();
   public categories = input<boolean>(false);
-
-  // Template methods
-  protected imageFile(filePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${filePath ?? ''}`;
-  }
+  public newData = input.required<NewMinimalResponse | undefined>();
 }

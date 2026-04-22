@@ -1,7 +1,7 @@
 import { RouterLink } from '@angular/router';
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
-import { environment } from '@environments/environment.development';
 import { ChangeDetectionStrategy, Component, effect, input, signal } from '@angular/core';
+import { GenerateContent } from '@shared/utils/generate-content';
 import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
 
 @Component({
@@ -15,7 +15,7 @@ import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.
 })
 export class PublicHeroSection {
   // Init
-  protected env = environment;
+  protected generateContent = GenerateContent;
   protected data = signal<ImageMinimalResponse[] | undefined>(undefined);
 
   // Input signal
@@ -37,10 +37,6 @@ export class PublicHeroSection {
   };
 
   // Template methods
-  protected imageFile(filePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${filePath ?? ''}`;
-  }
-
   protected getImageClasses(index: number): string {
     const base = 'rounded-lg shadow-md object-cover w-full h-full';
 

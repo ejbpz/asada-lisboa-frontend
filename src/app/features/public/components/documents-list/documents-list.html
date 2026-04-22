@@ -24,7 +24,7 @@
             <badges-carousel [badges]="document.categories"/>
           </td>
           <td class="h-full flex items-center">
-            <a [href]="generateUrl(document.filePath)" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-base-100 flex gap-1">
+            <a [href]="generateContent.url(document.filePath)" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-base-100 flex gap-1">
               <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/download-icon.svg"></use></svg>
               <span class="hidden sm:inline">Descargar</span>
             </a>

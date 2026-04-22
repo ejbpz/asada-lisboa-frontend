@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { environment } from '@environments/environment.development';
-import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
-import { TitleSection } from "@public/components/title-section/title-section";
 import { RouterLink } from "@angular/router";
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { GenerateContent } from '@shared/utils/generate-content';
+import { TitleSection } from "@public/components/title-section/title-section";
+import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
 
 @Component({
   selector: 'public-images-section',
@@ -15,16 +15,12 @@ import { RouterLink } from "@angular/router";
 })
 export class PublicImagesSection {
   // Init
-  private env = environment;
+  protected generateContent = GenerateContent;
 
   // Input signal
   public images = input.required<ImageMinimalResponse[] | undefined>();
 
   // Template methods
-  protected imageFile(filePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${filePath ?? ''}`;
-  }
-
   protected getImageClasses(index: number): string {
     const base = 'w-full h-auto sm:h-full object-cover rounded-lg shadow-md';
 
