@@ -1,27 +1,24 @@
+import { RouterLink } from "@angular/router";
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { environment } from "@environments/environment.development";
+import { GenerateContent } from "@shared/utils/generate-content";
+import { BadgesCarousel } from "../badges-carousel/badges-carousel";
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
-import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'news-card',
-  imports: [DatePipe, TitleCasePipe, RouterLink],
+  imports: [BadgesCarousel, DatePipe, TitleCasePipe, RouterLink],
   templateUrl: './news-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'card bg-base-100 w-92 min-w-92 shadow-sm'
+    class: 'w-full min-w-68.5 card bg-base-100 shadow-sm md:min-w-75 sm:max-w-92'
   }
 })
 export class NewsCard {
   // Init
-  private env = environment;
+  protected generateContent = GenerateContent;
 
   // Input signal
+  public categories = input<boolean>(false);
   public newData = input.required<NewMinimalResponse | undefined>();
-
-  // Template methods
-  protected imageFile(imagePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${imagePath ?? ''}`;
-  }
 }

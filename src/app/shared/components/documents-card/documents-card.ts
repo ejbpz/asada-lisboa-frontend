@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { environment } from "@environments/environment.development";
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { GenerateContent } from '@shared/utils/generate-content';
+import { DocumentTypeIcon } from '@shared/services/document-type-icon';
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
 
 @Component({
@@ -14,13 +15,16 @@ import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-res
 })
 export class DocumentsCard {
   // Init
-  private env = environment;
+  protected generateContent = GenerateContent;
+
+  // Injection
+  private documentType = inject(DocumentTypeIcon);
 
   // Input signal
   public document = input.required<DocumentMinimalResponse | undefined>();
 
   // Template methods
-  protected imageFile(imagePath: string | undefined): string {
-    return `${this.env.API_URL_CONTENT}/${imagePath ?? ''}`;
+  protected iconType(filePath: string | undefined): string {
+    return this.documentType.documentIcon(filePath);
   }
 }

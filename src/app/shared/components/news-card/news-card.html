@@ -1,6 +1,6 @@
 <figure class="h-40 max-h-40 overflow-hidden">
   <img
-    [src]="imageFile(newData()?.imageUrl)"
+    [src]="generateContent.url(newData()?.imageUrl)"
     [alt]="newData()?.title"
     class="w-full h-full object-cover"/>
 </figure>
@@ -14,4 +14,9 @@
     </div>
     <a [routerLink]="['/noticia', newData()?.slug]" class="btn btn-primary text-base-100">Saber más</a>
   </div>
+  @if(categories()) {
+    <div class="divider m-0"></div>
+
+    <badges-carousel [badges]="newData()?.categories"/>
+  }
 </div>

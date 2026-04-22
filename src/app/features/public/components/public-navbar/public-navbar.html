@@ -16,7 +16,6 @@
                   <li>
                     <a [routerLink]="[internal.link]"
                       [routerLinkActive]="'underline'"
-                      [routerLinkActiveOptions]="{ exact: true }"
                       class="hover:underline">{{ internal.title | titlecase }}</a>
                   </li>
                 }
@@ -25,7 +24,6 @@
           } @else {
             <a [routerLink]="[navigation.link]"
               [routerLinkActive]="'underline'"
-              [routerLinkActiveOptions]="{ exact: true }"
               class="hover:underline">{{ navigation.title | titlecase }}</a>
           }
         </li>
@@ -53,16 +51,14 @@
                     @for (internal of navigation?.internalLinks; track $index) {
                       <li>
                         <a class="text-sm" [routerLink]="[internal.link]"
-                        [routerLinkActive]="'underline'"
-                        [routerLinkActiveOptions]="{ exact: true }">{{ internal.title | titlecase }}</a>
+                        [routerLinkActive]="'underline'">{{ internal.title | titlecase }}</a>
                       </li>
                     }
                   </ul>
                 </details>
               } @else {
                 <a class="text-sm" [routerLink]="[navigation.link]"
-                [routerLinkActive]="'underline'"
-                [routerLinkActiveOptions]="{ exact: true }">{{ navigation.title | titlecase }}</a>
+                [routerLinkActive]="'underline'">{{ navigation.title | titlecase }}</a>
               }
             </li>
           }

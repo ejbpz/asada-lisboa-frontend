@@ -1,8 +1,7 @@
-<div #carousel class="flex gap-5 overflow-x-scroll mb-2 text-neutral no-scrollbar">
+<div #carousel class="w-full flex gap-3 overflow-x-scroll mb-2 text-neutral no-scrollbar">
   @for (newData of news(); track newData.id) {
     <news-card [newData]="newData"/>
   }
-
 </div>
 
 <div class="flex justify-end">

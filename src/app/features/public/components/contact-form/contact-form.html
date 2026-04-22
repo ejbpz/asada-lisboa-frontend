@@ -34,7 +34,7 @@
 
     <fieldset class="fieldset">
       <legend class="fieldset-legend font-normal text-sm">* Mensaje</legend>
-      <textarea formControlName="message" placeholder="El recibo del pasado mes de..." class="input w-full min-h-37.5 py-2 px-3 placeholder:text-neutral placeholder:text-xs"></textarea>
+      <textarea formControlName="message" placeholder="El recibo del pasado mes de..." class="textarea w-full min-h-37.5 py-2 px-3 placeholder:text-neutral placeholder:text-xs"></textarea>
       @if (!!contactForm.controls['message'].errors && contactForm.controls['message'].touched) {
         <span class="text-error text-[.75rem] font-light">{{ getErrors(contactForm.controls['message'].errors) }}</span>
       }

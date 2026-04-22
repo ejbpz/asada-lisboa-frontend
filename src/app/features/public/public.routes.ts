@@ -24,15 +24,11 @@ const publicRoutes: Routes = [
   },
   {
     path: 'documentos',
-    loadComponent: () => import('@public/pages/main-page/main-page')
-  },
-  {
-    path: 'documento/:slug',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/documents-page/documents-page')
   },
   {
     path: 'noticias',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/news-page/news-page')
   },
   {
     path: 'noticia/:slug',

@@ -1,0 +1,38 @@
+<form [formGroup]="searchForm" class="flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
+  <div class="flex gap-3 items-center">
+    <div class="input">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
+      <input formControlName="search" type="search" class="grow" placeholder="Buscar" autofocus/>
+    </div>
+
+    <div>
+      <select formControlName="filterBy" class="select select-md w-fit">
+        <option disabled selected value="">Filtrar</option>
+        @for (filter of filterBy(); track $index) {
+          <option value="{{ filter.value | lowercase }}">{{ filter.name | titlecase }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="flex gap-3 items-center">
+    <button type="button" (click)="toggleSort()" class="btn btn-ghost btn-circle cursor-pointer">
+      <svg class="w-6 h-6">
+        <use [attr.href]="
+          stateValue().sortDirection === SortDirection.ASC
+            ? 'assets/icons/down-icon.svg'
+            : 'assets/icons/up-icon.svg'
+        "></use>
+      </svg>
+    </button>
+
+    <div>
+      <select formControlName="sortBy" class="select select-md">
+        <option disabled selected value="">Ordenar</option>
+        @for (sort of sortBy(); track $index) {
+          <option value="{{ sort.value | lowercase }}">{{ sort.name | titlecase }}</option>
+        }
+      </select>
+    </div>
+  </div>
+</form>
