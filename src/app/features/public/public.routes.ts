@@ -1,13 +1,14 @@
 import { Routes } from "@angular/router";
 
 const publicRoutes: Routes = [
+
   {
     path: '',
     loadComponent: () => import('@public/pages/main-page/main-page')
   },
   {
     path: 'nosotros',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/about-us-page/about-us-page')
   },
   {
     path: 'junta-directiva',
