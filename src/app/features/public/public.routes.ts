@@ -12,7 +12,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'junta-directiva',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/director-board-page/director-board-page')
   },
   {
     path: 'galeria',
