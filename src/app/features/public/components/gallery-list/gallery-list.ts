@@ -1,13 +1,10 @@
-import { Router } from '@angular/router';
-import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { GenerateContent } from '@shared/utils/generate-content';
-import { BadgesCarousel } from "@shared/components/badges-carousel/badges-carousel";
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ImagesCard } from "@shared/components/images-card/images-card";
 import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
 
 @Component({
   selector: 'gallery-list',
-  imports: [TitleCasePipe, BadgesCarousel],
+  imports: [ImagesCard],
   templateUrl: './gallery-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -15,21 +12,6 @@ import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.
   }
 })
 export class GalleryList {
-  // Init
-  protected generateContent = GenerateContent;
-
-  // Injection
-  private router = inject(Router);
-
   // Input signal
   public images = input.required<ImageMinimalResponse[]>();
-
-  // Search category
-  protected searchCategory(category: string | null | undefined) {
-    this.router.navigate([], {
-      queryParams: { search: category, filterBy: 'category' },
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
-  }
 }

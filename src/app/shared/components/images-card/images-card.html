@@ -1,0 +1,20 @@
+<div class="bg-base-100 rounded-sm shadow-sm break-inside-avoid overflow-hidden">
+    <div class="card w-full rounded-sm">
+      <figure class="relative group">
+        <img
+          [src]="generateContent.url(image().filePath)"
+          [alt]="image().title"
+          class="w-full h-auto object-cover rounded-sm"
+          loading="lazy"/>
+
+          <div class="absolute hidden group-hover:flex flex-col w-full h-full justify-center items-center text-base-100 text-center py-2 px-3 bg-black/75">
+            <h3 class="text-md font-semibold">{{ image().title | titlecase }}</h3>
+            <div class="divider m-0 bg-transparent divider-primary"></div>
+            <p class="text-sm">{{ image().description }}</p>
+          </div>
+      </figure>
+      <div class="p-3 w-full flex flex-col gap-3 justify-center">
+        <badges-carousel [badges]="image().categories"/>
+      </div>
+    </div>
+  </div>
