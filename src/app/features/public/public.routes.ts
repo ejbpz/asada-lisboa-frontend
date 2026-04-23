@@ -1,7 +1,6 @@
 import { Routes } from "@angular/router";
 
 const publicRoutes: Routes = [
-
   {
     path: '',
     loadComponent: () => import('@public/pages/main-page/main-page')
@@ -16,11 +15,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'galeria',
-    loadComponent: () => import('@public/pages/main-page/main-page')
-  },
-  {
-    path: 'galeria/:slug',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/gallery-page/gallery-page')
   },
   {
     path: 'documentos',
