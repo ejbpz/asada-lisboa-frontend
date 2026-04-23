@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AboutUs } from "@public/components/public-about-us-section/about-us";
+import { AboutUsTimeline } from "@public/components/about-us-timeline/about-us-timeline";
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 
 @Component({
   selector: 'about-us-page',
-  imports: [AboutUs, GetBackTitle ],
+  imports: [AboutUsTimeline, GetBackTitle],
   templateUrl: './about-us-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
    host: {

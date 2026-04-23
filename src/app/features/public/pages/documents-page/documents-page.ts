@@ -7,7 +7,6 @@ import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { DocumentsList } from "@public/components/documents-list/documents-list";
 import { BaseSearchPage } from '@shared/pages/base-search-page/base-search-page';
 import { PaginationList } from "@shared/components/pagination-list/pagination-list";
-import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
 
 @Component({

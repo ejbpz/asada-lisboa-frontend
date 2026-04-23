@@ -1,0 +1,16 @@
+<ul class="timeline timeline-snap-icon max-w-7xl max-md:timeline-compact timeline-vertical w-full">
+  @if(aboutUsData()) {
+    @for(aboutUs of aboutUsData(); track aboutUs.id; let i = $index) {
+      <li>
+        <div class="timeline-middle">
+          <div class="flex items-center order-1 z-10 bg-primary shadow-sm w-5 h-5 rounded-full"></div>
+        </div>
+        <div [class]="timelineSide(i)">
+          <h3 class="text-lg font-black mb-1">{{ aboutUs.sectionType }}</h3>
+          <div class="bg-base-200 rounded-sm shadow-sm w-full p-6" [innerHTML]="aboutUs.content | breakLine"></div>
+        </div>
+        <hr />
+      </li>
+    }
+  }
+</ul>
