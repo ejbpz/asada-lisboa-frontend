@@ -1,3 +1,30 @@
-@for (image of images(); track image.id) {
-  <images-card [image]="image"/>
+@for (image of images(); track image.id; let i = $index) {
+  <images-card [image]="image" [index]="i" (showIndex)="onClickImage($event)"/>
+}
+
+@if(showMask()) {
+  <div #lightbox class="fixed w-screen h-screen z-100 bg-black/75 top-0 left-0" tabindex="0">
+    <div class="absolute w-full max-w-screen h-full max-h-screen flex justify-center items-center">
+      @if(showCount()) {
+        <span class="absolute top-4 left-4 text-base-100 z-20">
+          {{currentIndex() + 1}}/{{totalImageCount()}}
+        </span>
+      }
+
+      @if(previewImage()) {
+        <button class="absolute right-4 top-4 btn btn-outline btn-circle btn-error z-20" (click)="onCloseImage()" autofocus>X</button>
+      }
+
+      @if(controls()) {
+        <button class="absolute btn btn-outline btn-circle btn-base-100 hover:text-neutral top-1/2 left-6 text-base-100 z-20" (click)="previousImage()"><</button>
+        <button class="absolute btn btn-outline btn-circle btn-base-100 hover:text-neutral top-1/2 right-6 text-base-100 z-20" (click)="nextImage()">></button>
+      }
+
+      @if(previewImage()) {
+        <div class="absolute inset-0 flex justify-center items-center p-5">
+            <img [src]="generateContent.url(currentLightboxImage()?.filePath)" [alt]="currentLightboxImage()?.title" class="max-w-full max-h-full object-contain">
+        </div>
+      }
+    </div>
+  </div>
 }
