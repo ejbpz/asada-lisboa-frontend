@@ -27,7 +27,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'noticia/:slug',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/individual-new-page/individual-new-page')
   },
   {
     path: 'contacto',

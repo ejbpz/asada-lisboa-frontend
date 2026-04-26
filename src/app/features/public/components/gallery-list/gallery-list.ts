@@ -34,7 +34,6 @@ export class GalleryList implements OnInit {
   protected lightboxContainer = viewChild<ElementRef<HTMLDivElement>>('lightbox');
 
   // constructor
-
   constructor() {
     effect(() => {
       if (this.showMask()) {

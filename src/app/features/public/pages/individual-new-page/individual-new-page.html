@@ -1,0 +1,16 @@
+<section class="flex flex-col justify-center items-start w-full container my-12.5 md:my-25">
+  <div class="w-full sm:w-[60%] mb-8">
+    <get-back-title [link]="'/noticias'"/>
+  </div>
+  @if(newResource.isLoading()) {
+    <div class="text-center w-full">
+      <span class="loading loading-spinner loading-md"></span>
+    </div>
+  } @else if(newResource.hasValue()) {
+    <individual-new-card [newData]="newResource.value()"/>
+  }
+</section>
+
+<section class="w-full">
+  <public-news-section [news]="[]"/>
+</section>
