@@ -35,7 +35,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'recibos',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/receipts-page/receipts-page')
   },
   {
     path: 'buscador',

@@ -27,4 +27,8 @@ export class NewsApi {
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la noticia.')))
       );
   }
+
+  public getRecommendedNews(slug: string): Observable<NewMinimalResponse[]> {
+    return this.httpClient.get<NewMinimalResponse[]>(`${this.env.API_URL_CLIENT}/noticias/recomendaciones/${slug}`);
+  }
 }

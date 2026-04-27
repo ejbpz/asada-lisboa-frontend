@@ -1,0 +1,77 @@
+<form [formGroup]="receiptsForm" (submit)="onReceiptsForm()" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral sm:w-[60%]">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Número de paja</legend>
+      <input formControlName="receiptNumber" placeholder="823" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!receiptsForm.controls['receiptNumber'].errors && receiptsForm.controls['receiptNumber'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(receiptsForm.controls['receiptNumber'].errors) }}</span>
+      }
+    </fieldset>
+
+    <re-captcha-validator (resolved)="onCaptchaResolved($event)"/>
+
+    <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+      @if(isLoading()) {
+        <span class="loading loading-spinner"></span>
+      } Consultar
+    </button>
+</form>
+
+
+@if(receiptData()) {
+  <div class="divider divider-vertical"></div>
+
+  <section class="text-center w-full flex flex-col gap-3">
+    @if(receiptData()?.userName) {
+      <h3 class="font-semibold text-xl">{{ receiptData()?.userName | titlecase }}</h3>
+    }
+
+    <div class="text-sm">
+      @switch(receiptData()?.receiptType) {
+        @case (1) {
+          <p>Posee recibos pendientes</p>
+        }
+        @case (2) {
+          <p>No existe un medidor con ese identificador</p>
+        }
+        @case (3) {
+          <p>No posee recibos pendientes</p>
+        }
+      }
+    </div>
+
+    <div class="flex flex-col justify-center items-center gap-3 lg:flex-row">
+      @if(receiptData()?.chart1Url) {
+        <figure class="w-75 rounded-sm shadow-sm overflow-hidden sm:w-100 sm:h-75">
+          <img class="w-full h-full lg:object-cover" [src]="receiptData()?.chart1Url" [alt]="receiptData()?.userName">
+        </figure>
+      }
+
+      @if(receiptData()?.chart2Url) {
+        <figure class="w-75 rounded-sm shadow-sm overflow-hidden sm:w-100 sm:h-75">
+          <img class="w-full h-full lg:object-cover" [src]="receiptData()?.chart2Url" [alt]="receiptData()?.userName">
+        </figure>
+      }
+    </div>
+
+    @if(receiptData()?.table) {
+      <div class="block overflow-x-hidden w-full max-w-full rounded-sm border border-base-content/5 bg-base-100">
+        <table class="table overflow-scroll w-full">
+          <thead>
+            <tr>
+              @for(header of keys(); track $index) {
+                <th>{{ header }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              @for(value of values(); track $index) {
+                <td>{{ value }}</td>
+              }
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}

@@ -1,6 +1,7 @@
 import { ValidationErrors } from "@angular/forms";
 
 export class FormUtils {
+  public static numberPattern = '^[0-9]+$';
   public static textPattern = '^[a-zA-Z\\s]+$';
   public static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$';
   public static phonePattern = '^(?:\\d{8}|\\d{4}-\\d{4}|(?:\\d{2}-){3}\\d{2})$';
@@ -29,6 +30,9 @@ export class FormUtils {
 
           if(errors[errorKey].requiredPattern == this.textPattern)
             return 'Este campo solo acepta texto y espacios.';
+
+          if(errors[errorKey].requiredPattern == this.numberPattern)
+            return 'Este campo solo acepta números.';
       }
     }
 
