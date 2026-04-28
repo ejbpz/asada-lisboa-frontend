@@ -39,6 +39,17 @@ export default class IndividualNewPage {
     }
   });
 
+  // Calling service to get news related
+  protected relatedNewsResource = rxResource({
+    params: () => ({ slug: this.slug() }),
+    stream: ({ params }) => {
+      if(!params.slug)
+        return EMPTY;
+
+      return this.newsService.getRecommendedNews(params.slug);
+    }
+  });
+
   // Returns to 404 when slug doesn't exist
   private slugNotFound = effect(() => {
     if(this.newResource.error())

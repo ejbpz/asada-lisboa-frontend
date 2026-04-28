@@ -1,7 +1,7 @@
 <form [formGroup]="receiptsForm" (submit)="onReceiptsForm()" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral sm:w-[60%]">
     <fieldset class="fieldset">
       <legend class="fieldset-legend font-normal text-sm">* Número de paja</legend>
-      <input formControlName="receiptNumber" placeholder="823" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      <input formControlName="receiptNumber" placeholder="823" class="input w-full placeholder:text-neutral placeholder:text-xs" autofocus/>
       @if (!!receiptsForm.controls['receiptNumber'].errors && receiptsForm.controls['receiptNumber'].touched) {
         <span class="text-error text-[.75rem] font-light">{{ getErrors(receiptsForm.controls['receiptNumber'].errors) }}</span>
       }
@@ -20,58 +20,255 @@
 @if(receiptData()) {
   <div class="divider divider-vertical"></div>
 
-  <section class="text-center w-full flex flex-col gap-3">
-    @if(receiptData()?.userName) {
-      <h3 class="font-semibold text-xl">{{ receiptData()?.userName | titlecase }}</h3>
-    }
-
-    <div class="text-sm">
-      @switch(receiptData()?.receiptType) {
-        @case (1) {
-          <p>Posee recibos pendientes</p>
-        }
-        @case (2) {
-          <p>No existe un medidor con ese identificador</p>
-        }
-        @case (3) {
-          <p>No posee recibos pendientes</p>
-        }
-      }
-    </div>
-
-    <div class="flex flex-col justify-center items-center gap-3 lg:flex-row">
-      @if(receiptData()?.chart1Url) {
-        <figure class="w-75 rounded-sm shadow-sm overflow-hidden sm:w-100 sm:h-75">
-          <img class="w-full h-full lg:object-cover" [src]="receiptData()?.chart1Url" [alt]="receiptData()?.userName">
-        </figure>
+  <div class="max-w-4xl mx-auto mt-5 overflow-hidden sm:px-5">
+    <section class="text-center w-full flex flex-col gap-3 px-2 min-w-0 sm:px-0">
+      @if(receiptData()?.userName) {
+        <h3 class="font-semibold text-xl">
+          {{ receiptData()?.userName | titlecase }}
+        </h3>
       }
 
-      @if(receiptData()?.chart2Url) {
-        <figure class="w-75 rounded-sm shadow-sm overflow-hidden sm:w-100 sm:h-75">
-          <img class="w-full h-full lg:object-cover" [src]="receiptData()?.chart2Url" [alt]="receiptData()?.userName">
-        </figure>
-      }
-    </div>
-
-    @if(receiptData()?.table) {
-      <div class="block overflow-x-hidden w-full max-w-full rounded-sm border border-base-content/5 bg-base-100">
-        <table class="table overflow-scroll w-full">
-          <thead>
-            <tr>
-              @for(header of keys(); track $index) {
-                <th>{{ header }}</th>
-              }
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              @for(value of values(); track $index) {
-                <td>{{ value }}</td>
-              }
-            </tr>
-          </tbody>
-        </table>
+      <div class="text-sm">
+        @switch(receiptData()?.receiptType) {
+          @case (1) {
+            <p>Posee recibos pendientes</p>
+          }
+          @case (2) {
+            <p>No existe un medidor con ese identificador</p>
+          }
+          @case (3) {
+            <p>No posee recibos pendientes</p>
+          }
+        }
       </div>
-    }
-  </section>
+
+      <!-- IMAGES -->
+      <div class="flex flex-col justify-center items-center gap-3 lg:flex-row">
+        @if(receiptData()?.chart1Url) {
+          <figure class="w-full max-w-md rounded-sm shadow-sm overflow-hidden">
+            <img class="w-full h-full object-cover"
+                [src]="receiptData()?.chart1Url"
+                [alt]="receiptData()?.userName">
+          </figure>
+        }
+
+        @if(receiptData()?.chart2Url) {
+          <figure class="w-full max-w-md rounded-sm shadow-sm overflow-hidden">
+            <img class="w-full h-full object-cover"
+                [src]="receiptData()?.chart2Url"
+                [alt]="receiptData()?.userName">
+          </figure>
+        }
+      </div>
+
+      <!-- TABLE -->
+      @if(receiptData()?.table) {
+        <div class="divider divider-vertical"></div>
+
+        <div class="max-w-[calc(100vw-20px)] -mx-2 sm:mx-0">
+          <div class="overflow-x-auto w-full">
+            <div class="min-w-max rounded-box border border-base-content/5 bg-base-100">
+              <table class="table table-zebra">
+                <thead>
+                  <tr>
+                    @for(header of keys(); track $index) {
+                      <th class="whitespace-nowrap">{{ header }}</th>
+                    }
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    @for(value of values(); track $index) {
+                      @if(value.includes('Ver detalle')) {
+                        <td class="whitespace-nowrap cursor-pointer hover:link"
+                            (click)="onReceiptDetails($index)">
+                          {{ value }}
+                        </td>
+                      } @else {
+                        <td class="whitespace-nowrap">
+                          {{ value }}
+                        </td>
+                      }
+                    }
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+}
+
+@if(receiptDetailsData()) {
+  <div class="max-w-4xl mx-auto mt-5 sm:px-5">
+    <div class="card bg-base-100 shadow-sm">
+
+      <!-- HEADER -->
+      <div class="card-body">
+        @if(receiptDetailsData()?.userName) {
+          <h2 class="card-title text-lg sm:text-xl">
+            {{ receiptDetailsData()?.userName | titlecase }}
+          </h2>
+        }
+
+        @if(receiptDetailsData()?.address) {
+          <p class="text-sm opacity-70">
+            {{ receiptDetailsData()?.address | titlecase }}
+          </p>
+        }
+      </div>
+
+      <!-- STATS -->
+      <div class="stats stats-vertical sm:stats-horizontal shadow-sm m-4 overflow-x-auto">
+
+        @if(receiptDetailsData()?.total) {
+          <div class="stat min-w-37.5">
+            <div class="stat-title">Total</div>
+            <div class="stat-value text-primary">
+              ₡{{ receiptDetailsData()?.total | number }}
+            </div>
+          </div>
+        }
+
+        @if(receiptDetailsData()?.cubicMeters) {
+          <div class="stat min-w-37.5">
+            <div class="stat-title">Consumo (m³)</div>
+            <div class="stat-value">
+              {{ receiptDetailsData()?.cubicMeters }}
+            </div>
+          </div>
+        }
+
+        @if(receiptDetailsData()?.currentReading && receiptDetailsData()?.previousReading) {
+          <div class="stat min-w-45">
+            <div class="stat-title">Lectura</div>
+            <div class="stat-desc">
+              {{ receiptDetailsData()?.previousReading }} → {{ receiptDetailsData()?.currentReading }}
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- INFO -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 px-6 pb-4 text-sm">
+
+        @if(receiptDetailsData()?.meter) {
+          <div>
+            <span class="font-semibold">Medidor:</span>
+            <p>{{ receiptDetailsData()?.meter }}</p>
+          </div>
+        }
+
+        @if(receiptDetailsData()?.lapse) {
+          <div>
+            <span class="font-semibold">Periodo:</span>
+            <p>{{ receiptDetailsData()?.lapse }}</p>
+          </div>
+        }
+
+        @if(receiptDetailsData()?.expirationDate) {
+          <div>
+            <span class="font-semibold">Vencimiento:</span>
+            <p>{{ receiptDetailsData()?.expirationDate }}</p>
+          </div>
+        }
+
+      </div>
+
+      <!-- DETAILS -->
+      <div class="px-6 pb-6">
+        <h3 class="font-semibold mb-2">Detalle</h3>
+
+        <div class="overflow-x-auto">
+          <table class="table table-zebra min-w-max">
+            <tbody>
+
+              @if(receiptDetailsData()?.baseRate) {
+                <tr>
+                  <td>Tarifa Base</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.baseRate | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.consumption) {
+                <tr>
+                  <td>Consumo</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.consumption | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.fixedCharges) {
+                <tr>
+                  <td>Cargos Fijos</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.fixedCharges | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.otherCharges) {
+                <tr>
+                  <td>Otros Cargos</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.otherCharges | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.hydrants) {
+                <tr>
+                  <td>Hidrantes</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.hydrants | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.arrears) {
+                <tr>
+                  <td>Mora</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.arrears | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.waterResource) {
+                <tr>
+                  <td>Recurso Hídrico</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.waterResource | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.disconnectionReconnection) {
+                <tr>
+                  <td>Corte / Reconexión</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.disconnectionReconnection | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.repairs) {
+                <tr>
+                  <td>Arreglos</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.repairs | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.creditNote) {
+                <tr>
+                  <td>Nota Crédito</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.creditNote | number }}</td>
+                </tr>
+              }
+
+              @if(receiptDetailsData()?.taxes) {
+                <tr>
+                  <td>IVA</td>
+                  <td class="text-right">₡{{ receiptDetailsData()?.taxes | number }}</td>
+                </tr>
+              }
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
 }

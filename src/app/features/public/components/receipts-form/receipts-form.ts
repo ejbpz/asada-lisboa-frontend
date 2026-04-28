@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { DecimalPipe, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -7,11 +7,12 @@ import { ContactApi } from '@core/services/contact-api';
 import { ReceiptsApi } from '@core/services/receipts-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { ReceiptResponse } from '@public/interfaces/receipt-respose.interface';
+import { ReceiptDetailsResponse } from '@public/interfaces/receipt-details-response.interface';
 import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
 
 @Component({
   selector: 'receipts-form',
-  imports: [ReactiveFormsModule, ReCaptchaValidator, TitleCasePipe],
+  imports: [ReactiveFormsModule, ReCaptchaValidator, TitleCasePipe, DecimalPipe],
   templateUrl: './receipts-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -27,7 +28,9 @@ export class ReceiptsForm {
   protected keys = signal<string[]>([]);
   protected values = signal<string[]>([]);
 
+  protected receiptNumber = signal<number>(0);
   protected receiptData = signal<ReceiptResponse | undefined>(undefined);
+  protected receiptDetailsData = signal<ReceiptDetailsResponse | undefined>(undefined);
 
   // Injects
   private formBuilder = inject(FormBuilder);
@@ -47,24 +50,28 @@ export class ReceiptsForm {
       return;
     }
 
-    // if (!this.captchaToken) {
-    //   this.isError.set('ReCAPTCHA obligatorio.');
-    //   return;
-    // }
-          this.receiptApiService(this.receiptsForm.value['receiptNumber']);
+    if (!this.captchaToken) {
+      this.isError.set('ReCAPTCHA obligatorio.');
+      return;
+    }
 
-    // this.contactService.recaptchaValidation(this.captchaToken)
-    //   .subscribe({
-    //     next: (isValid: boolean) => {
-    //       if(!isValid)
-    //         this.isError.set('ReCAPTCHA fallido.');
+    this.contactService.recaptchaValidation(this.captchaToken)
+      .subscribe({
+        next: (isValid: boolean) => {
+          if(!isValid)
+            this.isError.set('ReCAPTCHA fallido.');
 
-    //       this.receiptApiService(this.receiptsForm.value['receiptNumber']);
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //       this.isError.set(error.message);
-    //     }
-    //   });
+          this.receiptNumber.set(this.receiptsForm.value['receiptNumber']);
+          this.receiptApiService(this.receiptNumber());
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isError.set(error.message);
+        }
+      });
+  }
+
+  protected onReceiptDetails(index: number) {
+    this.receiptDetailsApiService(this.receiptNumber(), index);
   }
 
   // Captcha resolve
@@ -77,7 +84,7 @@ export class ReceiptsForm {
     return FormUtils.getErrors(errors);
   }
 
-  // Calling login API
+  // Calling receipts API
   protected receiptApiService(receiptNumber: number): void {
     if(this.isLoading())
       return;
@@ -92,11 +99,33 @@ export class ReceiptsForm {
           this.receiptData.set(value);
 
           if(value.table) {
-            for(let a of value.table) {
-              this.keys.set(Object.keys(a))
-              this.values.set(Object.values(a))
+            for(let record of value.table) {
+              this.keys.set(Object.keys(record))
+              this.values.set(Object.values(record))
             }
           }
+
+          this.receiptsForm.reset();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isLoading.set(false);
+          this.isError.set(error.message);
+        }
+      });
+  }
+
+  protected receiptDetailsApiService(receiptNumber: number, index: number): void {
+    if(this.isLoading())
+      return;
+
+    this.isLoading.set(true);
+    this.isError.set(null);
+
+    this.receiptsService.getReceiptDetails({ receiptNumber, index })
+      .subscribe({
+        next: (value: ReceiptDetailsResponse) => {
+          this.isLoading.set(false);
+          this.receiptDetailsData.set(value);
 
           this.receiptsForm.reset();
         },
