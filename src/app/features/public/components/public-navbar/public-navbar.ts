@@ -1,10 +1,12 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { FormsModule } from '@angular/forms';
+import { Search} from '@shared/pages/search/search';
 
 @Component({
   selector: 'public-navbar',
-  imports: [TitleCasePipe, RouterLink, RouterLinkActive],
+  imports: [TitleCasePipe, RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './public-navbar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -12,6 +14,30 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   }
 })
 export class PublicNavbar {
+  
+search = inject(Search);
+
+  // Estado para mostrar/ocultar la búsqueda
+  isSearchOpen = signal(false);
+  
+   showSearch = signal(false);
+
+  isOpen = false;
+
+   protected cta = {
+    link: '/buscador',
+    title: 'buscar'
+  };
+
+  // toggleSearch() {
+  // this.isOpen = !this.isOpen;
+  // } 
+
+    toggleSearch() {
+    this.showSearch.update(value => !value);
+  }
+
+
   navigationLinks = [
     { title: 'Nosotros', internalLinks:
       [

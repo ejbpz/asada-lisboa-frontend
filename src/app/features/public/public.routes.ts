@@ -39,7 +39,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'buscador',
-    loadComponent: () => import('@public/pages/main-page/main-page')
+    loadComponent: () => import('@public/pages/search-page/search-page')
   }
 ]
 
