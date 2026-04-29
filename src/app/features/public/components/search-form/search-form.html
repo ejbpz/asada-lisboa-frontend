@@ -1,1 +1,58 @@
-<p>search-form works!</p>,
+<div  class="relative flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
+   <div class= "flex gap-3 items-center">
+      <!-- Barra de Búsqueda -->
+    
+        <div class="flex gap-3 items-center">
+            <div class="input">
+                <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
+                <input formControlName="search" type="search" class="grow" placeholder="Buscar contenido" autofocus/>
+            </div>
+
+            <div>
+                <a (click)= "search.buscarManual()" class="btn btn-primary text-base-100">Buscar</a>
+            </div>
+            
+        </div>
+    <div>
+
+
+        <div class="flex flex gap-4 items-center">
+            <div class="flex flex gap-4 items-center">
+                    <!-- Loading -->
+                @if (search.loading()) {
+                <div class="flex items-center mt-4 text-center">
+                    <span class="loading loading-spinner loading-md"></span>
+                </div>
+                }
+
+                <!-- Sin resultados -->
+                @if (!search.loading() && search.results().length === 0 && search.query()) {
+                <p class=" flex flex gap-4 items-center mt-4 text-gray-500 text-center">
+                    No se encontraron resultados
+                </p>
+                }
+
+            </div>
+        </div>
+     <!--Content-->
+
+    <div class="flex flex gap-5 items-center">
+
+        <div class="flex items-center mt-6">
+
+             @if (search.results().length > 0) {
+                 @for (item of search.results(); track item.id){
+                    
+
+                    <h3 class="font-bold text-lg">{{ item.title }}</h3>
+                    <p class="text-gray-600">{{ item.description }}</p>
+
+                    <span class="text-sm text-blue-500">{{ item.type }}</span>
+                }
+             }
+        </div>
+
+
+    </div>
+
+</div>
