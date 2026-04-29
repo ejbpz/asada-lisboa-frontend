@@ -4,6 +4,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { SearchReponse } from '@public/interfaces/search-reponse.interface';
+import { SearchRequest } from '@public/interfaces/search-request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,9 @@ export class SearchApi {
       );
   }
 
-  public search(query: string): Observable<SearchReponse[]> {
-  return this.httpClient.get<SearchReponse[]>(`/api/buscador?query=${query}`);
+  
+  public search(request: SearchRequest): Observable<SearchReponse[]> {
+    return this.httpClient.post<SearchReponse[]>(`/api/buscador`,request);
 }
 
 }
