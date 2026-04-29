@@ -1,53 +1,20 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { SearchApi } from '@core/services/search-api';
-import { SearchReponse } from '@public/interfaces/search-reponse.interface';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Search} from '@shared/pages/search/search';
 
 @Component({
-  selector: 'app-search-form',
+  selector: 'search-form',
   imports: [],
   templateUrl: './search-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchForm { 
 
-// Init
-  protected isLoading = signal<boolean>(false);
-  protected searchData = signal<SearchReponse[] | null>(null);
 
-  // Inject
-  protected searchService = inject(SearchApi);
+  search = inject(Search);
 
-  // AfterViewInit
-  ngAfterViewInit(): void {
-    this.principalApiService();
+ showSearch = signal(false);
+
+   toggleSearch() {
+    this.showSearch.update(value => !value);
   }
-
-
- // Calling principal API
-  protected principalApiService(): void {
-      if(this.isLoading())
-        return;
-
-      this.isLoading.set(true);
-
-      this.searchService.getsearchInformation()
-        .subscribe({
-          next: (searchReponse: SearchReponse[]) => {
-            this.searchData.set(searchReponse);
-            this.isLoading.set(false);
-          }
-        });     
-  }
-
-results: SearchReponse[] = [];
-query: string = '';
-
-buscar() {
-  this.searchService.search(this.query).subscribe(data => {
-    this.results = data;
-  });
-}
-
-
-
 }
