@@ -1,3 +1,4 @@
+ <div class="relative w-full">
 <div class="navbar container">
   <div class="navbar-start">
     <a href="" class="cursor-pointer">
@@ -33,7 +34,7 @@
     </ul>
   </div>
   <div class="navbar-end">
-    <button class="btn btn-ghost btn-circle">
+    <button class="btn btn-ghost btn-circle" (click)="toggleSearch()">
         <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
     </button>
     <div class="dropdown lg:hidden">
@@ -70,4 +71,22 @@
       </ul>
     </div>
   </div>
+
+     <!-- Barra de Búsqueda Desplegable -->
+   @if (showSearch()) {
+    <div class="absolute top-full left-0 w-full bg-base-100 shadow-xl border-t border-base-200 z-10 transition-all">
+      <div class="container mx-auto p-4">
+         <div class="join w-full">
+
+             <input [ngModel]="search.query()"
+                    (ngModelChange)="search.updateQuery($event)" 
+                    type="text" placeholder="Buscar contenido" class="input input-lg input-bordered w-full" autofocus />
+              <!-- Button-->
+              <a (click)= "search.buscarManual()" [routerLink]="cta.link" class="btn btn-primary text-base-100">{{ cta.title | titlecase }}</a>
+           </div> 
+
+      </div>
+    </div>
+  }
+</div>
 </div>
