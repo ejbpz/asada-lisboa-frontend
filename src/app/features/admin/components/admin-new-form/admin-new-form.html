@@ -48,7 +48,13 @@
 
   <!-- Enriched text -->
   <section>
-
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Contenido de la noticia</legend>
+      <rich-text-editor formControlName="content"/>
+      @if (!!newsForm.controls['content'].errors && newsForm.controls['content'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['content'].errors) }}</span>
+      }
+    </fieldset>
   </section>
 
   <!-- Statuses -->

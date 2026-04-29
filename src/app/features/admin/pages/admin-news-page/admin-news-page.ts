@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NewsApi } from '@core/services/news-api';
 import { SearchBar } from "@shared/components/search-bar/search-bar";
@@ -11,7 +11,7 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
 
 @Component({
   selector: 'admin-news-page',
-  imports: [GetBackTitle, SearchBar, PaginationList, AdminNewsList],
+  imports: [GetBackTitle, SearchBar, PaginationList, AdminNewsList, RouterLink],
   templateUrl: './admin-news-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

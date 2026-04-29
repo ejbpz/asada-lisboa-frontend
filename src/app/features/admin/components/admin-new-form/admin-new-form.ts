@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
+import { RichTextEditor } from "../rich-text-editor/rich-text-editor";
 
 @Component({
   selector: 'admin-new-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RichTextEditor],
   templateUrl: './admin-new-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -15,6 +16,7 @@ export class AdminNewForm {
   // New form
   protected newsForm: FormGroup = this.formBuilder.group({
     title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]],
+    content: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(5000)]],
     file: [null]
   });
 

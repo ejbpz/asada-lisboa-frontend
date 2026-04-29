@@ -23,5 +23,4 @@ export class AboutUsApi {
          catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error al obtener los datos.'))
       );
     }
-
 }

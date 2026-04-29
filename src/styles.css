@@ -33,6 +33,30 @@
   --font-hepta-slab: "Hepta Slab", "sans-serif";
 }
 
+/* Enrich text editor styles */
+:root {
+  --ae-gap: 5px;
+  --ae-text-area-border: 1px solid var(--color-base-300);
+  --ae-text-area-border-radius: var(--radius-sm);
+  --ae-focus-outline-color: var(--color-base-300) auto 1px;
+  --ae-toolbar-padding: 5px;
+  --ae-toolbar-bg-color: var(--color-base-100);
+  --ae-toolbar-border-radius: 1px solid var(--color-base-300);
+  --ae-button-bg-color: white;
+  --ae-button-border: 1px solid var(--color-base-300);
+  --ae-button-radius: var(--radius-sm);
+  --ae-button-hover-bg-color: #f1f1f1;
+  --ae-button-active-bg-color: #4c64eb;
+  --ae-button-active-hover-bg-color: #3a56f5;
+  --ae-button-disabled-bg-color: #f5f5f5;
+  --ae-picker-label-color: white;
+  --ae-picker-icon-bg-color: white;
+  --ae-picker-option-bg-color:  #fff;
+  --ae-picker-option-active-bg-color: #4c64eb;
+  --ae-picker-option-focused-bg-color: #4c64eb;
+  --ae-picker-option-hover-bg-color: #3a56f5;
+}
+
 /* Base global */
 @layer base {
   /* Firefox */
