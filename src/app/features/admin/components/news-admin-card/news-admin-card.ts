@@ -1,7 +1,7 @@
 import { RouterLink } from '@angular/router';
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { GenerateContent } from '@shared/utils/generate-content';
+import { ChangeDetectionStrategy, Component, input, effect, signal } from '@angular/core';
+import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
@@ -14,7 +14,23 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   }
 })
 export class NewsAdminCard {
-  // Input signal
+  // Init
+  protected draftStatus = signal<StatusResponse>({ id: '', name: '' });
+  protected publicStatus = signal<StatusResponse>({ id: '', name: '' });
+
+  // Input signals
   public categories = input<boolean>(false);
+  public statuses = input.required<StatusResponse[]>();
   public newData = input.required<NewMinimalResponse | undefined>();
+
+  // Statuses methods
+  private draft = effect(() => {
+    return this.statuses().forEach((value: StatusResponse) => {
+      if(value.name.trim().toLowerCase() === 'borrador')
+        this.draftStatus.set(value);
+
+      if(value.name.trim().toLowerCase() === 'publicado')
+        this.publicStatus.set(value);
+    });
+  })
 }

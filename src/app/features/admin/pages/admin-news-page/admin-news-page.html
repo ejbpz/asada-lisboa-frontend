@@ -18,7 +18,7 @@
       }
       @else if(newsResource.hasValue()) {
         <search-bar [stateValue]="filters()" [sortBy]="sortBy" [filterBy]="filterBy" (emitSearch)="onSearchSortForm($event)"/>
-        <admin-news-list [news]="newsResource.value().data"/>
+        <admin-news-list [news]="newsResource.value().data" [statuses]="statuses()"/>
         <pagination-list [offset]="filters().offset ?? 0" [total]="newsResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
       }
     </div>

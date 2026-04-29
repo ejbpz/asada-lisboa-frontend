@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NewsAdminCard } from "../news-admin-card/news-admin-card";
+import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
@@ -14,4 +15,5 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
 export class AdminNewsList {
   // Input signal
   public news = input.required<NewMinimalResponse[]>();
+  public statuses = input.required<StatusResponse[]>();
 }
