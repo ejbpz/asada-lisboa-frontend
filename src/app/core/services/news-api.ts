@@ -16,7 +16,7 @@ export class NewsApi {
   // Injection
   private httpClient = inject(HttpClient);
 
-  // Http calls
+  // Http public calls
   public getPublicNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
     return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_CLIENT}/noticias`, { params });
   }
@@ -30,5 +30,10 @@ export class NewsApi {
 
   public getRecommendedNews(slug: string): Observable<NewMinimalResponse[]> {
     return this.httpClient.get<NewMinimalResponse[]>(`${this.env.API_URL_CLIENT}/noticias/recomendaciones/${slug}`);
+  }
+
+  // Http admin calls
+  public getAdminNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
+    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params });
   }
 }

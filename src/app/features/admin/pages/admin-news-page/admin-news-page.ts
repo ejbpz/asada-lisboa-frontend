@@ -1,22 +1,22 @@
 import { HttpParams } from '@angular/common/http';
-import { NewsApi } from '@core/services/news-api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { NewsList } from '@public/components/news-list/news-list';
+import { NewsApi } from '@core/services/news-api';
 import { SearchBar } from "@shared/components/search-bar/search-bar";
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { BaseSearchPage } from '@shared/pages/base-search-page/base-search-page';
+import { AdminNewsList } from "@admin/components/admin-news-list/admin-news-list";
 import { PaginationList } from "@shared/components/pagination-list/pagination-list";
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
-  selector: 'news-page',
-  imports: [GetBackTitle, SearchBar, PaginationList, NewsList],
-  templateUrl: './news-page.html',
+  selector: 'admin-news-page',
+  imports: [GetBackTitle, SearchBar, PaginationList, AdminNewsList],
+  templateUrl: './admin-news-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class NewsPage extends BaseSearchPage<NewsApi, NewMinimalResponse> {
-  // Constructor
+export default class AdminNewsPage extends BaseSearchPage<NewsApi, NewMinimalResponse> {
+    // Constructor
   constructor() {
     super(
       inject(Router),
@@ -27,15 +27,16 @@ export default class NewsPage extends BaseSearchPage<NewsApi, NewMinimalResponse
 
   // Base class implementation
   protected override fetch(service: NewsApi, params: HttpParams) {
-    return service.getPublicNews(params);
+    return service.getAdminNews(params);
   }
 
   protected newsResource = this.resource;
 
   // Search filters
   protected filterBy = [
-    { value: 'title', name: 'Título' },
     { value: 'category', name: 'Categoría' },
+    { value: 'status', name: 'Estado' },
+    { value: 'title', name: 'Título' },
   ];
 
   protected sortBy = [
