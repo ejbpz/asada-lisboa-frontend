@@ -1,0 +1,61 @@
+<form [formGroup]="newsForm" class="w-full">
+  <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
+    <!-- Image -->
+    <div class="w-full gap-3 sm:w-1/2">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend font-normal text-sm">* Imagen de la noticia</legend>
+        <input
+          #fileInput
+          type="file"
+          accept="image/jpg, image/jpeg, image/png, image/webp, image/jfif"
+          class="hidden"
+          (change)="onFileSelected($event)"/>
+      </fieldset>
+
+      <div
+        class="w-full aspect-4/3 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden"
+        (click)="triggerFileInput(fileInput)">
+        @if (imagePreview()) {
+          <img
+            [src]="imagePreview()"
+            class="w-full h-full object-cover"/>
+        } @else {
+          <span class="text-gray-400 text-sm text-center px-2">Seleccionar imagen</span>
+        }
+      </div>
+    </div>
+
+    <div class="w-full gap-3 sm:w-1/2">
+      <!-- Title -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend font-normal text-sm">* Título</legend>
+        <input formControlName="title" placeholder="Pequeñas acciones para ahorrar agua" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+        @if (!!newsForm.controls['title'].errors && newsForm.controls['title'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['title'].errors) }}</span>
+        }
+      </fieldset>
+
+      <!-- Categories -->
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend font-normal text-sm">* Categoría/s</legend>
+        <input formControlName="title" placeholder="Mantenimiento" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+        @if (!!newsForm.controls['title'].errors && newsForm.controls['title'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['title'].errors) }}</span>
+        }
+      </fieldset>
+    </div>
+  </section>
+
+  <!-- Enriched text -->
+  <section>
+
+  </section>
+
+  <!-- Statuses -->
+  <section>
+
+  </section>
+
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary text-base-100">{{ true ? 'Actualizar' : 'Crear' }}</button>
+</form>

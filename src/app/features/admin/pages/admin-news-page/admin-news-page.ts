@@ -14,6 +14,9 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   imports: [GetBackTitle, SearchBar, PaginationList, AdminNewsList],
   templateUrl: './admin-news-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    class: 'flex flex-col justify-center items-center w-full container my-12.5 md:my-25'
+  }
 })
 export default class AdminNewsPage extends BaseSearchPage<NewsApi, NewMinimalResponse> {
     // Constructor
