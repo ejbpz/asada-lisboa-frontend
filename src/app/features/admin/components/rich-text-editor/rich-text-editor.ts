@@ -1,11 +1,11 @@
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, forwardRef, inject, signal } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, forwardRef, inject, input } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { filter, map, Observable } from 'rxjs';
 import { AngularEditorConfig, AngularEditorModule, UploadResponse } from '@kolkov/angular-editor';
 import { RichEditorApi } from '@core/services/rich-editor-api';
-import { EditorResponse } from '@admin/interfaces/editor-response.interface';
 import { environment } from '@environments/environment.development';
+import { EditorResponse } from '@admin/interfaces/editor-response.interface';
 
 @Component({
   selector: 'rich-text-editor',
@@ -23,7 +23,6 @@ import { environment } from '@environments/environment.development';
 export class RichTextEditor implements ControlValueAccessor {
   // Init
   private env = environment;
-  protected value = signal<string>('');
 
   // Injections
   private richEditorApi = inject(RichEditorApi);
@@ -43,19 +42,25 @@ export class RichTextEditor implements ControlValueAccessor {
     placeholder: 'Escriba el contenido de la noticia aquí...',
     toolbarHiddenButtons: [
       [
+        'heading',
+        'fontName',
         'fontSize',
         'textColor',
         'insertVideo',
         'removeFormat',
-        'customClasses',
         'backgroundColor',
         'toggleEditorMode',
         'insertHorizontalRule',
       ]
     ],
-    fonts: [
-      {class: 'font-poppins', name: 'Poppins'},
-      {class: 'font-hepta-slab', name: 'Hepta Slab'},
+    customClasses: [
+      { class: 'text-[1.5rem] font-bold font-hepta-slab', name: 'Título 2', tag: 'h2' },
+      { class: 'text-[1.3rem] font-normal font-hepta-slab', name: 'Título 3', tag: 'h3' },
+      { class: 'text-[1.1rem] font-normal font-hepta-slab', name: 'Título 4', tag: 'h4' },
+      { class: 'text-[1.08rem] font-normal font-hepta-slab', name: 'Título 5', tag: 'h5' },
+      { class: 'text-[1.05rem] font-normal font-hepta-slab', name: 'Título 6', tag: 'h6' },
+      { class: 'text-[1rem] font-light font-poppins', name: 'Párrafo', tag: 'p' },
+      { class: 'text-[#737373] text-[0.85rem] font-light font-poppins', name: 'Detalle', tag: 'span' },
     ],
     upload: (file: File): Observable<HttpEvent<UploadResponse>> => {
       const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/jfif'];
@@ -71,6 +76,9 @@ export class RichTextEditor implements ControlValueAccessor {
       try {
         return this.richEditorApi.uploadTemporalImage(file)
           .pipe(
+            filter((event): event is HttpResponse<EditorResponse> =>
+              event.type === HttpEventType.Response
+            ),
             map((event: HttpEvent<EditorResponse>) => {
               if(event.type === HttpEventType.Response) {
 
@@ -96,12 +104,15 @@ export class RichTextEditor implements ControlValueAccessor {
     }
   }
 
-  // ControlValueAccessor methods
+  // ControlValueAccessor
+  protected value = '';
+  protected isDisabled = false;
+
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
   writeValue(value: string): void {
-    this.value.set(value || '');
+    this.value = value ?? '';
   }
 
   registerOnChange(fn: any): void {
@@ -112,12 +123,16 @@ export class RichTextEditor implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  protected handleChange(value: string) {
-    this.value.set(value);
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+  }
+
+  handleChange(value: string) {
+    this.value = value;
     this.onChange(value);
   }
 
-  protected handleBlur() {
+  handleBlur() {
     this.onTouched();
   }
 }

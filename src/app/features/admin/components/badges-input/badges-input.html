@@ -1,0 +1,44 @@
+<div class="w-full flex flex-col gap-2">
+
+  <!-- INPUT -->
+   <div class="relative">
+    <input
+      type="text"
+      inputmode="text"
+      enterkeyhint="done"
+      class="input w-full placeholder:text-neutral placeholder:text-xs"
+      [value]="inputValue()"
+      [disabled]="disabled"
+      (input)="onInput($event)"
+      (keydown)="onKeyDown($event)"
+      (blur)="onTouched()"
+      placeholder="Mantenimiento..."/>
+
+    <!-- SUGGESTIONS -->
+    @if (filteredSuggestions().length > 0) {
+      <div class="absolute left-0 top-11 menu z-10 bg-base-200 border rounded-sm shadow-sm border-base-300">
+        @for (suggestion of filteredSuggestions(); track suggestion.id) {
+          <div
+            class="p-2 cursor-pointer text-xs hover:bg-base-200"
+            (click)="selectSuggestion(suggestion)">
+            {{ suggestion.name }}
+          </div>
+        }
+    </div>
+    }
+  </div>
+
+  <!-- TAGS -->
+  <div class="flex flex-wrap gap-2">
+    @for (badge of badges(); track $index) {
+      <span class="badge badge-soft badge-secondary flex items-center gap-1">
+        {{ badge.name | lowercase }}
+        <button
+          type="button"
+          (click)="removeBadge($index)">
+          <span class="cursor-pointer">×</span>
+        </button>
+      </span>
+    }
+  </div>
+</div>

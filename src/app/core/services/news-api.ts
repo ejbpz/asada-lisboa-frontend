@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
+import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
@@ -35,5 +36,30 @@ export class NewsApi {
   // Http admin calls
   public getAdminNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
     return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params });
+  }
+
+  public createOrEditNew(newRequest: NewRequest, id: string | undefined = undefined): Observable<NewResponse> {
+    const formData = new FormData();
+
+    formData.append('title', newRequest.title);
+
+    if(newRequest.file)
+      formData.append('file', newRequest.file);
+
+    formData.append('statusId', newRequest.statusId);
+    formData.append('description', newRequest.description);
+
+    newRequest.categories.forEach((cat: any, index: number) => {
+      if (cat.id !== null && cat.id !== undefined)
+        formData.append(`categories[${index}].id`, cat.id);
+
+      formData.append(`categories[${index}].name`, cat.name);
+    });
+
+    if(id !== null && id !== undefined) {
+      return this.httpClient.put<NewResponse>(`${this.env.API_URL_ADMIN}/noticias/${id}`, formData);
+    }
+
+    return this.httpClient.post<NewResponse>(`${this.env.API_URL_ADMIN}/noticias`, formData);
   }
 }

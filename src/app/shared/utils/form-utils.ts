@@ -12,6 +12,10 @@ export class FormUtils {
       switch(errorKey) {
         case 'required':
           return 'Este campo es requerido.';
+        case 'fileType':
+          return 'El tipo de imagen no es soportada.';
+        case 'fileSize':
+          return 'El tamaño de la imagen no es soportada.';
         case 'passwordMismatch':
           return 'Ambas contraseñas deben ser idénticas.';
         case 'minlength':

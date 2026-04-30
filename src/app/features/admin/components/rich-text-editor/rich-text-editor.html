@@ -1,5 +1,7 @@
 <angular-editor
-  [ngModel]="value()"
+  [(ngModel)]="value"
+  [ngModelOptions]="{ standalone: true }"
+  [disabled]="isDisabled"
   (ngModelChange)="handleChange($event)"
   (blur)="handleBlur()"
   [config]="config">

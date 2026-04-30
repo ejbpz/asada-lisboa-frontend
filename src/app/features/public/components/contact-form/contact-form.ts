@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validato
 import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
 import { ToastMessage } from '@shared/services/toast-message';
-import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 import { environment } from '@environments/environment.development';
+import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
 
 @Component({
@@ -63,7 +63,6 @@ export class ContactForm {
           this.isError.set(error.message);
         }
       });
-
   }
 
   // Captcha resolve

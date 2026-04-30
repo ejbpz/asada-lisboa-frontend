@@ -1,7 +1,7 @@
-<form [formGroup]="newsForm" class="w-full">
+<form [formGroup]="newsForm" (ngSubmit)="onNewForm()" class="w-full">
   <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
     <!-- Image -->
-    <div class="w-full gap-3 sm:w-1/2">
+    <div class="w-full sm:w-1/2">
       <fieldset class="fieldset">
         <legend class="fieldset-legend font-normal text-sm">* Imagen de la noticia</legend>
         <input
@@ -13,7 +13,7 @@
       </fieldset>
 
       <div
-        class="w-full aspect-4/3 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden"
+        class="w-full aspect-4/3 border border-gray-300 rounded-sm flex items-center justify-center cursor-pointer overflow-hidden"
         (click)="triggerFileInput(fileInput)">
         @if (imagePreview()) {
           <img
@@ -23,6 +23,16 @@
           <span class="text-gray-400 text-sm text-center px-2">Seleccionar imagen</span>
         }
       </div>
+
+      @if (!!newsForm.controls['file'].errors && newsForm.controls['file'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['file'].errors) }}</span>
+      }
+
+      @if(defaultImage != imagePreview()) {
+        <button type="button" (click)="removeImage(fileInput)" class="btn btn-outline btn-error mt-3 hover:text-base-100">
+          Quitar imagen
+        </button>
+      }
     </div>
 
     <div class="w-full gap-3 sm:w-1/2">
@@ -38,9 +48,9 @@
       <!-- Categories -->
       <fieldset class="fieldset">
         <legend class="fieldset-legend font-normal text-sm">* Categoría/s</legend>
-        <input formControlName="title" placeholder="Mantenimiento" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
-        @if (!!newsForm.controls['title'].errors && newsForm.controls['title'].touched) {
-          <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['title'].errors) }}</span>
+        <badges-input formControlName="categories"></badges-input>
+        @if (!!newsForm.controls['categories'].errors && newsForm.controls['categories'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['categories'].errors) }}</span>
         }
       </fieldset>
     </div>
@@ -50,18 +60,37 @@
   <section>
     <fieldset class="fieldset">
       <legend class="fieldset-legend font-normal text-sm">* Contenido de la noticia</legend>
-      <rich-text-editor formControlName="content"/>
-      @if (!!newsForm.controls['content'].errors && newsForm.controls['content'].touched) {
-        <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['content'].errors) }}</span>
+      <angular-editor formControlName="description" [config]="config"></angular-editor>
+      @if (!!newsForm.controls['description'].errors && newsForm.controls['description'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['description'].errors) }}</span>
       }
     </fieldset>
   </section>
 
   <!-- Statuses -->
-  <section>
-
+  <section class="mb-5">
+    <legend class="fieldset-legend font-normal text-sm">* Estado de la noticia</legend>
+    <div class="flex items-center gap-5">
+      @for(status of statuses(); track status.id) {
+        <div class="flex items-center gap-1">
+          <input type="radio"
+          [value]="status.id"
+          formControlName="statusId"
+          class="radio radio-xs radio-secondary"
+          [id]="`radio${status.name}`"/>
+          <label [for]="`radio${status.name}`" class="text-[0.8rem]">{{ status.name | titlecase }}</label>
+        </div>
+      }
+    </div>
+    @if (!!newsForm.controls['statusId'].errors && newsForm.controls['statusId'].touched) {
+      <span class="text-error text-[.75rem] font-light">{{ getErrors(newsForm.controls['statusId'].errors) }}</span>
+    }
   </section>
 
   <!-- Submit button -->
-  <button type="submit" class="btn btn-primary text-base-100">{{ true ? 'Actualizar' : 'Crear' }}</button>
+  <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+    @if(isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } {{ true ? 'Actualizar' : 'Crear' }}
+  </button>
 </form>
