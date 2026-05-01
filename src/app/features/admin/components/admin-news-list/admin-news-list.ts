@@ -32,9 +32,9 @@ export class AdminNewsList {
   public statuses = input.required<StatusResponse[]>();
 
   // View child
-  private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteModal')
+  private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteNewModal')
 
-  //
+  // News to signal
   private newsEffect = effect(() => {
     this.newsData.set(this.news());
   });

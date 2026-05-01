@@ -30,7 +30,7 @@ export class NewsAdminCard {
   public deleteRequest = output<string>();
 
   // Statuses methods
-  private draft = effect(() => {
+  private draftOrPosted = effect(() => {
     return this.statuses().forEach((value: StatusResponse) => {
       if(value.name.trim().toLowerCase() === 'borrador')
         this.draftStatus.set(value);

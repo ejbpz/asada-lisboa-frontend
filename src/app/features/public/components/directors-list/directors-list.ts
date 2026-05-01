@@ -13,7 +13,6 @@ import { DirectorsBoardResponse } from '@public/interfaces/directors-board-respo
   }
 })
 export class DirectorsList implements AfterViewInit {
-
    // Init
   protected isLoading = signal<boolean>(false);
   protected users = signal<DirectorsBoardResponse[] | null>(null);
@@ -23,11 +22,11 @@ export class DirectorsList implements AfterViewInit {
 
   // AfterViewInit
   ngAfterViewInit(): void {
-    this.principalApiService();
+    this.usersApiService();
   }
 
     // Calling principal API
-  protected principalApiService(): void {
+  protected usersApiService(): void {
     if(this.isLoading())
       return;
 
@@ -38,7 +37,10 @@ export class DirectorsList implements AfterViewInit {
         next: (directorsBoardResponse: DirectorsBoardResponse[]) => {
           this.users.set(directorsBoardResponse);
           this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
         }
       });
   }
- }
+}

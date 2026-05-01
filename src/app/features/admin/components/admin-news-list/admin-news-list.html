@@ -2,7 +2,7 @@
   <news-admin-card [newData]="newData" (deleteRequest)="openDeleteModal($event)" [categories]="true" [statuses]="statuses()"/>
 }
 
-<dialog #deleteModal class="modal modal-bottom sm:modal-middle">
+<dialog #deleteNewModal class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h3 class="text-lg font-bold">¡Hola!</h3>
     <p class="py-4">¿Estás seguro/a que quieres eliminar ésta noticia?</p>

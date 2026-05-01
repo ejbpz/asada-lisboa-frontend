@@ -9,10 +9,10 @@ const adminRoutes: Routes = [
   //   path: 'configuraciones',
   //   //loadComponent: () => import('') // TODO
   // },
-  // {
-  //   path: 'usuarios',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'usuarios',
+    loadComponent: () => import('@admin/pages/admin-director-board-page/admin-director-board-page')
+  },
   // {
   //   path: 'usuario/:id',
   //   //loadComponent: () => import('') // TODO
