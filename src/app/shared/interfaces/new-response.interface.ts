@@ -10,6 +10,7 @@ export interface NewResponse {
   fileName: string,
   filePath: string,
 
+  statusId: string,
   statusName: string,
   categories: string[],
 }

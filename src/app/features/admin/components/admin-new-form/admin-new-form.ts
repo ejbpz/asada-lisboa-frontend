@@ -1,6 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { filter, map, Observable } from 'rxjs';
 import { AngularEditorConfig, UploadResponse, AngularEditorModule } from '@kolkov/angular-editor';
@@ -11,12 +11,14 @@ import { BadgesInput } from "../badges-input/badges-input";
 import { ToastMessage } from '@shared/services/toast-message';
 import { RichEditorApi } from '@core/services/rich-editor-api';
 import { fileRequired } from '@shared/validators/file-required';
+import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
 import { environment } from '@environments/environment.development';
 import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { EditorResponse } from '@admin/interfaces/editor-response.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-new-form',
@@ -27,22 +29,42 @@ import { EditorResponse } from '@admin/interfaces/editor-response.interface';
 export class AdminNewForm implements AfterViewInit {
   // Init
   private env = environment;
+  private generateContent = GenerateContent;
   protected isLoading = signal(false);
   private isError = signal<string | null>(null);
   private isSuccess = signal<string | null>(null);
   protected statuses = signal<StatusResponse[]>([]);
-  protected newData = signal<NewResponse | undefined>(undefined);
+  protected newResponseData = signal<NewResponse | undefined>(undefined);
 
   // Injections
+  private router = inject(Router);
   private newsApiService = inject(NewsApi);
   private formBuilder = inject(FormBuilder);
   private toastService = inject(ToastMessage);
   private richEditorApi = inject(RichEditorApi);
   private statusesApiService = inject(StatusesApi);
 
+  // Input signal
+  public newToUpdate = input<NewResponse>();
+
   // AfterViewInit
   ngAfterViewInit(): void {
     this.statusesService();
+  }
+
+  constructor() {
+    effect(() => {
+      const data = this.newToUpdate();
+
+      if (!data) {
+        // CREATE
+        this.setCreateMode();
+        return;
+      }
+
+      // EDIT
+      this.setEditMode(data);
+    });
   }
 
   // New form
@@ -52,9 +74,14 @@ export class AdminNewForm implements AfterViewInit {
       allowedExtensions: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/jfif']
      })]],
     categories: [[], [
-      (control: any) => control.value.length === 0
-        ? { required: true }
-        : null
+      (control: any) => {
+        const value = control.value;
+        if(!value || value.length === 0) {
+          return { required: true };
+        }
+
+        return null;
+      }
     ]],
     statusId: ['', [Validators.required]],
     title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]],
@@ -68,7 +95,7 @@ export class AdminNewForm implements AfterViewInit {
       return;
     }
 
-    this.newsService(this.newsForm.value);
+    this.newsService(this.newsForm.value, this.newToUpdate()?.id);
   }
 
   // Get input errors
@@ -144,10 +171,12 @@ export class AdminNewForm implements AfterViewInit {
     this.newsApiService.createOrEditNew(newRequest, id)
       .subscribe({
         next: (value: NewResponse) => {
-          this.newData.set(value);
+          this.newResponseData.set(value);
           this.isLoading.set(false);
-          this.isSuccess.set('Noticia creada exitosamente.');
+          this.isSuccess.set(`Noticia ${this.newToUpdate() ? 'actualizada' : 'creada'} exitosamente.`);
           this.newsForm.reset();
+
+          this.router.navigate(['/admin/noticias']);
         },
         error: (error: HttpErrorResponse) => {
           this.isLoading.set(false);
@@ -165,6 +194,43 @@ export class AdminNewForm implements AfterViewInit {
 
     this.isError.set(null);
   });
+
+  // Set form
+  private setCreateMode() {
+    this.newsForm.reset();
+
+    this.newsForm.get('file')?.setValidators([
+      fileRequired,
+      fileValidator({
+        maxSizeMb: 5,
+        allowedExtensions: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/jfif']
+      })
+    ]);
+
+    this.newsForm.get('file')?.updateValueAndValidity();
+    this.imagePreview.set(this.defaultImage);
+  }
+
+  private setEditMode(data: NewResponse) {
+    this.newsForm.patchValue({
+      title: data.title,
+      statusId: data.statusId,
+      categories: this.mapCategories(data.categories),
+      description: data.description,
+    });
+
+    this.newsForm.get('file')?.clearValidators();
+    this.newsForm.get('file')?.updateValueAndValidity();
+
+    this.imagePreview.set(this.generateContent.url(data.imageUrl) ?? this.defaultImage);
+  }
+
+  private mapCategories(categories: string[]) {
+    return categories.map(name => ({
+      id: null,
+      name
+    }));
+  }
 
   // Editor configuration
   protected config: AngularEditorConfig = {

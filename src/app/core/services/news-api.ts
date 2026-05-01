@@ -38,6 +38,13 @@ export class NewsApi {
     return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params });
   }
 
+  public getAdminNew(id: string): Observable<NewResponse> {
+    return this.httpClient.get<NewResponse>(`${this.env.API_URL_ADMIN}/noticias/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la noticia.')))
+      );
+  }
+
   public createOrEditNew(newRequest: NewRequest, id: string | undefined = undefined): Observable<NewResponse> {
     const formData = new FormData();
 
@@ -61,5 +68,12 @@ export class NewsApi {
     }
 
     return this.httpClient.post<NewResponse>(`${this.env.API_URL_ADMIN}/noticias`, formData);
+  }
+
+  public deleteNew(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/noticias/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar la noticia.')))
+      );
   }
 }

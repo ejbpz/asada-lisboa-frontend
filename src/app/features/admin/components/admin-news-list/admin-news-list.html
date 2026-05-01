@@ -1,3 +1,16 @@
-@for (newData of news(); track newData.id) {
-  <news-admin-card [newData]="newData" [categories]="true" [statuses]="statuses()"/>
+@for (newData of newsData(); track newData.id) {
+  <news-admin-card [newData]="newData" (deleteRequest)="openDeleteModal($event)" [categories]="true" [statuses]="statuses()"/>
 }
+
+<dialog #deleteModal class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">¡Hola!</h3>
+    <p class="py-4">¿Estás seguro/a que quieres eliminar ésta noticia?</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-primary text-base-100">Cancelar</button>
+        <button (click)="confirmDelete()" class="ml-2 btn btn-error text-base-100">Eliminar</button>
+      </form>
+    </div>
+  </div>
+</dialog>

@@ -20,23 +20,23 @@
   <a [routerLink]="['/admin/noticia/', newData()?.id]" class="cursor-pointer">
     <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg>
   </a>
-  <button class="cursor-pointer">
+  <button (click)="onDeleteNew()" class="cursor-pointer">
     <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg>
   </button>
 </div>
 
 <div class="block sm:hidden">
   <div class="dropdown dropdown-end">
-  <div tabindex="0" role="button" class="m-1">
-    <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/dots-icon.svg"></use></svg>
+    <div tabindex="0" role="button" class="m-1">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/dots-icon.svg"></use></svg>
+    </div>
+    <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-fit py-2 px-4 shadow-sm">
+      <a [routerLink]="['/admin/noticia/', newData()?.id]" class="cursor-pointer flex gap-1 justify-start items-center">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg> Editar
+      </a>
+      <button (click)="onDeleteNew()" class="cursor-pointer flex gap-1 justify-start items-center">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg> Eliminar
+      </button>
+    </ul>
   </div>
-  <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-fit py-2 px-4 shadow-sm">
-    <a [routerLink]="['/admin/noticia/', newData()?.id]" class="cursor-pointer flex gap-1 justify-start items-center">
-      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg> Editar
-    </a>
-    <button class="cursor-pointer flex gap-1 justify-start items-center">
-      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg> Eliminar
-    </button>
-  </ul>
-</div>
 </div>
