@@ -13,7 +13,7 @@ import { LoginRequest } from '@account/interfaces/login-request.interface';
   templateUrl: './login-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'md:shadow-sm md:rounded md:py-3 md:px-7'
+    class: 'mt-5 md:shadow-sm md:rounded md:py-3 md:px-7'
   }
 })
 export class LoginForm {

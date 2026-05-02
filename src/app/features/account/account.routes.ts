@@ -16,6 +16,10 @@ const authRoutes: Routes = [
     loadComponent: () => import('@account/pages/reset-password-page/reset-password-page')
   },
   {
+    path: 'confirmar-correo',
+    loadComponent: () => import('@account/pages/confirm-email-page/confirm-email-page')
+  },
+  {
     path: '**',
     redirectTo: 'iniciar-sesion'
   }

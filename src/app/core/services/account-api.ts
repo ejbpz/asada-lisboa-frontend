@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
@@ -32,6 +32,16 @@ export class AccountApi {
       confirmPassword: resetPasswordRequest.confirmPassword,
     }).pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al validar token.')))
+      );
+  }
+
+  public confirmEmail(email: string, token: string): Observable<void> {
+    const params = new HttpParams()
+      .set('email', email)
+      .set('token', token)
+
+    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/registrar/confirmar-correo`, null, { params: params }).pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al confirmar correo.')))
       );
   }
 }

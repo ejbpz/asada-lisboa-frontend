@@ -12,7 +12,7 @@ import { ToastMessage } from '@shared/services/toast-message';
   templateUrl: './forgot-password-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'md:shadow-sm md:rounded md:py-3 md:px-7'
+    class: 'md:shadow-sm mt-5 md:rounded md:py-3 md:px-7'
   }
 })
 export class ForgotPasswordForm {

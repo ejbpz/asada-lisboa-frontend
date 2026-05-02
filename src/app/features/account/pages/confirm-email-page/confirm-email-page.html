@@ -1,0 +1,44 @@
+<div class="flex flex-col items-center justify-center px-4 container">
+  <div class="w-full">
+    <get-back-title [link]="'/cuenta/iniciar-sesion'"/>
+  </div>
+
+  <div class="w-full max-w-md rounded-2xl p-6 text-center space-y-4 mt-5 md:shadow-sm md:rounded md:py-3 md:px-7">
+    <div class="flex justify-center">
+      <svg class="w-22 h-22"><use class="w-full h-full" href="logo/asada-logo.svg"></use></svg>
+    </div>
+    @if(confirmEmailResource.isLoading()) {
+      <div class="flex flex-col items-center gap-3">
+        <span class="loading loading-spinner loading-lg"></span>
+        <p class="text-base-content/70">
+          Estamos confirmando su correo electrónico...
+        </p>
+      </div>
+    }
+
+    @else if(confirmEmailResource.error()) {
+      <div class="flex flex-col items-center gap-3">
+        <h2 class="text-lg font-medium">
+          Error al confirmar
+        </h2>
+
+        <p class="text-sm text-base-content/70">
+          {{ confirmEmailResource.error()?.message }}
+        </p>
+
+        <a routerLink="/cuenta/iniciar-sesion" class="btn btn-outline btn-error btn-sm mt-2 hover:text-base-100">Ir al inicio de sesión</a>
+      </div>
+    }
+
+    @else {
+      <div class="flex flex-col items-center gap-3">
+        <h2 class="text-lg font-medium">Correo confirmado</h2>
+
+        <p class="text-sm text-base-content/70">Su email ha sido confirmado con éxito.</p>
+
+        <a routerLink="/cuenta/iniciar-sesion" class="btn btn-primary btn-sm mt-2 text-base-100">Iniciar sesión</a>
+      </div>
+    }
+
+  </div>
+</div>
