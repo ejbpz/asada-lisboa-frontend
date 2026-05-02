@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
+import { RegisterRequest } from '@public/interfaces/register-request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,19 @@ export class DirectorsBoardApi {
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar al usuario.'))
       );
+  }
+
+  public createUser(registerRequest: RegisterRequest): Observable<void> {
+    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/registrar`, {
+      email: registerRequest.email,
+      roleId: registerRequest.roleId,
+      chargeId: registerRequest.chargeId,
+      password: registerRequest.password,
+      firstName: registerRequest.firstName,
+      phoneNumber: registerRequest.phoneNumber,
+      firstLastName: registerRequest.firstLastName,
+      secondLastName: registerRequest.secondLastName,
+      confirmPassword: registerRequest.confirmPassword,
+    });
   }
 }

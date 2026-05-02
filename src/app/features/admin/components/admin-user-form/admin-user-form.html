@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral">
+<form [formGroup]="userForm" (ngSubmit)="onUserForm()" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral">
   <section class="flex flex-col gap-2 w-full lg:flex-row">
       <!-- First name -->
       <fieldset class="fieldset lg:w-1/2">

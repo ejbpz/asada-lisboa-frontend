@@ -160,7 +160,7 @@ export class AdminNewForm implements AfterViewInit {
       })
   }
 
-    // Calling login API
+  // Calling create or edit new API
   protected newsService(newRequest: NewRequest, id: string | undefined = undefined): void {
     if(this.isLoading())
       return;

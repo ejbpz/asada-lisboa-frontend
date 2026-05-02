@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, finalize, map, Observable, shareReplay, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, Observable, shareReplay, throwError } from 'rxjs';
 import { StorageBrowser } from './storage-browser';
 import { environment } from '@environments/environment.development';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
@@ -38,7 +38,7 @@ export class AuthApi {
   public logoutUser(): Observable<void> {
     return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/cerrar-sesion`, {})
       .pipe(
-        tap(() => this.removeUser())
+        finalize(() => this.removeUser())
       );
   }
 

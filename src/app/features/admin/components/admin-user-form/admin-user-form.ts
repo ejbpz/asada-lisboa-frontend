@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -6,8 +7,10 @@ import { RolesApi } from '@core/services/roles-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ChargesApi } from '@core/services/charges-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { DirectorsBoardApi } from '@core/services/directors-board-api';
 import { RoleResponse } from '@admin/interfaces/role-response.interface';
 import { ChargeResponse } from '@admin/interfaces/charge-response.interface';
+import { RegisterRequest } from '@public/interfaces/register-request.interface';
 import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
 
 @Component({
@@ -25,31 +28,74 @@ export class AdminUserForm implements AfterViewInit {
   protected charges = signal<ChargeResponse[]>([]);
 
   // Injection
+  private router = inject(Router);
   private rolesApi = inject(RolesApi);
   private chargesApi = inject(ChargesApi);
   private formBuilder = inject(FormBuilder);
-    private toastService = inject(ToastMessage);
+  private toastService = inject(ToastMessage);
+  private directorsBoardApi = inject(DirectorsBoardApi);
 
   // User form
-  protected userForm = this.formBuilder.group({
-    roleId: ['', [Validators.required]],
-    chargeId: ['', [Validators.required]],
-    firstName: ['', [Validators.required]],
-    firstLastName: ['', [Validators.required]],
-    secondLastName: ['', [Validators.required]],
+  protected userForm = this.formBuilder.nonNullable.group({
+    roleId: ['', Validators.required],
+    chargeId: ['', Validators.required],
+    firstName: ['', Validators.required],
+    firstLastName: ['', Validators.required],
+    secondLastName: ['', Validators.required],
     phoneNumber: ['', [Validators.pattern(FormUtils.phonePattern)]],
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
-
-    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.phonePattern)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.phonePattern)]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.passwordPattern)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.passwordPattern)]],
   }, {
     validators: confirmPasswordValidator('password', 'confirmPassword')
   });
+
+  // OnSubmit form
+  protected onUserForm() {
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.userForm.getRawValue();
+    const request: RegisterRequest = {
+      ...formValue,
+      phoneNumber: formValue.phoneNumber?.trim() || null
+    };
+
+    this.createUserService(request);
+  }
 
   // AfterViewInit
   ngAfterViewInit(): void {
     this.getChargesService();
     this.getRolesService();
+  }
+
+  // Calling create user API
+  protected createUserService(newRequest: RegisterRequest): void {
+    if(this.isLoading())
+      return;
+
+    this.isLoading.set(true);
+    this.isError.set(null);
+
+    this.directorsBoardApi.createUser(newRequest)
+      .subscribe({
+        next: () => {
+          this.isLoading.set(false);
+          this.isSuccess.set(`Usuario creado exitosamente, revisar email para ser verificado.`);
+          this.userForm.reset();
+
+          setTimeout(() => {
+            this.router.navigate(['/admin/usuarios']);
+          }, 500);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isLoading.set(false);
+          this.isError.set(error.message);
+        }
+      });
   }
 
   // Getting charges
