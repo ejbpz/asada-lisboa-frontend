@@ -48,8 +48,8 @@
         <legend class="fieldset-legend font-normal text-sm">* Rol</legend>
         <select class="select select-md cursor-pointer w-full" formControlName="roleId">
           <option disabled selected value="">Rol</option>
-          @for (charge of charges(); track charge.id) {
-            <option [value]="charge.id">{{ charge.name | titlecase }}</option>
+          @for (role of roles(); track role.id) {
+            <option [value]="role.id">{{ role.name | titlecase }}</option>
           }
         </select>
         @if (!!userForm.controls['roleId'].errors && userForm.controls['roleId'].touched) {

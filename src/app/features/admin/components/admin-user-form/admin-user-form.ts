@@ -2,9 +2,11 @@ import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { RolesApi } from '@core/services/roles-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ChargesApi } from '@core/services/charges-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { RoleResponse } from '@admin/interfaces/role-response.interface';
 import { ChargeResponse } from '@admin/interfaces/charge-response.interface';
 import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
 
@@ -19,9 +21,11 @@ export class AdminUserForm implements AfterViewInit {
   protected isLoading = signal<boolean>(false);
   private isError = signal<string | null>(null);
   private isSuccess = signal<string | null>(null);
+  protected roles = signal<RoleResponse[]>([]);
   protected charges = signal<ChargeResponse[]>([]);
 
   // Injection
+  private rolesApi = inject(RolesApi);
   private chargesApi = inject(ChargesApi);
   private formBuilder = inject(FormBuilder);
     private toastService = inject(ToastMessage);
@@ -45,6 +49,7 @@ export class AdminUserForm implements AfterViewInit {
   // AfterViewInit
   ngAfterViewInit(): void {
     this.getChargesService();
+    this.getRolesService();
   }
 
   // Getting charges
@@ -53,6 +58,19 @@ export class AdminUserForm implements AfterViewInit {
       .subscribe({
         next: (value: ChargeResponse[]) => {
           this.charges.set(value);
+        },
+        error: (error: HttpErrorResponse) => {
+          this.isError.set(error.error);
+        }
+      });
+  }
+
+  // Getting roles
+  private getRolesService(): void {
+    this.rolesApi.getRoles()
+      .subscribe({
+        next: (value: RoleResponse[]) => {
+          this.roles.set(value);
         },
         error: (error: HttpErrorResponse) => {
           this.isError.set(error.error);
