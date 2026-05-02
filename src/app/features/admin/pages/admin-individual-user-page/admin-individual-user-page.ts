@@ -2,22 +2,22 @@ import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { map, of } from 'rxjs';
-import { NewsApi } from '@core/services/news-api';
-import { AdminNewForm } from "@admin/components/admin-new-form/admin-new-form";
+import { DirectorsBoardApi } from '@core/services/directors-board-api';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
+import { AdminUserForm } from "@admin/components/admin-user-form/admin-user-form";
 
 @Component({
-  selector: 'admin-individual-new-page',
-  imports: [GetBackTitle, AdminNewForm],
-  templateUrl: './admin-individual-new-page.html',
+  selector: 'admin-individual-user-page',
+  imports: [GetBackTitle, AdminUserForm],
+  templateUrl: './admin-individual-user-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'flex flex-col justify-center items-center w-full container my-12.5 sm:items-start md:my-25'
   }
 })
-export default class AdminIndividualNewPage {
+export default class AdminIndividualUserPage {
   // Injection
-  private newsService = inject(NewsApi);
+  private usersService = inject(DirectorsBoardApi);
 
   // Getting slug from route
   private id = toSignal(
@@ -26,14 +26,14 @@ export default class AdminIndividualNewPage {
     )
   );
 
-  // Calling service to get new with that id
-  protected newResource = rxResource({
+  // Calling service to get user with that id
+  protected userResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)
         return of(undefined);
 
-      return this.newsService.getAdminNew(params.id);
+      return this.usersService.getAdminUser(params.id);
     }
   });
 }

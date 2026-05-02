@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
@@ -18,7 +19,6 @@ import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { EditorResponse } from '@admin/interfaces/editor-response.interface';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'admin-new-form',

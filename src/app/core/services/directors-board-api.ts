@@ -28,6 +28,13 @@ export class DirectorsBoardApi {
       );
   }
 
+  public getAdminUser(id: string): Observable<DirectorsBoardResponse> {
+    return this.httpClient.get<DirectorsBoardResponse>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los usuarios.'))
+      );
+  }
+
   public deleteUser(id: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
       .pipe(

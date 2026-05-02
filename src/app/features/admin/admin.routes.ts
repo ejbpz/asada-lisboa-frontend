@@ -13,10 +13,14 @@ const adminRoutes: Routes = [
     path: 'usuarios',
     loadComponent: () => import('@admin/pages/admin-director-board-page/admin-director-board-page')
   },
-  // {
-  //   path: 'usuario/:id',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'usuario',
+    loadComponent: () => import('@admin/pages/admin-individual-user-page/admin-individual-user-page')
+  },
+  {
+    path: 'usuario/:id',
+    loadComponent: () => import('@admin/pages/admin-individual-user-page/admin-individual-user-page')
+  },
   // {
   //   path: 'galeria',
   //   //loadComponent: () => import('') // TODO
@@ -44,11 +48,7 @@ const adminRoutes: Routes = [
   {
     path: 'noticia/:id',
     loadComponent: () => import('@admin/pages/admin-individual-new-page/admin-individual-new-page')
-  },
-  // {
-  //   path: 'buscador',
-  //   //loadComponent: () => import('') // TODO
-  // }
+  }
 ]
 
 export default adminRoutes;
