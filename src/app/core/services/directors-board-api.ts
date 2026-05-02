@@ -3,8 +3,10 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
+import { RegisterRequest } from '@admin/interfaces/register-request.interface';
 import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
-import { RegisterRequest } from '@public/interfaces/register-request.interface';
+import { UserUpdateRequest } from '@admin/interfaces/user-update-request.interface';
+import { DirectorBoardDetailsResponse } from '@admin/interfaces/director-board-details-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +31,8 @@ export class DirectorsBoardApi {
       );
   }
 
-  public getAdminUser(id: string): Observable<DirectorsBoardResponse> {
-    return this.httpClient.get<DirectorsBoardResponse>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
+  public getAdminUser(id: string): Observable<DirectorBoardDetailsResponse> {
+    return this.httpClient.get<DirectorBoardDetailsResponse>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los usuarios.'))
       );
@@ -54,6 +56,17 @@ export class DirectorsBoardApi {
       firstLastName: registerRequest.firstLastName,
       secondLastName: registerRequest.secondLastName,
       confirmPassword: registerRequest.confirmPassword,
+    });
+  }
+
+  public updateUser(id: string, registerRequest: UserUpdateRequest): Observable<void> {
+    return this.httpClient.put<void>(`${this.env.API_URL_ADMIN}/usuarios/${id}`, {
+      roleId: registerRequest.roleId,
+      chargeId: registerRequest.chargeId,
+      firstName: registerRequest.firstName,
+      phoneNumber: registerRequest.phoneNumber,
+      firstLastName: registerRequest.firstLastName,
+      secondLastName: registerRequest.secondLastName,
     });
   }
 }

@@ -15,25 +15,4 @@ import { AdminUserForm } from "@admin/components/admin-user-form/admin-user-form
     class: 'flex flex-col justify-center items-center w-full container my-12.5 sm:items-start md:my-25'
   }
 })
-export default class AdminIndividualUserPage {
-  // Injection
-  private usersService = inject(DirectorsBoardApi);
-
-  // Getting slug from route
-  private id = toSignal(
-    inject(ActivatedRoute).params.pipe(
-      map(param => param['id'])
-    )
-  );
-
-  // Calling service to get user with that id
-  protected userResource = rxResource({
-    params: () => ({ id: this.id() ?? '' }),
-    stream: ({ params }) => {
-      if(!params.id)
-        return of(undefined);
-
-      return this.usersService.getAdminUser(params.id);
-    }
-  });
-}
+export default class AdminIndividualUserPage { }

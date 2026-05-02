@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { RolesApi } from '@core/services/roles-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ChargesApi } from '@core/services/charges-api';
@@ -10,22 +10,25 @@ import { ToastMessage } from '@shared/services/toast-message';
 import { DirectorsBoardApi } from '@core/services/directors-board-api';
 import { RoleResponse } from '@admin/interfaces/role-response.interface';
 import { ChargeResponse } from '@admin/interfaces/charge-response.interface';
-import { RegisterRequest } from '@admin/interfaces/register-request.interface';
-import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
+import { UserUpdateRequest } from '@admin/interfaces/user-update-request.interface';
+import { DirectorBoardDetailsResponse } from '@admin/interfaces/director-board-details-response.interface';
 
 @Component({
-  selector: 'admin-user-form',
+  selector: 'admin-update-user-form',
   imports: [ReactiveFormsModule, TitleCasePipe],
-  templateUrl: './admin-user-form.html',
+  templateUrl: './admin-update-user-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminUserForm implements AfterViewInit {
+export class AdminUpdateUserForm implements AfterViewInit {
   // Init
   protected isLoading = signal<boolean>(false);
   private isError = signal<string | null>(null);
   private isSuccess = signal<string | null>(null);
   protected roles = signal<RoleResponse[]>([]);
   protected charges = signal<ChargeResponse[]>([]);
+
+  // Input signal
+  public userToUpdate = input.required<DirectorBoardDetailsResponse | undefined>();
 
   // Injection
   private router = inject(Router);
@@ -43,12 +46,26 @@ export class AdminUserForm implements AfterViewInit {
     firstLastName: ['', Validators.required],
     secondLastName: ['', Validators.required],
     phoneNumber: ['', [Validators.pattern(FormUtils.phonePattern)]],
-    email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
-    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.passwordPattern)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100), Validators.pattern(FormUtils.passwordPattern)]],
-  }, {
-    validators: confirmPasswordValidator('password', 'confirmPassword')
   });
+
+  // Constructor
+  private initialized = false;
+
+  constructor() {
+    effect(() => {
+      const user = this.userToUpdate();
+
+      if (user === undefined || this.initialized) return;
+
+      if (!user || !user.id) {
+        this.router.navigate(['/admin/usuarios']);
+        return;
+      }
+
+      this.initialized = true;
+      this.setEditMode(user);
+    });
+  }
 
   // OnSubmit form
   protected onUserForm() {
@@ -58,7 +75,7 @@ export class AdminUserForm implements AfterViewInit {
     }
 
     const formValue = this.userForm.getRawValue();
-    const request: RegisterRequest = {
+    const request: UserUpdateRequest = {
       ...formValue,
       phoneNumber: formValue.phoneNumber?.trim() || null
     };
@@ -73,18 +90,18 @@ export class AdminUserForm implements AfterViewInit {
   }
 
   // Calling create user API
-  protected createUserService(newRequest: RegisterRequest): void {
+  protected createUserService(userUpdateRequest: UserUpdateRequest): void {
     if(this.isLoading())
       return;
 
     this.isLoading.set(true);
     this.isError.set(null);
 
-    this.directorsBoardApi.createUser(newRequest)
+    this.directorsBoardApi.updateUser(this.userToUpdate()?.id ?? '', userUpdateRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set(`Usuario creado exitosamente, revisar email para ser verificado.`);
+          this.isSuccess.set(`Usuario actualizado exitosamente`);
           this.userForm.reset();
 
           setTimeout(() => {
@@ -122,6 +139,17 @@ export class AdminUserForm implements AfterViewInit {
           this.isError.set(error.error);
         }
       });
+  }
+
+  private setEditMode(data: DirectorBoardDetailsResponse) {
+    this.userForm.patchValue({
+      chargeId: data.chargeId,
+      roleId: data.roles[0].id,
+      firstName: data.firstName,
+      firstLastName: data.firstLastName,
+      secondLastName: data.secondLastName,
+      phoneNumber: data.phoneNumber ?? '',
+    });
   }
 
   // Toast error

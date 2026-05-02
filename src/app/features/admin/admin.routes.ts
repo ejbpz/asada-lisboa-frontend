@@ -19,7 +19,7 @@ const adminRoutes: Routes = [
   },
   {
     path: 'usuario/:id',
-    loadComponent: () => import('@admin/pages/admin-individual-user-page/admin-individual-user-page')
+    loadComponent: () => import('@admin/pages/admin-update-user-page/admin-update-user-page')
   },
   // {
   //   path: 'galeria',
