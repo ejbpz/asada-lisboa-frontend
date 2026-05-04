@@ -10,7 +10,7 @@
   <div class="card-actions flex items-center justify-between">
     <div class="flex h-full justify-center items-center gap-1">
       <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/calendar-icon.svg"></use></svg>
-      <span>{{ newData()?.lastEditionDate | date:'dd/MM/yyyy' }}</span>
+      <span>{{ newData()?.lastEditionDate | date }}</span>
     </div>
     <a [routerLink]="['/noticia', newData()?.slug]" class="btn btn-primary text-base-100">Saber más</a>
   </div>

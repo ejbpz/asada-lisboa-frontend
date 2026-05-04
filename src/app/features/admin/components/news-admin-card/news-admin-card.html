@@ -12,7 +12,7 @@
     } @else {
       <h2 class="text-lg font-bold line-clamp-1 text-ellipsis h-7 max-h-7 sm:text-xl">{{ newData()?.title | titlecase }}</h2>
     }
-      <span class="text-sm font-light line-clamp-1 text-ellipsis">Última edición: {{ newData()?.lastEditionDate | date : 'dd/MM/yyyy' }}</span>
+      <span class="text-sm font-light line-clamp-1 text-ellipsis">Última edición: {{ newData()?.lastEditionDate | date }}</span>
   </div>
 </div>
 
