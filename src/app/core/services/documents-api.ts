@@ -15,10 +15,24 @@ export class DocumentsApi {
   // Injection
   private httpClient = inject(HttpClient);
 
-  // Http calls
+  // Http public calls
   public getPublicDocuments(params: HttpParams): Observable<PageResponse<DocumentMinimalResponse>> {
     return this.httpClient.get<PageResponse<DocumentMinimalResponse>>(`${this.env.API_URL_CLIENT}/documentos`, { params }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los documentos.')))
     );
+  }
+
+  // Http admin calls
+  public getAdminDocuments(params: HttpParams): Observable<PageResponse<DocumentMinimalResponse>> {
+    return this.httpClient.get<PageResponse<DocumentMinimalResponse>>(`${this.env.API_URL_ADMIN}/documentos`, { params }).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los documentos.')))
+    );
+  }
+
+  public deleteDocument(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/documentos/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar el documento.')))
+      );
   }
 }

@@ -29,10 +29,10 @@ const adminRoutes: Routes = [
   //   path: 'galeria/:id',
   //   //loadComponent: () => import('') // TODO
   // },
-  // {
-  //   path: 'documentos',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'documentos',
+    loadComponent: () => import('@admin/pages/admin-documents-page/admin-documents-page')
+  },
   // {
   //   path: 'documento/:id',
   //   //loadComponent: () => import('') // TODO

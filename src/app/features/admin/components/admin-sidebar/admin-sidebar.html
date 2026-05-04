@@ -1,5 +1,5 @@
 <div class="drawer lg:drawer-open relative">
-  <input id="my-drawer-4" type="checkbox" class="drawer-toggle" />
+  <input id="my-drawer-4" type="checkbox" [checked]="isLarge()" class="drawer-toggle"/>
 
   <div class="drawer-content relative">
     <!-- Page content here -->
@@ -12,7 +12,7 @@
 
     <!-- Navbar -->
     <nav class="w-fit h-fit z-1 fixed top-2 ml-2">
-      <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-circle btn-ghost bg-base-200">
+      <label for="my-drawer-4" aria-label="open sidebar" class="btn btn-circle btn-ghost bg-base-200 shadow-sm">
         <!-- Sidebar toggle icon -->
         <svg class="w-5 h-5"><use class="w-full h-full" href="assets/icons/sidebar-icon.svg"></use></svg>
       </label>

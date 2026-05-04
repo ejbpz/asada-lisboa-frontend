@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterOutlet, RouterLinkWithHref, Router } from '@angular/router';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { finalize } from 'rxjs';
 import { AuthApi } from '@core/services/auth-api';
 import { GlobalFooter } from "@shared/components/global-footer/global-footer";
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'admin-sidebar',
@@ -10,8 +11,10 @@ import { finalize } from 'rxjs';
   templateUrl: './admin-sidebar.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminSidebar {
+export class AdminSidebar implements AfterViewInit {
   // Init
+  protected isLarge = signal<boolean>(false);
+
   protected navigationLinks = [
     { title: 'Inicio', link: '/', imageUrl: 'assets/icons/home-icon.svg' },
     { title: 'Usuarios', link: '/admin/usuarios', imageUrl: 'assets/icons/user-icon.svg' },
@@ -24,6 +27,14 @@ export class AdminSidebar {
   // Injects
   private router = inject(Router);
   private authApiService = inject(AuthApi);
+  private breakpointObserver = inject(BreakpointObserver);
+
+  // AfterViewInit
+  ngAfterViewInit() {
+    this.breakpointObserver
+      .observe(['(min-width: 1024px)'])
+      .subscribe(r => this.isLarge.set(r.matches));
+  }
 
   // Calling logout API
   protected onLogout() {
