@@ -20,7 +20,9 @@ export class DirectorsBoardApi {
 
   // Http calls - public
   public getDirectorsBoardInformation(): Observable<DirectorsBoardResponse[]> {
-    return this.httpClient.get<DirectorsBoardResponse[]>(`${this.env.API_URL_CLIENT}/usuarios`);
+    return this.httpClient.get<DirectorsBoardResponse[]>(`${this.env.API_URL_CLIENT}/usuarios`).pipe(
+      catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la junta directiva.')))
+    );
   }
 
   // Http calls - admin
@@ -56,7 +58,9 @@ export class DirectorsBoardApi {
       firstLastName: registerRequest.firstLastName,
       secondLastName: registerRequest.secondLastName,
       confirmPassword: registerRequest.confirmPassword,
-    });
+    }).pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear un usuario.')))
+      );
   }
 
   public updateUser(id: string, registerRequest: UserUpdateRequest): Observable<void> {
@@ -67,6 +71,8 @@ export class DirectorsBoardApi {
       phoneNumber: registerRequest.phoneNumber,
       firstLastName: registerRequest.firstLastName,
       secondLastName: registerRequest.secondLastName,
-    });
+    }).pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar un usuario.')))
+      );
   }
 }

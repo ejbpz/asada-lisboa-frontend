@@ -21,6 +21,7 @@ export class ContactApi {
     return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_CLIENT}/contactos`)
       .pipe(
         map((response: PageResponse<ContactResponse>) => response.data),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener información de contacto.')))
       );
   }
 

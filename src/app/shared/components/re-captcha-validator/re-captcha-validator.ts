@@ -1,5 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, output, PLATFORM_ID, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, output, PLATFORM_ID, signal, viewChild } from '@angular/core';
+import { ToastMessage } from '@shared/services/toast-message';
 import { ReCaptchaLoader } from '@core/services/re-captcha-loader';
 import { environment } from '@environments/environment.development';
 
@@ -18,10 +19,14 @@ export class ReCaptchaValidator implements AfterViewInit {
   // Init
   private widgetId!: number;
   private env = environment;
+  private isError = signal<string | null>(null);
+
+  // Output signal
   public resolved = output<string>();
 
   // Injection
   private platformId = inject(PLATFORM_ID);
+  private toastService = inject(ToastMessage);
   private reCaptchaLoader = inject(ReCaptchaLoader);
 
   async ngAfterViewInit() {
@@ -30,7 +35,7 @@ export class ReCaptchaValidator implements AfterViewInit {
     await this.reCaptchaLoader.load();
 
     if (typeof grecaptcha === 'undefined') {
-      console.error('grecaptcha no está disponible');
+      this.isError.set('grecaptcha no está disponible');
       return;
     }
 
@@ -50,4 +55,11 @@ export class ReCaptchaValidator implements AfterViewInit {
       grecaptcha.reset(this.widgetId);
     }
   }
+
+  // Toast error
+  private showToast = effect(() => {
+    this.toastService.showToast(this.isError(), '❌');
+
+    this.isError.set(null);
+  });
 }

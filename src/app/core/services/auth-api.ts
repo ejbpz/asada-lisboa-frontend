@@ -38,7 +38,8 @@ export class AuthApi {
   public logoutUser(): Observable<void> {
     return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/cerrar-sesion`, {})
       .pipe(
-        finalize(() => this.removeUser())
+        finalize(() => this.removeUser()),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al cerrar sesión.')))
       );
   }
 

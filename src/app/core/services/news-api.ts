@@ -19,7 +19,10 @@ export class NewsApi {
 
   // Http public calls
   public getPublicNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
-    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_CLIENT}/noticias`, { params });
+    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_CLIENT}/noticias`, { params })
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las noticias.')))
+      );
   }
 
   public getPublicNew(slug: string): Observable<NewResponse> {
@@ -30,12 +33,18 @@ export class NewsApi {
   }
 
   public getRecommendedNews(slug: string): Observable<NewMinimalResponse[]> {
-    return this.httpClient.get<NewMinimalResponse[]>(`${this.env.API_URL_CLIENT}/noticias/recomendaciones/${slug}`);
+    return this.httpClient.get<NewMinimalResponse[]>(`${this.env.API_URL_CLIENT}/noticias/recomendaciones/${slug}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las recomendaciones.')))
+      );
   }
 
   // Http admin calls
   public getAdminNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
-    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params });
+    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params })
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las noticias.')))
+      );
   }
 
   public getAdminNew(id: string): Observable<NewResponse> {
@@ -64,10 +73,16 @@ export class NewsApi {
     });
 
     if(id !== null && id !== undefined) {
-      return this.httpClient.put<NewResponse>(`${this.env.API_URL_ADMIN}/noticias/${id}`, formData);
+      return this.httpClient.put<NewResponse>(`${this.env.API_URL_ADMIN}/noticias/${id}`, formData)
+        .pipe(
+          catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar la noticia.')))
+        );
     }
 
-    return this.httpClient.post<NewResponse>(`${this.env.API_URL_ADMIN}/noticias`, formData);
+    return this.httpClient.post<NewResponse>(`${this.env.API_URL_ADMIN}/noticias`, formData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear la noticia.')))
+      );
   }
 
   public deleteNew(id: string): Observable<void> {

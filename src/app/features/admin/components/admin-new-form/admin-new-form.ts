@@ -271,11 +271,11 @@ export class AdminNewForm implements AfterViewInit {
       const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/jfif'];
 
       if (!allowedTypes.includes(file.type)) {
-        throw new Error('Tipo de imagen no permitida');
+        this.isError.set('Tipo de imagen no permitida');
       }
 
       if (file.size > 5_242_880) {
-        throw new Error('Imágenes máximo 5MB');
+        this.isError.set('Imágenes máximo 5MB');
       }
 
       try {
@@ -303,7 +303,7 @@ export class AdminNewForm implements AfterViewInit {
           );
 
       } catch (error) {
-        console.error(error);
+        this.isError.set('Error inesperado al subir la imagen del contenido');
         throw error;
       }
     }

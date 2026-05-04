@@ -25,14 +25,11 @@ export class ReceiptsApi {
   }
 
   public getReceiptDetails(receiptRequest: ReceiptRequest): Observable<ReceiptDetailsResponse> {
-    console.log(receiptRequest)
-
     return this.httpClient.post<ReceiptDetailsResponse>(`${this.env.API_URL_CLIENT}/recibos`, {
       receiptNumber: receiptRequest.receiptNumber,
       index: receiptRequest.index,
     })
       .pipe(
-        tap(console.log),
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener el detalle del recibo.')))
       );
   }
