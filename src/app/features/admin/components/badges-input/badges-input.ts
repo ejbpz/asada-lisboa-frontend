@@ -1,4 +1,4 @@
-import { LowerCasePipe } from '@angular/common';
+import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 import { rxResource, toObservable } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, signal } from '@angular/core';
@@ -8,7 +8,7 @@ import { CategoriesResponse } from '@shared/interfaces/categories-response.inter
 
 @Component({
   selector: 'badges-input',
-  imports: [LowerCasePipe],
+  imports: [LowerCasePipe, TitleCasePipe],
   templateUrl: './badges-input.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

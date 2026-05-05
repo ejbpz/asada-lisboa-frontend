@@ -1,0 +1,112 @@
+<form [formGroup]="documentForm" (ngSubmit)="onDocumentForm()" class="w-full">
+  <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
+    <!-- Document -->
+    <div class="w-full sm:w-1/2">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend font-normal text-sm">* Documento</legend>
+        <input
+          #fileInput
+          type="file"
+          accept=".pdf,.docx,.xlsx,.txt,.csv,.zip"
+          class="hidden"
+          (change)="onDocumentSelected($event)" />
+      </fieldset>
+
+      <div
+        class="w-full h-32 border border-gray-300 rounded-sm flex flex-col items-center justify-center cursor-pointer overflow-hidden p-3 text-center"
+        (click)="triggerFileInput(fileInput)"
+      >
+        @if (documentInfo()) {
+          <div class="text-sm">
+            <p class="font-medium truncate">{{ documentInfo()?.name }}</p>
+            <p class="text-gray-500 text-xs">
+              {{ documentInfo()?.size }} MB
+            </p>
+          </div>
+        } @else {
+          <span class="text-gray-400 text-sm">Seleccionar documento</span>
+        }
+      </div>
+
+      @if (!!documentForm.controls['file'].errors && documentForm.controls['file'].touched) {
+        <span class="text-error text-[.75rem] font-light">
+          {{ getErrors(documentForm.controls['file'].errors) }}
+        </span>
+      }
+
+      @if (documentInfo()) {
+        <div class="flex gap-2 mt-3">
+          <button
+            type="button"
+            class="btn btn-outline"
+            (click)="openDocument()">
+            Ver
+          </button>
+
+          <button
+            type="button"
+            (click)="removeDocument(fileInput)"
+            class="btn btn-outline btn-error hover:text-base-100">
+            Quitar
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- Categories -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Categoría/s</legend>
+      <badges-input formControlName="categories"></badges-input>
+      @if (!!documentForm.controls['categories'].errors && documentForm.controls['categories'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(documentForm.controls['categories'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
+    <!-- Title -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Título</legend>
+      <input formControlName="title" placeholder="Reglamento técnico para prestación de servicios" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!documentForm.controls['title'].errors && documentForm.controls['title'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(documentForm.controls['title'].errors) }}</span>
+      }
+    </fieldset>
+
+    <!-- Description -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Descripción</legend>
+      <input formControlName="description" placeholder="Características, métodos de producción, requisitos de calidad y normas de seguridad obligatorias" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!documentForm.controls['description'].errors && documentForm.controls['description'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(documentForm.controls['description'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <!-- Statuses -->
+  <section class="mb-5">
+    <legend class="fieldset-legend font-normal text-sm">* Estado del documento</legend>
+    <div class="flex items-center gap-5">
+      @for(status of statuses(); track status.id) {
+        <div class="flex items-center gap-1">
+          <input type="radio"
+          [value]="status.id"
+          formControlName="statusId"
+          class="radio radio-xs radio-secondary"
+          [id]="`radio${status.name}`"/>
+          <label [for]="`radio${status.name}`" class="text-[0.8rem]">{{ status.name | titlecase }}</label>
+        </div>
+      }
+    </div>
+    @if (!!documentForm.controls['statusId'].errors && documentForm.controls['statusId'].touched) {
+      <span class="text-error text-[.75rem] font-light">{{ getErrors(documentForm.controls['statusId'].errors) }}</span>
+    }
+  </section>
+
+  <!-- Submit button -->
+  <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+    @if(isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } {{ documentToUpdate()?.id ? 'Actualizar' : 'Crear' }}
+  </button>
+</form>

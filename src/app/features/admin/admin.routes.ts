@@ -33,10 +33,14 @@ const adminRoutes: Routes = [
     path: 'documentos',
     loadComponent: () => import('@admin/pages/admin-documents-page/admin-documents-page')
   },
-  // {
-  //   path: 'documento/:id',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'documento',
+    loadComponent: () => import('@admin/pages/admin-individual-document-page/admin-individual-document-page')
+  },
+  {
+    path: 'documento/:id',
+    loadComponent: () => import('@admin/pages/admin-individual-document-page/admin-individual-document-page')
+  },
   {
     path: 'noticias',
     loadComponent: () => import('@admin/pages/admin-news-page/admin-news-page')
