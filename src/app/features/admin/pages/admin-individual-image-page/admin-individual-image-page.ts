@@ -2,22 +2,21 @@ import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { map, of } from 'rxjs';
-import { DocumentsApi } from '@core/services/documents-api';
+import { GalleryApi } from '@core/services/gallery-api';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
-import { AdminDocumentForm } from "@admin/components/admin-document-form/admin-document-form";
 
 @Component({
-  selector: 'admin-individual-document-page',
-  imports: [GetBackTitle, AdminDocumentForm],
-  templateUrl: './admin-individual-document-page.html',
+  selector: 'admin-individual-image-page',
+  imports: [GetBackTitle],
+  templateUrl: './admin-individual-image-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'flex flex-col justify-center items-center w-full container my-12.5 sm:items-start md:my-25'
   }
 })
-export default class AdminIndividualDocumentPage {
+export default class AdminIndividualImagePage {
   // Injection
-  private documentsService = inject(DocumentsApi);
+  private imagesService = inject(GalleryApi);
 
   // Getting slug from route
   private id = toSignal(
@@ -26,14 +25,14 @@ export default class AdminIndividualDocumentPage {
     )
   );
 
-  // Calling service to get document with that id
-  protected documentResource = rxResource({
+  // Calling service to get image with that id
+  protected imageResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)
         return of(undefined);
 
-      return this.documentsService.getAdminDocument(params.id);
+      return this.imagesService.getAdminImage(params.id);
     }
   });
 }

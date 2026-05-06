@@ -25,14 +25,14 @@ const adminRoutes: Routes = [
     path: 'imagenes',
     loadComponent: () => import('@admin/pages/admin-images-page/admin-images-page')
   },
-  // {
-  //   path: 'imagen',
-  //   //loadComponent: () => import('') // TODO
-  // },
-  // {
-  //   path: 'imagen/:id',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'imagen',
+    loadComponent: () => import('@admin/pages/admin-individual-image-page/admin-individual-image-page')
+  },
+  {
+    path: 'imagen/:id',
+    loadComponent: () => import('@admin/pages/admin-individual-image-page/admin-individual-image-page')
+  },
   {
     path: 'documentos',
     loadComponent: () => import('@admin/pages/admin-documents-page/admin-documents-page')
