@@ -21,12 +21,16 @@ const adminRoutes: Routes = [
     path: 'usuario/:id',
     loadComponent: () => import('@admin/pages/admin-update-user-page/admin-update-user-page')
   },
+  {
+    path: 'imagenes',
+    loadComponent: () => import('@admin/pages/admin-images-page/admin-images-page')
+  },
   // {
-  //   path: 'galeria',
+  //   path: 'imagen',
   //   //loadComponent: () => import('') // TODO
   // },
   // {
-  //   path: 'galeria/:id',
+  //   path: 'imagen/:id',
   //   //loadComponent: () => import('') // TODO
   // },
   {

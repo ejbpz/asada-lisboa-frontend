@@ -40,8 +40,8 @@ export class NewsApi {
   }
 
   // Http admin calls
-  public getAdminNews(params: HttpParams): Observable<PageResponse<NewMinimalResponse>> {
-    return this.httpClient.get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params })
+  public getAdminNews(params: HttpParams): Observable<PageResponse<NewResponse>> {
+    return this.httpClient.get<PageResponse<NewResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params })
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las noticias.')))
       );

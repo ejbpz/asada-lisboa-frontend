@@ -1,8 +1,8 @@
 import { RouterLink } from '@angular/router';
 import { DatePipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, effect, signal, output } from '@angular/core';
+import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
-import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
   selector: 'news-admin-card',
@@ -24,7 +24,7 @@ export class NewsAdminCard {
   // Input signals
   public categories = input<boolean>(false);
   public statuses = input.required<StatusResponse[]>();
-  public newData = input.required<NewMinimalResponse | undefined>();
+  public newData = input.required<NewResponse | undefined>();
 
   // Output signal
   public deleteRequest = output<string>();

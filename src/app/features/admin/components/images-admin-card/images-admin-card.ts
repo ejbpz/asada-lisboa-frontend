@@ -1,21 +1,20 @@
 import { RouterLink } from "@angular/router";
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output, signal } from '@angular/core';
 import { GenerateContent } from '@shared/utils/generate-content';
-import { DocumentTypeIcon } from '@shared/services/document-type-icon';
+import { ImageResponse } from '@admin/interfaces/image-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
-import { DocumentResponse } from "@admin/interfaces/document-response.interface";
 
 @Component({
-  selector: 'documents-admin-card',
+  selector: 'images-admin-card',
   imports: [TitleCasePipe, RouterLink],
-  templateUrl: './documents-admin-card.html',
+  templateUrl: './images-admin-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full flex justify-between items-center'
+    class: 'block bg-base-100 rounded-sm shadow-sm break-inside-avoid overflow-hidden cursor-pointer',
   }
 })
-export class DocumentsAdminCard {
+export class ImagesAdminCard {
   // Init
   protected generateContent = GenerateContent;
   protected isLoading = signal<boolean>(false);
@@ -24,13 +23,10 @@ export class DocumentsAdminCard {
   protected draftStatus = signal<StatusResponse>({ id: '', name: '' });
   protected publicStatus = signal<StatusResponse>({ id: '', name: '' });
 
-  // Injection
-  private documentType = inject(DocumentTypeIcon);
-
   // Input signals
   public categories = input<boolean>(false);
   public statuses = input.required<StatusResponse[]>();
-  public document = input.required<DocumentResponse | undefined>();
+  public image = input.required<ImageResponse | undefined>();
 
   // Output signal
   public deleteRequest = output<string>();
@@ -46,16 +42,11 @@ export class DocumentsAdminCard {
     });
   });
 
-  // Emit delete document
-  onDeleteDocument() {
-    if(!(this.document()?.id))
+  // Emit delete new
+  onDeleteImage() {
+    if(!(this.image()?.id))
       return;
 
-    this.deleteRequest.emit(this.document()?.id ?? '');
-  }
-
-  // Helper methods
-  protected iconType(fileName: string | undefined): string {
-    return this.documentType.documentIcon(fileName);
+    this.deleteRequest.emit(this.image()?.id ?? '');
   }
 }

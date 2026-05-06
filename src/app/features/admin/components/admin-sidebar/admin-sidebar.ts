@@ -18,7 +18,7 @@ export class AdminSidebar implements AfterViewInit {
   protected navigationLinks = [
     { title: 'Inicio', link: '/', imageUrl: 'assets/icons/home-icon.svg' },
     { title: 'Usuarios', link: '/admin/usuarios', imageUrl: 'assets/icons/user-icon.svg' },
-    { title: 'Galería', link: '/admin/galeria', imageUrl: 'assets/icons/image-icon.svg' },
+    { title: 'Galería', link: '/admin/imagenes', imageUrl: 'assets/icons/image-icon.svg' },
     { title: 'Noticias', link: '/admin/noticias', imageUrl: 'assets/icons/new-icon.svg' },
     { title: 'Documentos', link: '/admin/documentos', imageUrl: 'assets/icons/admin-document-icon.svg' },
     { title: 'Configuraciones', link: '/admin/configuraciones', imageUrl: 'assets/icons/settings-icon.svg' },

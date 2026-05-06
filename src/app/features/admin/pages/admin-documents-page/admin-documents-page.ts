@@ -6,9 +6,9 @@ import { DocumentsApi } from "@core/services/documents-api";
 import { SearchBar } from "@shared/components/search-bar/search-bar";
 import { StatusResponse } from "@admin/interfaces/status-response.interface";
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
+import { DocumentResponse } from "@admin/interfaces/document-response.interface";
 import { BaseSearchPage } from "@shared/pages/base-search-page/base-search-page";
 import { PaginationList } from "@shared/components/pagination-list/pagination-list";
-import { DocumentMinimalResponse } from "@public/interfaces/document-minimal-response.interface";
 import { AdminDocumentsList } from "@admin/components/admin-documents-list/admin-documents-list";
 
 @Component({
@@ -20,7 +20,7 @@ import { AdminDocumentsList } from "@admin/components/admin-documents-list/admin
     class: 'flex flex-col justify-center items-center w-full container my-12.5 md:my-25'
   }
 })
-export default class AdminDocumentsPage extends BaseSearchPage<DocumentsApi, DocumentMinimalResponse> implements AfterViewInit {
+export default class AdminDocumentsPage extends BaseSearchPage<DocumentsApi, DocumentResponse> implements AfterViewInit {
   // Init
   private isLoading = signal<boolean>(false);
   protected statuses = signal<StatusResponse[]>([]);

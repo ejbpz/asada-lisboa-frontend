@@ -1,0 +1,26 @@
+<div class="w-full flex flex-col items-between justify-center sm:flex-row">
+  <div class="w-full sm:w-[60%] mb-5">
+    <get-back-title title="Imágenes" isAdmin>
+      <div section-description>Administra las imágenes y mantén actualizada la galería mediante la creación, edición y eliminación de contenido.</div>
+    </get-back-title>
+  </div>
+  <div class="w-full sm:w-[40%] flex sm:justify-end items-center px-5">
+    <a [routerLink]="['/admin/imagen']" class="btn btn-primary text-base-100">Nueva imagen</a>
+  </div>
+</div>
+<div class="w-full flex flex-col gap-5 p-5">
+  <div class="flex flex-col items-center">
+    <div class="w-full">
+      @if(imagesResource.isLoading()) {
+        <div class="my-10 w-full flex items-center justify-center">
+          <span class="loading loading-spinner loading-md"></span>
+        </div>
+      }
+      @else if(imagesResource.hasValue()) {
+        <search-bar [stateValue]="filters()" [sortBy]="sortBy" [filterBy]="filterBy" (emitSearch)="onSearchSortForm($event)"/>
+        <admin-images-list [images]="imagesResource.value().data" [statuses]="statuses()"/>
+        <pagination-list [offset]="filters().offset ?? 0" [total]="imagesResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
+      }
+    </div>
+  </div>
+</div>

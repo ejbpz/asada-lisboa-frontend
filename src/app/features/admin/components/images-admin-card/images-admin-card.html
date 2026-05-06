@@ -1,0 +1,22 @@
+<div class="card bg-base-100">
+  <figure class="w-full">
+    <img class="w-full h-full object-cover"
+      [src]="generateContent.url(image()?.filePath)"
+      [alt]="image()?.title" />
+  </figure>
+  <div class="card-body">
+    <div class="flex flex-col flex-wrap w-full justify-start gap-1">
+      <h2 class="card-title">{{ image()?.title | titlecase }}</h2>
+      @if(publicStatus().id === image()?.statusId) {
+        <div class="badge badge-success text-base-100 text-sm font-light">Publicado</div>
+      } @else if(draftStatus().id === image()?.statusId) {
+        <div class="badge badge-warning text-base-100 text-sm font-light">Borrador</div>
+      }
+    </div>
+    <p>{{ image()?.description }}</p>
+    <div class="card-actions justify-end">
+        <a [routerLink]="['/admin/imagen/', image()?.id]" class="btn btn-neutral btn-outline cursor-pointer flex gap-1 justify-start items-center">Editar</a>
+        <button (click)="onDeleteImage()" class="btn btn-neutral btn-outline cursor-pointer flex gap-1 justify-start items-center">Eliminar</button>
+    </div>
+  </div>
+</div>

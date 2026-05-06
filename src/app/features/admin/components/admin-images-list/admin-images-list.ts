@@ -1,42 +1,42 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
-import { DocumentsApi } from '@core/services/documents-api';
+import { GalleryApi } from '@core/services/gallery-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { ImagesAdminCard } from "../images-admin-card/images-admin-card";
+import { ImageResponse } from '@admin/interfaces/image-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
-import { DocumentResponse } from '@admin/interfaces/document-response.interface';
-import { DocumentsAdminCard } from "../documents-admin-card/documents-admin-card";
 
 @Component({
-  selector: 'admin-documents-list',
-  imports: [DocumentsAdminCard],
-  templateUrl: './admin-documents-list.html',
+  selector: 'admin-images-list',
+  imports: [ImagesAdminCard],
+  templateUrl: './admin-images-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full flex justify-center'
+    class: 'block w-full [column-width:250px] gap-3 space-y-3 my-5'
   }
 })
-export class AdminDocumentsList {
+export class AdminImagesList {
   // Init
   private isLoading = signal<boolean>(false);
   private isError = signal<string | null>(null);
   private isSuccess = signal<string | null>(null);
   protected selectedId = signal<string | null>(null);
-  protected documentsData = signal<DocumentResponse[]>([]);
+  protected imagesData = signal<ImageResponse[]>([]);
 
   // Injection
-  private documentsApi = inject(DocumentsApi);
+  private imagesApi = inject(GalleryApi);
   private toastService = inject(ToastMessage);
 
   // Input signal
-  public documents = input.required<DocumentResponse[]>();
+  public images = input.required<ImageResponse[]>();
   public statuses = input.required<StatusResponse[]>();
 
   // View child
-  private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteDocumentModal')
+  private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteImageModal')
 
   // News to signal
-  private documentsEffect = effect(() => {
-    this.documentsData.set(this.documents());
+  private imagesEffect = effect(() => {
+    this.imagesData.set(this.images());
   });
 
   // Delete document
@@ -49,27 +49,27 @@ export class AdminDocumentsList {
     const id = this.selectedId();
     if (!id) return;
 
-    this.documentsApiService(id);
+    this.imagesApiService(id);
   }
 
-  private removeDocumentFromList(id: string): void {
-    this.documentsData.set(this.documents().filter((value: DocumentResponse) => value.id != id))
+  private removeImageFromList(id: string): void {
+    this.imagesData.set(this.images().filter((value: ImageResponse) => value.id != id))
   }
 
   // Delete new service
-  private documentsApiService(id: string): void {
+  private imagesApiService(id: string): void {
     if(this.isLoading())
       return;
 
     this.isError.set(null)
     this.isLoading.set(true);
 
-    this.documentsApi.deleteDocument(id)
+    this.imagesApi.deleteImage(id)
       .subscribe({
         next: () => {
           this.isError.set(null);
           this.isSuccess.set('Documento eliminado con éxito.');
-          this.removeDocumentFromList(id);
+          this.removeImageFromList(id);
           this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {

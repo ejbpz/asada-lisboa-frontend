@@ -25,8 +25,8 @@ export class DocumentsApi {
   }
 
   // Http admin calls
-  public getAdminDocuments(params: HttpParams): Observable<PageResponse<DocumentMinimalResponse>> {
-    return this.httpClient.get<PageResponse<DocumentMinimalResponse>>(`${this.env.API_URL_ADMIN}/documentos`, { params }).pipe(
+  public getAdminDocuments(params: HttpParams): Observable<PageResponse<DocumentResponse>> {
+    return this.httpClient.get<PageResponse<DocumentResponse>>(`${this.env.API_URL_ADMIN}/documentos`, { params }).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los documentos.')))
     );
   }

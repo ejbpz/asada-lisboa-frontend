@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, 
 import { NewsApi } from '@core/services/news-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { NewsAdminCard } from "../news-admin-card/news-admin-card";
+import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
-import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
 @Component({
   selector: 'admin-news-list',
@@ -21,14 +21,14 @@ export class AdminNewsList {
   private isError = signal<string | null>(null);
   private isSuccess = signal<string | null>(null);
   protected selectedId = signal<string | null>(null);
-  protected newsData = signal<NewMinimalResponse[]>([]);
+  protected newsData = signal<NewResponse[]>([]);
 
   // Injection
   private newsApi = inject(NewsApi);
   private toastService = inject(ToastMessage);
 
   // Input signal
-  public news = input.required<NewMinimalResponse[]>();
+  public news = input.required<NewResponse[]>();
   public statuses = input.required<StatusResponse[]>();
 
   // View child
@@ -53,7 +53,7 @@ export class AdminNewsList {
   }
 
   private removeNewFromList(id: string): void {
-    this.newsData.set(this.news().filter((value: NewMinimalResponse) => value.id != id))
+    this.newsData.set(this.news().filter((value: NewResponse) => value.id != id))
   }
 
   // Delete new service
