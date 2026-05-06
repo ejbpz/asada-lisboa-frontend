@@ -68,7 +68,7 @@ export class AdminImagesList {
       .subscribe({
         next: () => {
           this.isError.set(null);
-          this.isSuccess.set('Documento eliminado con éxito.');
+          this.isSuccess.set('Imagen eliminada con éxito.');
           this.removeImageFromList(id);
           this.isLoading.set(false);
         },

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormUtils } from '@shared/utils/form-utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { StatusesApi } from '@core/services/statuses-api';
@@ -9,11 +9,11 @@ import { BadgesInput } from "../badges-input/badges-input";
 import { DocumentsApi } from '@core/services/documents-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { fileRequired } from '@shared/validators/file-required';
+import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { DocumentRequest } from '@admin/interfaces/document-request.interface';
 import { DocumentResponse } from '@admin/interfaces/document-response.interface';
-import { GenerateContent } from '@shared/utils/generate-content';
 
 @Component({
   selector: 'admin-document-form',
@@ -21,7 +21,7 @@ import { GenerateContent } from '@shared/utils/generate-content';
   templateUrl: './admin-document-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AdminDocumentForm {
+export class AdminDocumentForm implements AfterViewInit {
   // Init
   protected isLoading = signal<boolean>(false);
   protected isError = signal<string | null>(null);
@@ -111,7 +111,6 @@ export class AdminDocumentForm {
       return;
     }
 
-    console.log(this.documentForm.value['file'])
     this.newsService(this.documentForm.value, this.documentToUpdate()?.id);
   }
 
@@ -122,8 +121,6 @@ export class AdminDocumentForm {
 
     this.isLoading.set(true);
     this.isError.set(null);
-
-    console.log(documentRequest.file)
 
     this.documentsApi.createOrEditDocument(documentRequest, id)
       .subscribe({
@@ -217,8 +214,6 @@ export class AdminDocumentForm {
     if (!input.files || input.files.length === 0) return;
 
     const file = input.files[0];
-
-    console.log(file)
 
     this.documentForm.patchValue({
       file: file

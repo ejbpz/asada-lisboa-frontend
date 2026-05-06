@@ -1,0 +1,94 @@
+<form [formGroup]="imagesForm" (ngSubmit)="onImageForm()" class="w-full">
+  <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
+    <!-- Image -->
+    <div class="w-full sm:w-1/2">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend font-normal text-sm">* Imagen de la noticia</legend>
+        <input
+          #fileInput
+          type="file"
+          accept="'image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/jfif', 'video/mp4', 'video/quicktime', 'video/x-matroska', 'video/webm'"
+          class="hidden"
+          (change)="onFileSelected($event)"/>
+      </fieldset>
+
+      <div
+        class="w-full aspect-4/3 border border-gray-300 rounded-sm flex items-center justify-center cursor-pointer overflow-hidden"
+        (click)="triggerFileInput(fileInput)">
+        @if (imagePreview()) {
+          <img
+            [src]="imagePreview()"
+            class="w-full h-full object-cover"/>
+        } @else {
+          <span class="text-gray-400 text-sm text-center px-2">Seleccionar imagen</span>
+        }
+      </div>
+
+      @if (!!imagesForm.controls['file'].errors && imagesForm.controls['file'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(imagesForm.controls['file'].errors) }}</span>
+      }
+
+      @if(defaultImage != imagePreview()) {
+        <button type="button" (click)="removeImage(fileInput)" class="btn btn-outline btn-error mt-3 hover:text-base-100">
+          Quitar imagen
+        </button>
+      }
+    </div>
+
+    <!-- Categories -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Categoría/s</legend>
+      <badges-input formControlName="categories"></badges-input>
+      @if (!!imagesForm.controls['categories'].errors && imagesForm.controls['categories'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(imagesForm.controls['categories'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <section class="w-full flex flex-col gap-3 justify-center items-center sm:flex-row">
+    <!-- Title -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Título</legend>
+      <input formControlName="title" placeholder="Reglamento técnico para prestación de servicios" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!imagesForm.controls['title'].errors && imagesForm.controls['title'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(imagesForm.controls['title'].errors) }}</span>
+      }
+    </fieldset>
+
+    <!-- Description -->
+    <fieldset class="fieldset w-full sm:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Descripción</legend>
+      <input formControlName="description" placeholder="Características, métodos de producción, requisitos de calidad y normas de seguridad obligatorias" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!imagesForm.controls['description'].errors && imagesForm.controls['description'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(imagesForm.controls['description'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <!-- Statuses -->
+  <section class="mb-5">
+    <legend class="fieldset-legend font-normal text-sm">* Estado del documento</legend>
+    <div class="flex items-center gap-5">
+      @for(status of statuses(); track status.id) {
+        <div class="flex items-center gap-1">
+          <input type="radio"
+          [value]="status.id"
+          formControlName="statusId"
+          class="radio radio-xs radio-secondary"
+          [id]="`radio${status.name}`"/>
+          <label [for]="`radio${status.name}`" class="text-[0.8rem]">{{ status.name | titlecase }}</label>
+        </div>
+      }
+    </div>
+    @if (!!imagesForm.controls['statusId'].errors && imagesForm.controls['statusId'].touched) {
+      <span class="text-error text-[.75rem] font-light">{{ getErrors(imagesForm.controls['statusId'].errors) }}</span>
+    }
+  </section>
+
+  <!-- Submit button -->
+  <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+    @if(isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } {{ imageToUpdate()?.id ? 'Actualizar' : 'Crear' }}
+  </button>
+</form>

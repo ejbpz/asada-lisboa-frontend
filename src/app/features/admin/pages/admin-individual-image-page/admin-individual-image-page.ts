@@ -4,10 +4,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { map, of } from 'rxjs';
 import { GalleryApi } from '@core/services/gallery-api';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
+import { AdminImageForm } from "@admin/components/admin-image-form/admin-image-form";
 
 @Component({
   selector: 'admin-individual-image-page',
-  imports: [GetBackTitle],
+  imports: [GetBackTitle, AdminImageForm],
   templateUrl: './admin-individual-image-page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
