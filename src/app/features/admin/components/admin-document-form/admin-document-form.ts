@@ -46,6 +46,8 @@ export class AdminDocumentForm implements AfterViewInit {
       allowedExtensions: ['application/pdf',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
+        'application/msword',
         'text/csv',
         'text/plain',
         'application/octet-stream']
@@ -165,6 +167,8 @@ export class AdminDocumentForm implements AfterViewInit {
         allowedExtensions: ['application/pdf',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/vnd.ms-excel',
+          'application/msword',
           'text/csv',
           'text/plain',
           'application/octet-stream']

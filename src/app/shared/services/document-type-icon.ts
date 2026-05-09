@@ -22,7 +22,11 @@ export class DocumentTypeIcon {
         return 'assets/icons/pdf-icon.svg';
       case 'docx':
         return 'assets/icons/docx-icon.svg';
+      case 'doc':
+        return 'assets/icons/docx-icon.svg';
       case 'xlsx':
+        return 'assets/icons/xlsx-icon.svg';
+      case 'xls':
         return 'assets/icons/xlsx-icon.svg';
       case 'zip':
         return 'assets/icons/zip-icon.svg';
