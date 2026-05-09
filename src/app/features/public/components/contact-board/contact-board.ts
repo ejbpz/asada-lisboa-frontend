@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ContactApi } from '@core/services/contact-api';
 import { FormUtils } from '@shared/utils/form-utils';
+import { ContactApi } from '@core/services/contact-api';
 import { ContactResponse } from '@public/interfaces/contact-response.interface';
 
 @Component({

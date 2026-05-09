@@ -36,7 +36,7 @@ export class ContactForm {
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
     subject: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     message: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(320)]],
-    fullName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(FormUtils.textPattern)]]
+    fullName: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50), Validators.pattern(new RegExp(FormUtils.textPattern, 'u'))]]
   });
 
   // OnSubmit form
