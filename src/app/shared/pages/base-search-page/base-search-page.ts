@@ -3,8 +3,8 @@ import { HttpParams } from "@angular/common/http";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { rxResource, toSignal } from "@angular/core/rxjs-interop";
 import { map, Observable } from 'rxjs';
-import { SearchSortRequest } from "@shared/interfaces/search-sort-request.interface";
 import { PageResponse } from "@shared/interfaces/page-response.interface";
+import { SearchSortRequest } from "@shared/interfaces/search-sort-request.interface";
 
 export abstract class BaseSearchPage<TService, TItem> {
   // Init

@@ -49,7 +49,7 @@ export class AdminDocumentForm implements AfterViewInit {
         'text/csv',
         'text/plain',
         'application/octet-stream']
-     })]],
+    })]],
     categories: [[], [
       (control: any) => {
         const value = control.value;

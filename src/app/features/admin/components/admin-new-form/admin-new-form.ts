@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
 import { AngularEditorConfig, UploadResponse, AngularEditorModule } from '@kolkov/angular-editor';
 import { NewsApi } from '@core/services/news-api';
