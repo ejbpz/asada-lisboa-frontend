@@ -1,19 +1,19 @@
-<div class="flex flex-col justify-between gap-1 sm:flex-row sm:items-center">
+<div class="flex w-full flex-col justify-between gap-1 sm:flex-row sm:items-center">
   <h3 class="inline-block mb-2 text-lg">- Información institucional</h3>
-  <button (click)="openCreateEditModal()" class="btn btn-primary text-base-100">Crear sección</button>
+  <button (click)="openCreateEditModal()" class="btn btn-soft btn-primary w-fit hover:text-base-100">Crear sección</button>
 </div>
 
 <section class="w-full flex flex-wrap items-center gap-2">
   @for (aboutUs of aboutUs(); track aboutUs.id) {
-    <details class="collapse collapse-arrow bg-base-100 border border-base-300 w-full sm:w-[48%]" name="my-accordion-det-2">
+    <details class="collapse collapse-arrow bg-base-100 border border-base-300 w-full sm:w-[calc(50%-4px)]" name="my-accordion-det-2">
       <summary class="collapse-title font-semibold">{{ aboutUs.sectionType }}</summary>
       <div class="collapse-content text-sm" [innerHTML]="aboutUs.content | breakLine"></div>
       <div class="flex px-5 py-2 w-full justify-end">
-        <button (click)="openDeleteModal(aboutUs.id)" class="cursor-pointer">
-          <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg>
-        </button>
         <button (click)="openCreateEditModal(aboutUs)" class="cursor-pointer">
           <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg>
+        </button>
+        <button (click)="openDeleteModal(aboutUs.id)" class="cursor-pointer">
+          <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg>
         </button>
       </div>
     </details>

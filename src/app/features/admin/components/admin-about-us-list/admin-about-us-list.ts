@@ -156,8 +156,8 @@ export class AdminAboutUsList {
     if(this.selectedAboutUs())
       this.aboutUsForm.patchValue({
         order: this.selectedAboutUs()?.order,
-        value: this.selectedAboutUs()?.content,
-        contactType: this.selectedAboutUs()?.sectionType,
+        content: this.selectedAboutUs()?.content,
+        sectionType: this.selectedAboutUs()?.sectionType,
       });
 
     else
