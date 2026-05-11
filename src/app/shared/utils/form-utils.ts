@@ -23,6 +23,10 @@ export class FormUtils {
           return `Debe contener mínimo ${errors[errorKey].requiredLength} caracteres.`;
         case 'maxlength':
           return `Debe contener máximo ${errors[errorKey].requiredLength} caracteres.`;
+        case 'min':
+          return `Valor mínimo de ${errors[errorKey].min}.`;
+        case 'max':
+          return `Valor máximo de ${errors[errorKey].max}.`;
         case 'pattern':
           if(errors[errorKey].requiredPattern == this.emailPattern)
             return 'No corresponde al formato de un correo.';

@@ -44,13 +44,21 @@ export class AboutUsApi {
 
   public createOrEditAboutUs(aboutUsRequest: AboutUsRequest, id: string | undefined = undefined): Observable<AboutUsResponse> {
     if(id !== null && id !== undefined) {
-      return this.httpClient.put<AboutUsResponse>(`${this.env.API_URL_ADMIN}/nosotros/${id}`, { aboutUsRequest })
+      return this.httpClient.put<AboutUsResponse>(`${this.env.API_URL_ADMIN}/nosotros/${id}`, {
+        order: aboutUsRequest.order,
+        content: aboutUsRequest.content,
+        sectionType: aboutUsRequest.sectionType,
+      })
         .pipe(
           catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar la información de la institución.')))
         );
     }
 
-    return this.httpClient.post<AboutUsResponse>(`${this.env.API_URL_ADMIN}/nosotros`, { aboutUsRequest })
+    return this.httpClient.post<AboutUsResponse>(`${this.env.API_URL_ADMIN}/nosotros`, {
+      order: aboutUsRequest.order,
+      content: aboutUsRequest.content,
+      sectionType: aboutUsRequest.sectionType,
+    })
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear la información de la institución.')))
       );

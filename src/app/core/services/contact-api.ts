@@ -65,13 +65,21 @@ export class ContactApi {
 
   public createOrEditContact(contactRequest: ContactRequest, id: string | undefined = undefined): Observable<ContactResponse> {
     if(id !== null && id !== undefined) {
-      return this.httpClient.put<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos/${id}`, { contactRequest })
+      return this.httpClient.put<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos/${id}`, {
+        order: contactRequest.order,
+        value: contactRequest.value,
+        contactType: contactRequest.contactType,
+      })
         .pipe(
           catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar el contacto.')))
         );
     }
 
-    return this.httpClient.post<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos`, { contactRequest })
+    return this.httpClient.post<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos`, {
+        order: contactRequest.order,
+        value: contactRequest.value,
+        contactType: contactRequest.contactType,
+      })
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el contacto.')))
       );

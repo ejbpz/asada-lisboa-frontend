@@ -23,8 +23,8 @@
     <h3 class="text-lg font-bold">¡Hola!</h3>
     <p class="py-4">¿Estás seguro/a que quieres eliminar este documento?</p>
     <div class="modal-action">
-      <form method="dialog">
-        <button class="btn btn-primary text-base-100">Cancelar</button>
+      <form>
+        <button (click)="closeDeleteModal()" class="btn btn-primary text-base-100">Cancelar</button>
         <button (click)="confirmDelete()" class="ml-2 btn btn-error text-base-100">Eliminar</button>
       </form>
     </div>

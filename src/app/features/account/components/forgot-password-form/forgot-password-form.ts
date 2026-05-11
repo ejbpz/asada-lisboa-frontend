@@ -21,7 +21,7 @@ export class ForgotPasswordForm {
   isError = signal<string | null>(null);
   isSuccess = signal<string | null>(null);
 
-  // Injects
+  // Injections
   private formBuilder = inject(FormBuilder);
   private accountService = inject(AccountApi);
   private toastService = inject(ToastMessage);

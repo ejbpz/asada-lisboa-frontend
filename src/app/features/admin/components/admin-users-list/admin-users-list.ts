@@ -1,7 +1,7 @@
 import { RouterLink } from "@angular/router";
 import { TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from "@angular/common/http";
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { ToastMessage } from "@shared/services/toast-message";
 import { DirectorsBoardApi } from "@core/services/directors-board-api";
 import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
@@ -15,7 +15,7 @@ import { DirectorsBoardResponse } from '@public/interfaces/directors-board-respo
     class: 'w-full flex justify-center my-5'
   }
 })
-export class AdminUsersList {
+export class AdminUsersList implements OnInit {
   // Init
   protected isLoading = signal(false);
   protected isError = signal<string | null>(null);
@@ -34,14 +34,19 @@ export class AdminUsersList {
   private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteUserModal')
 
   // Users to signal
-  private newsEffect = effect(() => {
+  ngOnInit(): void {
     this.usersData.set(this.users());
-  });
+  };
 
   // Delete user
   onDeleteUser(id: string): void {
     this.selectedId.set(id);
     this.modal().nativeElement.showModal();
+  }
+
+  protected closeDeleteModal(): void {
+    this.selectedId.set(null);
+    this.modal().nativeElement.close();
   }
 
   protected confirmDelete(): void {
@@ -52,7 +57,9 @@ export class AdminUsersList {
   }
 
   private removeUserFromList(id: string): void {
-    this.usersData.set(this.usersData().filter((value: DirectorsBoardResponse) => value.id != id))
+    this.usersData.update(values =>
+      values.filter(value => value.id !== id)
+    );
   }
 
   // Delete user service
@@ -69,6 +76,7 @@ export class AdminUsersList {
           this.isError.set(null);
           this.isSuccess.set('Usuario eliminado con éxito.');
           this.removeUserFromList(id);
+          this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {

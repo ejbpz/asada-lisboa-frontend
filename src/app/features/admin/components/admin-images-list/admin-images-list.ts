@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { GalleryApi } from '@core/services/gallery-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { ImagesAdminCard } from "../images-admin-card/images-admin-card";
@@ -15,7 +15,7 @@ import { StatusResponse } from '@admin/interfaces/status-response.interface';
     class: 'block w-full [column-width:250px] gap-3 space-y-3 my-5'
   }
 })
-export class AdminImagesList {
+export class AdminImagesList implements OnInit {
   // Init
   private isLoading = signal<boolean>(false);
   private isError = signal<string | null>(null);
@@ -35,14 +35,19 @@ export class AdminImagesList {
   private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteImageModal')
 
   // News to signal
-  private imagesEffect = effect(() => {
+  ngOnInit(): void {
     this.imagesData.set(this.images());
-  });
+  };
 
   // Delete document
   protected openDeleteModal(id: string): void {
     this.selectedId.set(id);
     this.modal().nativeElement.showModal();
+  }
+
+  protected closeDeleteModal(): void {
+    this.selectedId.set(null);
+    this.modal().nativeElement.close();
   }
 
   protected confirmDelete(): void {
@@ -53,7 +58,9 @@ export class AdminImagesList {
   }
 
   private removeImageFromList(id: string): void {
-    this.imagesData.set(this.images().filter((value: ImageResponse) => value.id != id))
+    this.imagesData.update(values =>
+      values.filter(value => value.id !== id)
+    );
   }
 
   // Delete new service
@@ -70,6 +77,7 @@ export class AdminImagesList {
           this.isError.set(null);
           this.isSuccess.set('Imagen eliminada con éxito.');
           this.removeImageFromList(id);
+          this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {

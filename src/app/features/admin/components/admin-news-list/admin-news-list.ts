@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { NewsApi } from '@core/services/news-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { NewsAdminCard } from "../news-admin-card/news-admin-card";
@@ -15,7 +15,7 @@ import { StatusResponse } from '@admin/interfaces/status-response.interface';
     class: 'w-full flex flex-col gap-3 my-5'
   }
 })
-export class AdminNewsList {
+export class AdminNewsList implements OnInit {
   // Init
   private isLoading = signal<boolean>(false);
   private isError = signal<string | null>(null);
@@ -35,14 +35,19 @@ export class AdminNewsList {
   private modal = viewChild.required<ElementRef<HTMLDialogElement>>('deleteNewModal')
 
   // News to signal
-  private newsEffect = effect(() => {
+  ngOnInit(): void {
     this.newsData.set(this.news());
-  });
+  }
 
   // Delete new
   protected openDeleteModal(id: string): void {
     this.selectedId.set(id);
     this.modal().nativeElement.showModal();
+  }
+
+  protected closeDeleteModal(): void {
+    this.selectedId.set(null);
+    this.modal().nativeElement.close();
   }
 
   protected confirmDelete(): void {
@@ -53,7 +58,9 @@ export class AdminNewsList {
   }
 
   private removeNewFromList(id: string): void {
-    this.newsData.set(this.news().filter((value: NewResponse) => value.id != id))
+    this.newsData.update(values =>
+      values.filter(value => value.id !== id)
+    );
   }
 
   // Delete new service
@@ -70,6 +77,7 @@ export class AdminNewsList {
           this.isError.set(null);
           this.isSuccess.set('Noticia eliminada con éxito.');
           this.removeNewFromList(id);
+          this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: HttpErrorResponse) => {
