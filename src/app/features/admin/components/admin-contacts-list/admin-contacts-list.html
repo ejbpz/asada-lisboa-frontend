@@ -1,0 +1,6 @@
+@for (contact of contactsInput(); track contact.id) {
+  <details class="collapse collapse-arrow bg-base-100 border border-base-300 w-full sm:w-[48%]" name="my-accordion-det-1" closed>
+    <summary class="collapse-title font-semibold">{{ contact.contactType }}</summary>
+    <div class="collapse-content text-sm">{{ contact.value }}</div>
+  </details>
+}

@@ -5,10 +5,10 @@ const adminRoutes: Routes = [
   //   path: '',
   //   //loadComponent: () => import('') // TODO
   // },
-  // {
-  //   path: 'configuraciones',
-  //   //loadComponent: () => import('') // TODO
-  // },
+  {
+    path: 'configuraciones',
+    loadComponent: () => import('@admin/pages/admin-configurations-page/admin-configurations-page')
+  },
   {
     path: 'usuarios',
     loadComponent: () => import('@admin/pages/admin-director-board-page/admin-director-board-page')

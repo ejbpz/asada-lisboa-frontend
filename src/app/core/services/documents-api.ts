@@ -44,34 +44,34 @@ export class DocumentsApi {
       );
   }
 
-    public createOrEditDocument(newRequest: DocumentRequest, id: string | undefined = undefined): Observable<DocumentResponse> {
-      const formData = new FormData();
+  public createOrEditDocument(newRequest: DocumentRequest, id: string | undefined = undefined): Observable<DocumentResponse> {
+    const formData = new FormData();
 
-      formData.append('title', newRequest.title);
+    formData.append('title', newRequest.title);
 
-      if(newRequest.file)
-        formData.append('file', newRequest.file);
+    if(newRequest.file)
+      formData.append('file', newRequest.file);
 
-      formData.append('statusId', newRequest.statusId);
-      formData.append('description', newRequest.description);
+    formData.append('statusId', newRequest.statusId);
+    formData.append('description', newRequest.description);
 
-      newRequest.categories.forEach((cat: any, index: number) => {
-        if (cat.id !== null && cat.id !== undefined)
-          formData.append(`categories[${index}].id`, cat.id);
+    newRequest.categories.forEach((cat: any, index: number) => {
+      if (cat.id !== null && cat.id !== undefined)
+        formData.append(`categories[${index}].id`, cat.id);
 
-        formData.append(`categories[${index}].name`, cat.name);
-      });
+      formData.append(`categories[${index}].name`, cat.name);
+    });
 
-      if(id !== null && id !== undefined) {
-        return this.httpClient.put<DocumentResponse>(`${this.env.API_URL_ADMIN}/documentos/${id}`, formData)
-          .pipe(
-            catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar el documento.')))
-          );
-      }
-
-      return this.httpClient.post<DocumentResponse>(`${this.env.API_URL_ADMIN}/documentos`, formData)
+    if(id !== null && id !== undefined) {
+      return this.httpClient.put<DocumentResponse>(`${this.env.API_URL_ADMIN}/documentos/${id}`, formData)
         .pipe(
-          catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
+          catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar el documento.')))
         );
     }
+
+    return this.httpClient.post<DocumentResponse>(`${this.env.API_URL_ADMIN}/documentos`, formData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
+      );
+  }
 }
