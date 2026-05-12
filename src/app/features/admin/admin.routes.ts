@@ -1,16 +1,16 @@
 import { Routes } from "@angular/router";
 
 const adminRoutes: Routes = [
-  // {
-  //   path: '',
-  //   loadComponent: () => import(''), // TODO
-  //   data: {
-  //     seo: {
-  //       title: 'Panel administrativo',
-  //       noIndex: true
-  //     }
-  //   }
-  // },
+  {
+    path: '',
+    loadComponent: () => import('@admin/pages/admin-dashboard-page/admin-dashboard-page'), 
+    data: {
+      seo: {
+        title: 'Panel administrativo',
+        noIndex: true
+      }
+    }
+  },
   {
     path: 'configuraciones',
     loadComponent: () => import('@admin/pages/admin-configurations-page/admin-configurations-page'),
