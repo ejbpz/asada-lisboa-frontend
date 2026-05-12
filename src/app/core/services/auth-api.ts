@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, finalize, map, Observable, shareReplay, throwError } from 'rxjs';
 import { StorageBrowser } from './storage-browser';
@@ -38,7 +38,7 @@ export class AuthApi {
   public logoutUser(): Observable<void> {
     return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/cerrar-sesion`, {})
       .pipe(
-        finalize(() => this.removeUser()),
+        finalize(() => this.clearSession()),
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al cerrar sesión.')))
       );
   }
@@ -98,7 +98,7 @@ export class AuthApi {
     return true;
   }
 
-  private removeUser(): void {
+  public clearSession(): void {
     this.storage.remove(this.TOKEN_KEY);
     this.storage.remove(this.REFRESH_TOKEN_KEY);
     this.storage.remove(this.TOKEN_EXPIRATION_KEY);
@@ -127,5 +127,17 @@ export class AuthApi {
     if(!token) return false;
 
     return !this.isTokenExpired();
+  }
+
+  public hasSession(): boolean {
+    return !!this.getRefreshToken();
+  }
+
+  private _sessionExpired = signal<boolean>(false);
+
+  public sessionExpired = this._sessionExpired.asReadonly();
+
+  public notifySessionExpired(): void {
+    this._sessionExpired.set(true);
   }
 }

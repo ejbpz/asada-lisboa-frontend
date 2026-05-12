@@ -7,14 +7,19 @@ export const jwtTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authApiService = inject(AuthApi);
 
   const isAuthRequest = req.url.includes('/admin/');
-  const isLogoutRequest = req.url.includes('/cuenta/cerrar-sesion');
-  const isAuthUser = authApiService.isUserAuthenticated();
+  const isLogoutRequest = req.url.includes('/cuenta/cerrar-sesion');const isRefreshRequest = req.url.includes('/cuenta/refrescar-token');
+
+  if(isRefreshRequest) {
+    return next(req);
+  }
+
+  const hasSession = authApiService.hasSession();
 
   const newHeaders: Record<string, string> = {
     'x-version': '1'
   };
 
-  if(!isAuthUser || (!isAuthRequest && !isLogoutRequest)) {
+  if(!hasSession || (!isAuthRequest && !isLogoutRequest)) {
     const versionReq = req.clone({ setHeaders: newHeaders });
     return next(versionReq);
   }
@@ -38,15 +43,16 @@ export const jwtTokenInterceptor: HttpInterceptorFn = (req, next) => {
           .pipe(
             switchMap((_: boolean) => {
               const retryReq = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${authApiService.getToken()}`
-                }
+                headers: req.headers.set(
+                  'Authorization',
+                  `Bearer ${authApiService.getToken()}`
+                )
               });
 
               return next(retryReq);
             }),
             catchError((refreshError: HttpErrorResponse) => {
-              authApiService.logoutUser();
+              authApiService.clearSession();
               return throwError(() => refreshError);
             })
           )
