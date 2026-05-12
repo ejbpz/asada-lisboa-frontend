@@ -3,9 +3,11 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
 import { EMPTY, map } from 'rxjs';
 import { NewsApi } from '@core/services/news-api';
+import { SeoManagement } from '@core/services/seo-management';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { IndividualNewCard } from "@public/components/individual-new-card/individual-new-card";
 import { PublicNewsSection } from "@public/components/public-news-section/public-news-section";
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-individual-new-page',
@@ -19,6 +21,7 @@ import { PublicNewsSection } from "@public/components/public-news-section/public
 export default class IndividualNewPage {
   // Injection
   private router = inject(Router);
+  private seo = inject(SeoManagement);
   private newsService = inject(NewsApi);
 
   // Getting slug from route
@@ -48,6 +51,22 @@ export default class IndividualNewPage {
 
       return this.newsService.getRecommendedNews(params.slug);
     }
+  });
+
+  // SEO for dynamic routes
+  private updateSeo = effect(() => {
+    const news = this.newResource.value();
+
+    if(!news) return;
+
+    this.seo.setSeo({
+      url: `${environment.APP_URL}/noticias/${news.slug}`,
+      image: `${environment.APP_URL}/${news.filePath}`,
+      description: news.description,
+      title: news.title,
+      type: 'article',
+      noIndex: false,
+    })
   });
 
   // Returns to 404 when slug doesn't exist
