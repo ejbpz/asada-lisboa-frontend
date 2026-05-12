@@ -6,6 +6,7 @@ import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -91,4 +92,14 @@ export class NewsApi {
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar la noticia.')))
       );
   }
+
+   public getAdminNews2(params: HttpParams): Observable<NewMinimalResponse[]> {
+     return this.httpClient
+      .get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params })
+      .pipe(
+        
+        map(response => response.data),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la noticia.')))
+      );
+    }
 }
