@@ -6,7 +6,7 @@ export const nonAuthenticatedUserGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authApiService = inject(AuthApi);
 
-  return authApiService.isUserAuthenticated()
+  return authApiService.isAuthenticated()
     ? router.createUrlTree(['/admin'])
     : true;
 };

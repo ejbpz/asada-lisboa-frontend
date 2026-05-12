@@ -6,7 +6,7 @@ export const authenticatedUserGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authApiService = inject(AuthApi);
 
-  return authApiService.isUserAuthenticated()
+  return authApiService.isAuthenticated()
     ? true
     : router.createUrlTree(['/cuenta/iniciar-sesion']);
 };

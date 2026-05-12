@@ -28,6 +28,11 @@
           }
         </li>
       }
+      <li>
+        <a [routerLink]="[authLink().link]"
+        [routerLinkActive]="'underline'"
+        class="hover:underline">{{ authLink().title | titlecase }}</a>
+      </li>
     </ul>
   </div>
   <div class="navbar-end">
@@ -51,17 +56,21 @@
                     @for (internal of navigation?.internalLinks; track $index) {
                       <li>
                         <a class="text-sm" [routerLink]="[internal.link]"
-                        [routerLinkActive]="'underline'">{{ internal.title | titlecase }}</a>
+                          [routerLinkActive]="'underline'">{{ internal.title | titlecase }}</a>
                       </li>
                     }
                   </ul>
                 </details>
               } @else {
                 <a class="text-sm" [routerLink]="[navigation.link]"
-                [routerLinkActive]="'underline'">{{ navigation.title | titlecase }}</a>
+                  [routerLinkActive]="'underline'">{{ navigation.title | titlecase }}</a>
               }
             </li>
           }
+          <li>
+            <a class="text-sm" [routerLink]="[authLink().link]"
+              [routerLinkActive]="'underline'">{{ authLink().title | titlecase }}</a>
+          </li>
         </div>
       </ul>
     </div>

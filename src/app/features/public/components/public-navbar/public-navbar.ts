@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from "@angular/router";
+import { ChangeDetectionStrategy, Component, inject, signal, effect, computed } from '@angular/core';
+import { AuthApi } from '@core/services/auth-api';
 
 @Component({
   selector: 'public-navbar',
@@ -12,6 +13,10 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   }
 })
 export class PublicNavbar {
+  // Injection
+  private authApi = inject(AuthApi);
+
+  // Init
   navigationLinks = [
     { title: 'Nosotros', internalLinks:
       [
@@ -24,6 +29,11 @@ export class PublicNavbar {
     { title: 'Noticias', link: 'noticias' },
     { title: 'Contacto', link: 'contacto' },
     { title: 'Recibos', link: 'recibos' },
-    { title: 'Iniciar Sesión', link: 'cuenta/iniciar-sesion' },
-  ]
+  ];
+
+  protected authLink = computed(() => {
+    return this.authApi.isAuthenticated()
+      ? { title: 'Panel Administrativo', link: 'admin' }
+      : { title: 'Iniciar Sesión', link: 'cuenta/iniciar-sesion' };
+  });
 }
