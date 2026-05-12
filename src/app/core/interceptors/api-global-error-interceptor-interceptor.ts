@@ -6,6 +6,31 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req)
     .pipe(
       catchError((error: HttpErrorResponse) => {
+        if (error.status === 429) {
+          return throwError((): AppError => ({
+            status: 429,
+            message:
+              'Muchas peticiones realizadas, espere un momento.'
+          }));
+        }
+
+        if(error.status === 403) {
+          const forbiddenError: AppError = {
+            status: 403,
+            message: 'No posee permisos para realizar esta acción.'
+          }
+
+          return throwError(() => forbiddenError);
+        }
+
+        if (error.status >= 500) {
+          return throwError((): AppError => ({
+            status: error.status,
+            message:
+              'Ocurrió un error interno del servidor.'
+          }));
+        }
+
         if(error.status === 0) {
           const networkError: AppError = {
             status: 0,
