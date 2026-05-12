@@ -6,6 +6,7 @@ import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { DocumentRequest } from '@admin/interfaces/document-request.interface';
 import { DocumentResponse } from '@admin/interfaces/document-response.interface';
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,15 @@ export class DocumentsApi {
     return this.httpClient.post<DocumentResponse>(`${this.env.API_URL_ADMIN}/documentos`, formData)
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
+      );
+  }
+
+  public getAdmindocument2(params: HttpParams): Observable<DocumentMinimalResponse[]> {
+    return this.httpClient
+      .get<PageResponse<DocumentMinimalResponse>>(`${this.env.API_URL_ADMIN}/documentos`, { params })
+      .pipe(       
+        map(response => response.data),
+         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
       );
   }
 }
