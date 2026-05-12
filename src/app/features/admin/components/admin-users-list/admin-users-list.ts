@@ -1,8 +1,8 @@
 import { RouterLink } from "@angular/router";
 import { TitleCasePipe } from '@angular/common';
-import { HttpErrorResponse } from "@angular/common/http";
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { ToastMessage } from "@shared/services/toast-message";
+import { AppError } from "@core/interfaces/app-error.interface";
 import { DirectorsBoardApi } from "@core/services/directors-board-api";
 import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
 
@@ -79,9 +79,9 @@ export class AdminUsersList implements OnInit {
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isSuccess.set(null);
-          this.isError.set(error.error);
+          this.isError.set(error.message);
           this.isLoading.set(false);
         }
       })

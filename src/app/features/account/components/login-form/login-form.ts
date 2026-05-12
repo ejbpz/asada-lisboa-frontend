@@ -1,10 +1,10 @@
 import { Router, RouterLink } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
 import { AuthApi } from '@core/services/auth-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 
 @Component({
@@ -65,7 +65,7 @@ export class LoginForm {
           if(isValid)
             this.router.navigate(['/admin']);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

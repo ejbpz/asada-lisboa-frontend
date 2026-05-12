@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { DocumentsApi } from '@core/services/documents-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
 import { DocumentResponse } from '@admin/interfaces/document-response.interface';
 import { DocumentsAdminCard } from "../documents-admin-card/documents-admin-card";
@@ -80,9 +80,9 @@ export class AdminDocumentsList implements OnInit {
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isSuccess.set(null);
-          this.isError.set(error.error);
+          this.isError.set(error.message);
           this.isLoading.set(false);
         }
       })

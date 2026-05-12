@@ -1,10 +1,10 @@
-import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-request.interface';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
+import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-request.interface';
 
 @Component({
   selector: 'forgot-password-form',
@@ -61,7 +61,7 @@ export class ForgotPasswordForm {
           this.isSuccess.set('Email ha sido enviado, por favor revisar su correo.');
           this.forgotPasswordForm.reset();
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

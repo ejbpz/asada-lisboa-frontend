@@ -1,12 +1,12 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { RolesApi } from '@core/services/roles-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ChargesApi } from '@core/services/charges-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { DirectorsBoardApi } from '@core/services/directors-board-api';
 import { RoleResponse } from '@admin/interfaces/role-response.interface';
 import { ChargeResponse } from '@admin/interfaces/charge-response.interface';
@@ -91,7 +91,7 @@ export class AdminUserForm implements AfterViewInit {
             this.router.navigate(['/admin/usuarios']);
           }, 500);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }
@@ -105,8 +105,8 @@ export class AdminUserForm implements AfterViewInit {
         next: (value: ChargeResponse[]) => {
           this.charges.set(value);
         },
-        error: (error: HttpErrorResponse) => {
-          this.isError.set(error.error);
+        error: (error: AppError) => {
+          this.isError.set(error.message);
         }
       });
   }
@@ -118,8 +118,8 @@ export class AdminUserForm implements AfterViewInit {
         next: (value: RoleResponse[]) => {
           this.roles.set(value);
         },
-        error: (error: HttpErrorResponse) => {
-          this.isError.set(error.error);
+        error: (error: AppError) => {
+          this.isError.set(error.message);
         }
       });
   }

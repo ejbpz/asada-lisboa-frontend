@@ -1,10 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AboutUsApi } from '@core/services/about-us-api';
 import { BreakLinePipe } from '@shared/pipes/break-line-pipe';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { AboutUsRequest } from '@admin/interfaces/about-us-request.interface';
 import { AboutUsResponse } from '@public/interfaces/about-us-response.interface';
 
@@ -118,9 +118,9 @@ export class AdminAboutUsList {
           this.removeAboutUsSectionFromList(id);
           this.isLoading.set(false);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isSuccess.set(null);
-          this.isError.set(error.error);
+          this.isError.set(error.message);
           this.isLoading.set(false);
         }
       })
@@ -143,9 +143,9 @@ export class AdminAboutUsList {
           this.closeCreateEditModal();
           this.isLoading.set(false);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isSuccess.set(null);
-          this.isError.set(error.error);
+          this.isError.set(error.message);
           this.isLoading.set(false);
         }
       })

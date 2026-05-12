@@ -3,12 +3,12 @@ import { TitleCasePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormUtils } from '@shared/utils/form-utils';
-import { HttpErrorResponse } from '@angular/common/http';
 import { StatusesApi } from '@core/services/statuses-api';
 import { BadgesInput } from "../badges-input/badges-input";
 import { DocumentsApi } from '@core/services/documents-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { fileRequired } from '@shared/validators/file-required';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
@@ -134,7 +134,7 @@ export class AdminDocumentForm implements AfterViewInit {
 
           this.router.navigate(['/admin/documentos']);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

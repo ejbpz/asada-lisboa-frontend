@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
-import { HttpErrorResponse, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
@@ -12,6 +12,7 @@ import { BadgesInput } from "../badges-input/badges-input";
 import { ToastMessage } from '@shared/services/toast-message';
 import { RichEditorApi } from '@core/services/rich-editor-api';
 import { fileRequired } from '@shared/validators/file-required';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
 import { environment } from '@environments/environment.development';
@@ -178,7 +179,7 @@ export class AdminNewForm implements AfterViewInit {
 
           this.router.navigate(['/admin/noticias']);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

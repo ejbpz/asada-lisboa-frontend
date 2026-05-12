@@ -1,11 +1,11 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
 import { ReceiptsApi } from '@core/services/receipts-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { ReceiptResponse } from '@public/interfaces/receipt-respose.interface';
 import { ReceiptDetailsResponse } from '@public/interfaces/receipt-details-response.interface';
 import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
@@ -64,7 +64,7 @@ export class ReceiptsForm {
           this.receiptNumber.set(this.receiptsForm.value['receiptNumber']);
           this.receiptApiService(this.receiptNumber());
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isError.set(error.message);
         }
       });
@@ -107,7 +107,7 @@ export class ReceiptsForm {
 
           this.receiptsForm.reset();
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }
@@ -129,7 +129,7 @@ export class ReceiptsForm {
 
           this.receiptsForm.reset();
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

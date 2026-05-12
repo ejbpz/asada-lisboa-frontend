@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { environment } from '@environments/environment.development';
 import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
@@ -59,7 +59,7 @@ export class ContactForm {
 
           this.contactApiService(this.contactForm.value);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isError.set(error.message);
         }
       });
@@ -86,7 +86,7 @@ export class ContactForm {
 
           this.contactForm.reset();
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { GalleryApi } from '@core/services/gallery-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { ImagesAdminCard } from "../images-admin-card/images-admin-card";
 import { ImageResponse } from '@admin/interfaces/image-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';
@@ -80,9 +80,9 @@ export class AdminImagesList implements OnInit {
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isSuccess.set(null);
-          this.isError.set(error.error);
+          this.isError.set(error.message);
           this.isLoading.set(false);
         }
       })

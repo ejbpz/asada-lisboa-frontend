@@ -1,6 +1,5 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, input, signal } from '@angular/core';
 import { FormUtils } from '@shared/utils/form-utils';
@@ -9,6 +8,7 @@ import { StatusesApi } from '@core/services/statuses-api';
 import { BadgesInput } from "../badges-input/badges-input";
 import { ToastMessage } from '@shared/services/toast-message';
 import { fileRequired } from '@shared/validators/file-required';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
 import { ImageRequest } from '@admin/interfaces/image-request.interface';
@@ -128,7 +128,7 @@ export class AdminImageForm implements AfterViewInit {
 
           this.router.navigate(['/admin/imagenes']);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }

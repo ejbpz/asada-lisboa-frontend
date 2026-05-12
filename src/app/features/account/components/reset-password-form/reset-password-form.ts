@@ -1,10 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
 import { ToastMessage } from '@shared/services/toast-message';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { confirmPasswordValidator } from '@shared/validators/confirm-password-validator';
 import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
 
@@ -86,7 +86,7 @@ export class ResetPasswordForm implements AfterViewInit {
 
           this.router.navigate(['cuenta/iniciar-sesion']);
         },
-        error: (error: HttpErrorResponse) => {
+        error: (error: AppError) => {
           this.isLoading.set(false);
           this.isError.set(error.message);
         }
