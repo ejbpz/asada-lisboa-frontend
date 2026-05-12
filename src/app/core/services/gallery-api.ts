@@ -6,6 +6,7 @@ import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { ImageResponse } from '@admin/interfaces/image-response.interface';
 import { ImageMinimalResponse } from '@public/interfaces/image-minimal-response.interface';
 import { ImageRequest } from '@admin/interfaces/image-request.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,16 @@ export class GalleryApi {
     return this.httpClient.post<ImageResponse>(`${this.env.API_URL_ADMIN}/imagenes`, formData)
       .pipe(
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear la imagen.')))
+      );
+  }
+
+  public getAdminImages2(params: HttpParams): Observable<ImageMinimalResponse[]> {
+    return this.httpClient
+      .get<PageResponse<ImageMinimalResponse>>(`${this.env.API_URL_ADMIN}/imagenes`, { params })
+      .pipe(
+        
+        map(response => response.data),
+         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las imagenes.')))
       );
   }
 }
