@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { DocumentsApi } from '@core/services/documents-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { AppError } from '@core/interfaces/app-error.interface';
@@ -18,14 +18,12 @@ import { DocumentsAdminCard } from "../documents-admin-card/documents-admin-card
 export class AdminDocumentsList implements OnInit {
   // Init
   private isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected selectedId = signal<string | null>(null);
   protected documentsData = signal<DocumentResponse[]>([]);
 
   // Injection
+  private toast = inject(ToastMessage);
   private documentsApi = inject(DocumentsApi);
-  private toastService = inject(ToastMessage);
 
   // Input signal
   public documents = input.required<DocumentResponse[]>();
@@ -68,34 +66,20 @@ export class AdminDocumentsList implements OnInit {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.documentsApi.deleteDocument(id)
       .subscribe({
         next: () => {
-          this.isError.set(null);
-          this.isSuccess.set('Documento eliminado con éxito.');
+          this.toast.success('Documento eliminado con éxito.');
           this.removeDocumentFromList(id);
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

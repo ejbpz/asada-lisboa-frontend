@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { TitleCasePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RolesApi } from '@core/services/roles-api';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ChargesApi } from '@core/services/charges-api';
@@ -22,17 +22,15 @@ import { confirmPasswordValidator } from '@shared/validators/confirm-password-va
 export class AdminUserForm implements AfterViewInit {
   // Init
   protected isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected roles = signal<RoleResponse[]>([]);
   protected charges = signal<ChargeResponse[]>([]);
 
   // Injection
   private router = inject(Router);
   private rolesApi = inject(RolesApi);
+  private toast = inject(ToastMessage);
   private chargesApi = inject(ChargesApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private directorsBoardApi = inject(DirectorsBoardApi);
 
   // User form
@@ -78,13 +76,12 @@ export class AdminUserForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.directorsBoardApi.createUser(newRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set(`Usuario creado exitosamente, revisar email para ser verificado.`);
+          this.toast.success(`Usuario creado exitosamente, revisar email para ser verificado.`);
           this.userForm.reset();
 
           setTimeout(() => {
@@ -93,7 +90,7 @@ export class AdminUserForm implements AfterViewInit {
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -106,7 +103,7 @@ export class AdminUserForm implements AfterViewInit {
           this.charges.set(value);
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -119,20 +116,10 @@ export class AdminUserForm implements AfterViewInit {
           this.roles.set(value);
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 
   // Get input errors
   protected getErrors(errors: ValidationErrors): string | undefined | null {

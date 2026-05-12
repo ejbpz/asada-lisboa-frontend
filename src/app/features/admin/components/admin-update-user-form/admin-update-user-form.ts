@@ -22,8 +22,6 @@ import { DirectorBoardDetailsResponse } from '@admin/interfaces/director-board-d
 export class AdminUpdateUserForm implements AfterViewInit {
   // Init
   protected isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected roles = signal<RoleResponse[]>([]);
   protected charges = signal<ChargeResponse[]>([]);
 
@@ -33,9 +31,9 @@ export class AdminUpdateUserForm implements AfterViewInit {
   // Injection
   private router = inject(Router);
   private rolesApi = inject(RolesApi);
+  private toast = inject(ToastMessage);
   private chargesApi = inject(ChargesApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private directorsBoardApi = inject(DirectorsBoardApi);
 
   // User form
@@ -95,13 +93,12 @@ export class AdminUpdateUserForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.directorsBoardApi.updateUser(this.userToUpdate()?.id ?? '', userUpdateRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set(`Usuario actualizado exitosamente`);
+          this.toast.success(`Usuario actualizado exitosamente`);
           this.userForm.reset();
 
           setTimeout(() => {
@@ -110,7 +107,7 @@ export class AdminUpdateUserForm implements AfterViewInit {
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -123,7 +120,7 @@ export class AdminUpdateUserForm implements AfterViewInit {
           this.charges.set(value);
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -136,7 +133,7 @@ export class AdminUpdateUserForm implements AfterViewInit {
           this.roles.set(value);
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -151,16 +148,6 @@ export class AdminUpdateUserForm implements AfterViewInit {
       phoneNumber: data.phoneNumber ?? '',
     });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 
   // Get input errors
   protected getErrors(errors: ValidationErrors): string | undefined | null {

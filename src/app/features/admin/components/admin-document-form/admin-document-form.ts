@@ -24,8 +24,6 @@ import { DocumentResponse } from '@admin/interfaces/document-response.interface'
 export class AdminDocumentForm implements AfterViewInit {
   // Init
   protected isLoading = signal<boolean>(false);
-  protected isError = signal<string | null>(null);
-  protected isSuccess = signal<string | null>(null);
   protected statuses = signal<StatusResponse[]>([]);
   protected newResponseData = signal<DocumentResponse | undefined>(undefined);
 
@@ -34,8 +32,8 @@ export class AdminDocumentForm implements AfterViewInit {
 
   // Injections
   private router = inject(Router);
+  private toast = inject(ToastMessage);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private documentsApi = inject(DocumentsApi);
   private statusesApiService = inject(StatusesApi);
 
@@ -122,21 +120,20 @@ export class AdminDocumentForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.documentsApi.createOrEditDocument(documentRequest, id)
       .subscribe({
         next: (value: DocumentResponse) => {
           this.newResponseData.set(value);
           this.isLoading.set(false);
-          this.isSuccess.set(`Documento ${this.documentToUpdate() ? 'actualizado' : 'creado'} exitosamente.`);
+          this.toast.success(`Documento ${this.documentToUpdate() ? 'actualizado' : 'creado'} exitosamente.`);
           this.documentForm.reset();
 
           this.router.navigate(['/admin/documentos']);
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -145,16 +142,6 @@ export class AdminDocumentForm implements AfterViewInit {
   protected getErrors(errors: ValidationErrors): string | undefined | null {
     return FormUtils.getErrors(errors);
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 
   // Set form
   private setCreateMode() {

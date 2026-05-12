@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { GalleryApi } from '@core/services/gallery-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { AppError } from '@core/interfaces/app-error.interface';
@@ -18,14 +18,12 @@ import { StatusResponse } from '@admin/interfaces/status-response.interface';
 export class AdminImagesList implements OnInit {
   // Init
   private isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected selectedId = signal<string | null>(null);
   protected imagesData = signal<ImageResponse[]>([]);
 
   // Injection
+  private toast = inject(ToastMessage);
   private imagesApi = inject(GalleryApi);
-  private toastService = inject(ToastMessage);
 
   // Input signal
   public images = input.required<ImageResponse[]>();
@@ -68,34 +66,20 @@ export class AdminImagesList implements OnInit {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.imagesApi.deleteImage(id)
       .subscribe({
         next: () => {
-          this.isError.set(null);
-          this.isSuccess.set('Imagen eliminada con éxito.');
+          this.toast.success('Imagen eliminada con éxito.');
           this.removeImageFromList(id);
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

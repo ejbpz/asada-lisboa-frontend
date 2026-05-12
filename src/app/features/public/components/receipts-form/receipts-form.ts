@@ -1,5 +1,5 @@
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
@@ -23,7 +23,6 @@ export class ReceiptsForm {
     // Init
     private captchaToken: string | null = null;
   protected isLoading = signal<boolean>(false);
-  protected isError = signal<string | null>(null);
 
   protected keys = signal<string[]>([]);
   protected values = signal<string[]>([]);
@@ -33,8 +32,8 @@ export class ReceiptsForm {
   protected receiptDetailsData = signal<ReceiptDetailsResponse | undefined>(undefined);
 
   // Injects
+  private toast = inject(ToastMessage);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private receiptsService = inject(ReceiptsApi);
     protected contactService = inject(ContactApi);
 
@@ -51,7 +50,7 @@ export class ReceiptsForm {
     }
 
     if (!this.captchaToken) {
-      this.isError.set('ReCAPTCHA obligatorio.');
+      this.toast.error('ReCAPTCHA obligatorio.');
       return;
     }
 
@@ -59,13 +58,13 @@ export class ReceiptsForm {
       .subscribe({
         next: (isValid: boolean) => {
           if(!isValid)
-            this.isError.set('ReCAPTCHA fallido.');
+            this.toast.error('ReCAPTCHA fallido.');
 
           this.receiptNumber.set(this.receiptsForm.value['receiptNumber']);
           this.receiptApiService(this.receiptNumber());
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -90,7 +89,6 @@ export class ReceiptsForm {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.receiptsService.getReceipt(receiptNumber)
       .subscribe({
@@ -109,7 +107,7 @@ export class ReceiptsForm {
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -119,7 +117,6 @@ export class ReceiptsForm {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.receiptsService.getReceiptDetails({ receiptNumber, index })
       .subscribe({
@@ -131,15 +128,8 @@ export class ReceiptsForm {
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(this.isError(), '❌');
-
-    this.isError.set(null);
-  });
 }

@@ -1,5 +1,5 @@
 import { Router, RouterLink } from '@angular/router';
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms'
 import { AuthApi } from '@core/services/auth-api';
 import { FormUtils } from '@shared/utils/form-utils';
@@ -19,13 +19,12 @@ import { LoginRequest } from '@account/interfaces/login-request.interface';
 export class LoginForm {
   // Init
   isLoading = signal(false);
-  isError = signal<string | null>(null);
 
   // Injects
   private router = inject(Router);
+  private toast = inject(ToastMessage);
   private authApiService = inject(AuthApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
 
   // Form
   protected loginForm: FormGroup = this.formBuilder.group({
@@ -54,7 +53,6 @@ export class LoginForm {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.authApiService.loginUser(loginRequest)
       .subscribe({
@@ -67,18 +65,8 @@ export class LoginForm {
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       })
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 }

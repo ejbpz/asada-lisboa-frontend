@@ -20,16 +20,14 @@ import { ContactResponse } from '@public/interfaces/contact-response.interface';
 export class AdminContactsList {
   // Init
   protected isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected contacts = signal<ContactResponse[]>([]);
   protected selectedId = signal<string | null>(null);
   protected selectedContact = signal<ContactResponse | null>(null);
 
   // Injections
+  private toast = inject(ToastMessage);
   private contactsApi = inject(ContactApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
 
   // Input signal
   public contactsInput = input.required<ContactResponse[]>();
@@ -103,21 +101,18 @@ export class AdminContactsList {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.contactsApi.createOrEditContact(contactRequest, id)
       .subscribe({
         next: (value: ContactResponse) => {
-          this.isError.set(null);
-          this.isSuccess.set('Información de contacto agregada con éxito.');
+          this.toast.success('Información de contacto agregada con éxito.');
           this.updateContactFromList(value);
           this.closeCreateEditModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
@@ -128,21 +123,18 @@ export class AdminContactsList {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.contactsApi.deleteContact(id)
       .subscribe({
         next: () => {
-          this.isError.set(null);
-          this.isSuccess.set('Información de contacto eliminado con éxito.');
+          this.toast.success('Información de contacto eliminado con éxito.');
           this.removeContactFromList(id);
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
@@ -186,15 +178,4 @@ export class AdminContactsList {
   protected getErrors(errors: ValidationErrors): string | undefined | null {
     return FormUtils.getErrors(errors);
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

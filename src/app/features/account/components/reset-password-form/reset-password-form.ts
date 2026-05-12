@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
@@ -20,17 +20,15 @@ import { ResetPasswordRequest } from '@account/interfaces/reset-password-request
 export class ResetPasswordForm implements AfterViewInit {
   // Init
   isLoading = signal(false);
-  isError = signal<string | null>(null);
-  isSuccess = signal<string | null>(null);
 
   token = signal<string>('');
   email = signal<string>('');
 
   // Injects
   private router = inject(Router);
+  private toast = inject(ToastMessage);
   private formBuilder = inject(FormBuilder);
   private accountService = inject(AccountApi);
-  private toastService = inject(ToastMessage);
   private activatedRoute = inject(ActivatedRoute);
 
   // Form
@@ -75,32 +73,20 @@ export class ResetPasswordForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.accountService.resetPassword(resetPasswordRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set('Contraseña actualizada con éxito.');
+          this.toast.success('Contraseña actualizada con éxito.');
           this.resetPasswordForm.reset();
 
           this.router.navigate(['cuenta/iniciar-sesion']);
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       })
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

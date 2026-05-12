@@ -32,16 +32,14 @@ export class AdminNewForm implements AfterViewInit {
   private env = environment;
   private generateContent = GenerateContent;
   protected isLoading = signal(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected statuses = signal<StatusResponse[]>([]);
   protected newResponseData = signal<NewResponse | undefined>(undefined);
 
   // Injections
   private router = inject(Router);
+  private toast = inject(ToastMessage);
   private newsApiService = inject(NewsApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private richEditorApi = inject(RichEditorApi);
   private statusesApiService = inject(StatusesApi);
 
@@ -167,34 +165,23 @@ export class AdminNewForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.newsApiService.createOrEditNew(newRequest, id)
       .subscribe({
         next: (value: NewResponse) => {
           this.newResponseData.set(value);
           this.isLoading.set(false);
-          this.isSuccess.set(`Noticia ${this.newToUpdate() ? 'actualizada' : 'creada'} exitosamente.`);
+          this.toast.success(`Noticia ${this.newToUpdate() ? 'actualizada' : 'creada'} exitosamente.`);
           this.newsForm.reset();
 
           this.router.navigate(['/admin/noticias']);
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 
   // Set form
   private setCreateMode() {
@@ -272,11 +259,11 @@ export class AdminNewForm implements AfterViewInit {
       const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/jfif'];
 
       if (!allowedTypes.includes(file.type)) {
-        this.isError.set('Tipo de imagen no permitida');
+        this.toast.error('Tipo de imagen no permitida');
       }
 
       if (file.size > 5_242_880) {
-        this.isError.set('Imágenes máximo 5MB');
+        this.toast.error('Imágenes máximo 5MB');
       }
 
       try {
@@ -304,7 +291,7 @@ export class AdminNewForm implements AfterViewInit {
           );
 
       } catch (error) {
-        this.isError.set('Error inesperado al subir la imagen del contenido');
+        this.toast.error('Error inesperado al subir la imagen del contenido');
         throw error;
       }
     }

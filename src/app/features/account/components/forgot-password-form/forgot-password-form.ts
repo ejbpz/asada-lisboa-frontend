@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
@@ -18,13 +18,11 @@ import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-reque
 export class ForgotPasswordForm {
   // Init
   isLoading = signal(false);
-  isError = signal<string | null>(null);
-  isSuccess = signal<string | null>(null);
 
   // Injections
+  private toast = inject(ToastMessage);
   private formBuilder = inject(FormBuilder);
   private accountService = inject(AccountApi);
-  private toastService = inject(ToastMessage);
 
   // Form
   protected forgotPasswordForm: FormGroup = this.formBuilder.group({
@@ -52,30 +50,18 @@ export class ForgotPasswordForm {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.accountService.forgotPassword(forgotPasswordRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set('Email ha sido enviado, por favor revisar su correo.');
+          this.toast.success('Email ha sido enviado, por favor revisar su correo.');
           this.forgotPasswordForm.reset();
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

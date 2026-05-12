@@ -1,6 +1,6 @@
 import { RouterLink } from "@angular/router";
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, OnInit, signal, viewChild } from '@angular/core';
 import { ToastMessage } from "@shared/services/toast-message";
 import { AppError } from "@core/interfaces/app-error.interface";
 import { DirectorsBoardApi } from "@core/services/directors-board-api";
@@ -18,13 +18,11 @@ import { DirectorsBoardResponse } from '@public/interfaces/directors-board-respo
 export class AdminUsersList implements OnInit {
   // Init
   protected isLoading = signal(false);
-  protected isError = signal<string | null>(null);
-  protected isSuccess = signal<string | null>(null);
   protected selectedId = signal<string | null>(null);
   protected usersData = signal<DirectorsBoardResponse[]>([]);
 
   // Injector
-  private toastService = inject(ToastMessage);
+  private toast = inject(ToastMessage);
   private usersApi = inject(DirectorsBoardApi);
 
   // Input signal
@@ -67,34 +65,20 @@ export class AdminUsersList implements OnInit {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.usersApi.deleteUser(id)
       .subscribe({
         next: () => {
-          this.isError.set(null);
-          this.isSuccess.set('Usuario eliminado con éxito.');
+          this.toast.success('Usuario eliminado con éxito.');
           this.removeUserFromList(id);
           this.closeDeleteModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
   }
-
-    // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

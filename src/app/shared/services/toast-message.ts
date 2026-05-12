@@ -8,13 +8,34 @@ export class ToastMessage {
   // Injections
   private toastService = inject(HotToastService);
 
-  // Show toast message
-  public showToast(message: string | null | undefined, icon: string | null) {
-    if(!message || !icon)
-      return;
-
+  // Show toast messages
+  public success(message: string) {
     this.toastService.show(message, {
-      icon: icon,
+      icon: '✔',
+      theme: 'snackbar',
+      position: 'top-right'
+    });
+  }
+
+  public error(message: string) {
+    this.toastService.show(message, {
+      icon: '❌',
+      theme: 'snackbar',
+      position: 'top-right'
+    });
+  }
+
+  public warning(message: string) {
+    this.toastService.show(message, {
+      icon: '⚠',
+      theme: 'snackbar',
+      position: 'top-right'
+    });
+  }
+
+  public info(message: string) {
+    this.toastService.show(message, {
+      icon: 'ℹ',
       theme: 'snackbar',
       position: 'top-right'
     });

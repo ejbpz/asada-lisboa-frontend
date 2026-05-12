@@ -24,16 +24,14 @@ import { StatusResponse } from '@admin/interfaces/status-response.interface';
 export class AdminImageForm implements AfterViewInit {
     // Init
   private generateContent = GenerateContent;
-  protected isLoading = signal(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
+  protected isLoading = signal(false);;
   protected statuses = signal<StatusResponse[]>([]);
   protected imageResponseData = signal<ImageResponse | undefined>(undefined);
 
   // Injections
   private router = inject(Router);
+  private toast = inject(ToastMessage);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   private imagesApiService = inject(GalleryApi);
   private statusesApiService = inject(StatusesApi);
 
@@ -116,21 +114,20 @@ export class AdminImageForm implements AfterViewInit {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.imagesApiService.createOrEditImage(imageRequest, id)
       .subscribe({
         next: (value: ImageResponse) => {
           this.imageResponseData.set(value);
           this.isLoading.set(false);
-          this.isSuccess.set(`Imagen ${this.imageToUpdate() ? 'actualizada' : 'creada'} exitosamente.`);
+          this.toast.success(`Imagen ${this.imageToUpdate() ? 'actualizada' : 'creada'} exitosamente.`);
           this.imagesForm.reset();
 
           this.router.navigate(['/admin/imagenes']);
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -171,16 +168,6 @@ export class AdminImageForm implements AfterViewInit {
       name
     }));
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-  });
 
   // Get input errors
   protected getErrors(errors: ValidationErrors): string | undefined | null {

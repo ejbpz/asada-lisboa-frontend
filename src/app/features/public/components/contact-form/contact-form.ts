@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
@@ -22,12 +22,10 @@ export class ContactForm {
   protected env = environment;
   protected isLoading = signal(false);
   private captchaToken: string | null = null;
-  protected isError = signal<string | null>(null);
-  protected isSuccess = signal<string | null>(null);
 
   // Injector
+  private toast = inject(ToastMessage);
   protected formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
   protected contactService = inject(ContactApi);
 
   // Form
@@ -47,7 +45,7 @@ export class ContactForm {
     }
 
     if (!this.captchaToken) {
-      this.isError.set('ReCAPTCHA obligatorio.');
+      this.toast.error('ReCAPTCHA obligatorio.');
       return;
     }
 
@@ -55,12 +53,12 @@ export class ContactForm {
       .subscribe({
         next: (isValid: boolean) => {
           if(!isValid)
-            this.isError.set('ReCAPTCHA fallido.');
+            this.toast.error('ReCAPTCHA fallido.');
 
           this.contactApiService(this.contactForm.value);
         },
         error: (error: AppError) => {
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
@@ -76,33 +74,21 @@ export class ContactForm {
       return;
 
     this.isLoading.set(true);
-    this.isError.set(null);
 
     this.contactService.contactEmail(emailContactRequest)
       .subscribe({
         next: () => {
           this.isLoading.set(false);
-          this.isSuccess.set('Email enviado exitosamente, pronta respuesta.');
+          this.toast.success('Email enviado exitosamente, pronta respuesta.');
 
           this.contactForm.reset();
         },
         error: (error: AppError) => {
           this.isLoading.set(false);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
         }
       });
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 
   // Get input errors
   protected getErrors(errors: ValidationErrors): string | undefined | null {

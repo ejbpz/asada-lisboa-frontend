@@ -20,16 +20,14 @@ import { AboutUsResponse } from '@public/interfaces/about-us-response.interface'
 export class AdminAboutUsList {
   // Init
   protected isLoading = signal<boolean>(false);
-  private isError = signal<string | null>(null);
-  private isSuccess = signal<string | null>(null);
   protected aboutUs = signal<AboutUsResponse[]>([]);
   protected selectedId = signal<string | null>(null);
   protected selectedAboutUs = signal<AboutUsResponse | null>(null);
 
   // Injection
+  private toast = inject(ToastMessage);
   private aboutUsApi = inject(AboutUsApi);
   private formBuilder = inject(FormBuilder);
-  private toastService = inject(ToastMessage);
 
   // Input signal
   public aboutUsInput = input.required<AboutUsResponse[]>();
@@ -98,29 +96,22 @@ export class AdminAboutUsList {
     this.createEditModal().nativeElement.close();
   }
 
-  private removeAboutUsSectionFromList(id: string): void {
-    this.aboutUs.set(this.aboutUsInput().filter((value: AboutUsResponse) => value.id != id))
-  }
-
   // API - Delete about us section
   private deleteAboutUsSection(id: string) {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.aboutUsApi.deleteAboutUs(id)
       .subscribe({
         next: () => {
-          this.isError.set(null);
-          this.isSuccess.set('Sección \'nosotros\' eliminado con éxito.');
-          this.removeAboutUsSectionFromList(id);
+          this.toast.success('Sección \'nosotros\' eliminado con éxito.');
+          this.removeAboutUsFromList(id);
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
@@ -131,21 +122,18 @@ export class AdminAboutUsList {
     if(this.isLoading())
       return;
 
-    this.isError.set(null)
     this.isLoading.set(true);
 
     this.aboutUsApi.createOrEditAboutUs(aboutUsRequest, id)
       .subscribe({
         next: (value: AboutUsResponse) => {
-          this.isError.set(null);
-          this.isSuccess.set('Información de la institución agregada con éxito.');
+          this.toast.success('Información de la institución agregada con éxito.');
           this.updateAboutUsFromList(value);
           this.closeCreateEditModal();
           this.isLoading.set(false);
         },
         error: (error: AppError) => {
-          this.isSuccess.set(null);
-          this.isError.set(error.message);
+          this.toast.error(error.message);
           this.isLoading.set(false);
         }
       })
@@ -189,15 +177,4 @@ export class AdminAboutUsList {
   protected getErrors(errors: ValidationErrors): string | undefined | null {
     return FormUtils.getErrors(errors);
   }
-
-  // Toast error
-  private showToast = effect(() => {
-    this.toastService.showToast(
-      this.isError() ? this.isError() : this.isSuccess(),
-      this.isError() ? '❌' : '✔'
-    );
-
-    this.isError.set(null);
-    this.isSuccess.set(null);
-  });
 }

@@ -11,12 +11,12 @@ import { SeoRouteListener } from '@core/services/seo-route-listener';
 })
 export class App {
   // Constructor
-  constructor(private seoRouteListener: SeoRouteListener, authService: AuthApi, toastMessage: ToastMessage) {
+  constructor(private seoRouteListener: SeoRouteListener, authService: AuthApi, toast: ToastMessage) {
     this.seoRouteListener.init();
 
     effect(() => {
       if(authService.sessionExpired())
-        toastMessage.showToast('Tu sesión expiró. Inicia sesión nuevamente en otra pestaña.', '❌');
+        toast.error('Tu sesión expiró. Inicia sesión nuevamente en otra pestaña.');
     });
   }
 }
