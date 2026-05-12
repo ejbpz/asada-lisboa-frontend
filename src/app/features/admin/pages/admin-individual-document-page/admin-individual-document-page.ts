@@ -27,7 +27,7 @@ export default class AdminIndividualDocumentPage {
   );
 
   // Calling service to get document with that id
-  protected documentResource = rxResource({
+  protected readonly documentResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)

@@ -19,7 +19,7 @@ export abstract class BaseSearchPage<TService, TItem> {
   protected abstract fetch(service: TService, params: HttpParams): Observable<PageResponse<TItem>>;
 
   // Document service
-  protected resource = rxResource<PageResponse<TItem>, { filters: SearchSortRequest }>({
+  protected readonly resource = rxResource<PageResponse<TItem>, { filters: SearchSortRequest }>({
     params: () => ({ filters: this.filters() }),
     stream: ({ params }) => {
       let httpParams = new HttpParams();

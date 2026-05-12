@@ -1,8 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map, of } from 'rxjs';
-import { DirectorsBoardApi } from '@core/services/directors-board-api';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { AdminUserForm } from "@admin/components/admin-user-form/admin-user-form";
 

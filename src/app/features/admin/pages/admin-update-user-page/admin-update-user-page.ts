@@ -27,7 +27,7 @@ export default class AdminUpdateUserPage {
   );
 
   // Calling service to get user with that id
-  protected userResource = rxResource({
+  protected readonly userResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)

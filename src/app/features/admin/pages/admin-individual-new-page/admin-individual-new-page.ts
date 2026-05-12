@@ -27,7 +27,7 @@ export default class AdminIndividualNewPage {
   );
 
   // Calling service to get new with that id
-  protected newResource = rxResource({
+  protected readonly newResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)

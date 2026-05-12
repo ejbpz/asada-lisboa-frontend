@@ -27,7 +27,7 @@ export default class AdminIndividualImagePage {
   );
 
   // Calling service to get image with that id
-  protected imageResource = rxResource({
+  protected readonly imageResource = rxResource({
     params: () => ({ id: this.id() ?? '' }),
     stream: ({ params }) => {
       if(!params.id)

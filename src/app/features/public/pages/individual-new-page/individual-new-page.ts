@@ -4,10 +4,10 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { EMPTY, map } from 'rxjs';
 import { NewsApi } from '@core/services/news-api';
 import { SeoManagement } from '@core/services/seo-management';
+import { environment } from '@environments/environment.development';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { IndividualNewCard } from "@public/components/individual-new-card/individual-new-card";
 import { PublicNewsSection } from "@public/components/public-news-section/public-news-section";
-import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-individual-new-page',
@@ -32,7 +32,7 @@ export default class IndividualNewPage {
   );
 
   // Calling service to get new with that slug
-  protected newResource = rxResource({
+  protected readonly newResource = rxResource({
     params: () => ({ slug: this.slug() }),
     stream: ({ params }) => {
       if(!params.slug)
@@ -43,7 +43,7 @@ export default class IndividualNewPage {
   });
 
   // Calling service to get news related
-  protected relatedNewsResource = rxResource({
+  protected readonly relatedNewsResource = rxResource({
     params: () => ({ slug: this.slug() }),
     stream: ({ params }) => {
       if(!params.slug)
