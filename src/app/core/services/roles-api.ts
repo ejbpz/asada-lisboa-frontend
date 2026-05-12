@@ -1,6 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { RoleResponse } from '@admin/interfaces/role-response.interface';
 
@@ -16,9 +16,6 @@ export class RolesApi {
 
   // HttpCalls
   public getRoles(): Observable<RoleResponse[]> {
-    return this.httpClient.get<RoleResponse[]>(`${this.env.API_URL_ADMIN}/roles`)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error al obtener los roles.'))
-      );
+    return this.httpClient.get<RoleResponse[]>(`${this.env.API_URL_ADMIN}/roles`);
   }
 }

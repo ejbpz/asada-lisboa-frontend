@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { ResetPasswordRequest } from '@account/interfaces/reset-password-request.interface';
 import { ForgotPasswordRequest } from '@account/interfaces/forgot-password-request.interface';
@@ -19,9 +19,7 @@ export class AccountApi {
   public forgotPassword(forgotPasswordRequest: ForgotPasswordRequest): Observable<void> {
     return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/olvidar-contrasena`, {
       email: forgotPasswordRequest.email
-    }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al enviar email.')))
-      );
+    });
   }
 
   public resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<void> {
@@ -30,9 +28,7 @@ export class AccountApi {
       token: resetPasswordRequest.token,
       password: resetPasswordRequest.password,
       confirmPassword: resetPasswordRequest.confirmPassword,
-    }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al validar token.')))
-      );
+    });
   }
 
   public confirmEmail(email: string, token: string): Observable<void> {
@@ -40,8 +36,6 @@ export class AccountApi {
       .set('email', email)
       .set('token', token)
 
-    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/registrar/confirmar-correo`, null, { params: params }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al confirmar correo.')))
-      );
+    return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/registrar/confirmar-correo`, null, { params: params });
   }
 }

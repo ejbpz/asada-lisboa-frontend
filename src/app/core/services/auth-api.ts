@@ -1,7 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, finalize, map, Observable, shareReplay, throwError } from 'rxjs';
+import { finalize, map, Observable, shareReplay, throwError } from 'rxjs';
 import { StorageBrowser } from './storage-browser';
+import { AppError } from '../interfaces/app-error.interface';
 import { environment } from '@environments/environment.development';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 import { LoginResponse } from '@account/interfaces/login-response.interface';
@@ -31,7 +32,6 @@ export class AuthApi {
       password: loginRequest.password
     }).pipe(
         map((response: LoginResponse) => this.setUser(response)),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al iniciar sesión.')))
       );
   }
 
@@ -39,7 +39,6 @@ export class AuthApi {
     return this.httpClient.post<void>(`${this.env.API_URL_ACCOUNT}/cuenta/cerrar-sesion`, {})
       .pipe(
         finalize(() => this.clearSession()),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al cerrar sesión.')))
       );
   }
 
@@ -47,8 +46,14 @@ export class AuthApi {
     const token = this.getToken();
     const refreshToken = this.getRefreshToken();
 
-    if(!token || !refreshToken)
-      return throwError(() => new Error('Sin tokens para refrescar.'));
+    if(!token || !refreshToken) {
+      const appError: AppError = {
+        isAuthError: true,
+        message: 'Sin tokens para refrescar.',
+        detail: 'No hay tokens para extender la sesión',
+      }
+      return throwError(() => appError);
+    }
 
     if(this.isRefreshing && this.refresh$)
       return this.refresh$;
@@ -61,7 +66,6 @@ export class AuthApi {
     }).pipe(
         map((response: LoginResponse) => this.setUser(response)),
         shareReplay(1),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al refrescar token.'))),
         finalize(() => {
           this.isRefreshing = false;
           this.refresh$ = null;

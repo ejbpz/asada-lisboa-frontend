@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { RegisterRequest } from '@admin/interfaces/register-request.interface';
-import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
 import { UserUpdateRequest } from '@admin/interfaces/user-update-request.interface';
+import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
 import { DirectorBoardDetailsResponse } from '@admin/interfaces/director-board-details-response.interface';
 
 @Injectable({
@@ -20,31 +20,20 @@ export class DirectorsBoardApi {
 
   // Http calls - public
   public getDirectorsBoardInformation(): Observable<DirectorsBoardResponse[]> {
-    return this.httpClient.get<DirectorsBoardResponse[]>(`${this.env.API_URL_CLIENT}/usuarios`).pipe(
-      catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la junta directiva.')))
-    );
+    return this.httpClient.get<DirectorsBoardResponse[]>(`${this.env.API_URL_CLIENT}/usuarios`);
   }
 
   // Http calls - admin
   public getAdminUsers(params: HttpParams): Observable<PageResponse<DirectorsBoardResponse>> {
-    return this.httpClient.get<PageResponse<DirectorsBoardResponse>>(`${this.env.API_URL_ADMIN}/usuarios`, { params })
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los usuarios.'))
-      );
+    return this.httpClient.get<PageResponse<DirectorsBoardResponse>>(`${this.env.API_URL_ADMIN}/usuarios`, { params });
   }
 
   public getAdminUser(id: string): Observable<DirectorBoardDetailsResponse> {
-    return this.httpClient.get<DirectorBoardDetailsResponse>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al obtener los usuarios.'))
-      );
+    return this.httpClient.get<DirectorBoardDetailsResponse>(`${this.env.API_URL_ADMIN}/usuarios/${id}`);
   }
 
   public deleteUser(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/usuarios/${id}`)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar al usuario.'))
-      );
+    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/usuarios/${id}`);
   }
 
   public createUser(registerRequest: RegisterRequest): Observable<void> {
@@ -58,9 +47,7 @@ export class DirectorsBoardApi {
       firstLastName: registerRequest.firstLastName,
       secondLastName: registerRequest.secondLastName,
       confirmPassword: registerRequest.confirmPassword,
-    }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear un usuario.')))
-      );
+    });
   }
 
   public updateUser(id: string, registerRequest: UserUpdateRequest): Observable<void> {
@@ -71,8 +58,6 @@ export class DirectorsBoardApi {
       phoneNumber: registerRequest.phoneNumber,
       firstLastName: registerRequest.firstLastName,
       secondLastName: registerRequest.secondLastName,
-    }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar un usuario.')))
-      );
+    });
   }
 }

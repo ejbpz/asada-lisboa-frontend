@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { ContactRequest } from '@admin/interfaces/contact-request.interface';
@@ -22,7 +22,6 @@ export class ContactApi {
     return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_CLIENT}/contactos`)
       .pipe(
         map((response: PageResponse<ContactResponse>) => response.data),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener información de contacto.')))
       );
   }
 
@@ -33,17 +32,13 @@ export class ContactApi {
       message: emailContactRequest.message,
       fullName: emailContactRequest.fullName,
       phoneNumber: emailContactRequest.phoneNumber,
-    }).pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => error.error?.detail ?? error?.message ?? 'Error inesperado al enviar mensaje de contacto.'))
-      );
+    });
   }
 
   public recaptchaValidation(reCaptchdaRequest: string): Observable<boolean> {
     return this.httpClient.post<boolean>(`${this.env.API_URL_ACCOUNT}/email/re-captcha`, {
       reCaptchaRequest: reCaptchdaRequest,
-    }).pipe(
-        catchError(() => throwError(() => new Error('Error al validar el ReCAPTCHA.')))
-      );
+    });
   }
 
   // Http admin calls
@@ -59,7 +54,6 @@ export class ContactApi {
     return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_ADMIN}/contactos`, { params })
       .pipe(
         map((response: PageResponse<ContactResponse>) => response.data),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener información de contacto.')))
       );
   }
 
@@ -69,26 +63,17 @@ export class ContactApi {
         order: contactRequest.order,
         value: contactRequest.value,
         contactType: contactRequest.contactType,
-      })
-        .pipe(
-          catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar el contacto.')))
-        );
+      });
     }
 
     return this.httpClient.post<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos`, {
         order: contactRequest.order,
         value: contactRequest.value,
         contactType: contactRequest.contactType,
-      })
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el contacto.')))
-      );
+      });
   }
 
   public deleteContact(id: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/contactos/${id}`)
-      .pipe(
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar el contacto.')))
-      );
+    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/contactos/${id}`);
   }
 }
