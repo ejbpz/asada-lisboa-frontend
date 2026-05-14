@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  output
+} from '@angular/core';
 
 @Component({
   selector: 'pagination-list',
@@ -14,39 +20,42 @@ export class PaginationList {
   public emmitOffset = output<number>();
 
   // Constant value
-  protected pageSize = 8;
+  protected readonly pageSize = 8;
 
   // Input signals
   public offset = input.required<number>();
   public total = input.required<number>();
 
-  // Computed signal
+  // Safe numeric offset
+  protected currentOffset = computed(() => Number(this.offset()));
+
+  // Current page
   protected page = computed(() => {
-    const offset = Math.max(this.offset(), 0);
-
-    if(offset === 0)
-      return offset + 1;
-
-    return Math.floor(offset / this.pageSize) + 1;
+    return Math.floor(this.currentOffset() / this.pageSize) + 1;
   });
 
+  // Total pages
   protected maxPages = computed(() => {
-    return Math.ceil(Math.max(this.total(), 1) / this.pageSize);
+    return Math.ceil(Number(this.total()) / this.pageSize);
   });
 
-  // Before and next
+  // Previous page
   protected beforePage() {
-    if(this.page() <= 1) return;
+    if (this.page() <= 1)
+      return;
 
-    const newOffset = this.offset() - this.pageSize;
+    const newOffset = this.currentOffset() - this.pageSize;
+
     this.emmitOffset.emit(Math.max(newOffset, 0));
   }
 
+  // Next page
   protected nextPage() {
-    if(this.page() >= this.maxPages())
+    if (this.page() >= this.maxPages())
       return;
 
-    const newOffset = this.offset() + this.pageSize;
+    const newOffset = this.currentOffset() + this.pageSize;
+
     this.emmitOffset.emit(newOffset);
   }
 }
