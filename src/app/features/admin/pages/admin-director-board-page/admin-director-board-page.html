@@ -1,0 +1,26 @@
+<div class="w-full flex flex-col items-between justify-center sm:flex-row">
+  <div class="w-full sm:w-[60%] mb-5">
+    <get-back-title title="Usuarios" isAdmin>
+      <div section-description>Desde aquí puedes gestionar los usuarios del sistema, incluyendo su creación, edición y eliminación.</div>
+    </get-back-title>
+  </div>
+  <div class="w-full sm:w-[40%] flex sm:justify-end items-center px-5">
+    <a [routerLink]="['/admin/usuario']" class="btn btn-primary text-base-100">Nuevo usuario</a>
+  </div>
+</div>
+<div class="w-full flex flex-col gap-5 p-5">
+  <div class="flex flex-col items-center">
+    <div class="w-full">
+      @if(usersResource.isLoading()) {
+        <div class="my-10 w-full flex items-center justify-center">
+          <span class="loading loading-spinner loading-md"></span>
+        </div>
+      }
+      @else if(usersResource.hasValue()) {
+        <search-bar [stateValue]="filters()" [sortBy]="sortBy" [filterBy]="filterBy" (emitSearch)="onSearchSortForm($event)"/>
+        <admin-users-list [users]="usersResource.value().data"/>
+        <pagination-list [offset]="filters().offset ?? 0" [total]="usersResource.value().total" (emmitOffset)="onOffsetChange($event)"/>
+      }
+    </div>
+  </div>
+</div>

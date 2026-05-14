@@ -3,7 +3,7 @@
     <button
       (click)="scrollBackward()"
       [disabled]="isAtStart()"
-      class="h-full flex justify-center items-center bg-base-100 absolute left-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30"><</button>
+      class="h-full flex justify-center items-center text-neutral bg-base-100 absolute left-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"><</button>
   }
 
   <div #container
@@ -19,6 +19,6 @@
     <button
       (click)="scrollForward()"
       [disabled]="isAtEnd()"
-      class="h-full flex justify-center items-center bg-base-100 absolute right-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30">></button>
+      class="h-full flex justify-center items-center text-neutral bg-base-100 absolute right-0 top-0 z-10 px-2 py-1 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed">></button>
   }
 </section>

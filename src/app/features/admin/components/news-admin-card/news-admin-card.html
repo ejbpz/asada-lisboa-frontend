@@ -1,0 +1,42 @@
+<div class="flex items-center gap-2">
+  <div
+    class="min-w-5 w-5 h-5 rounded-full border border-neutral"
+    [class.bg-warning]="newData()?.statusId === draftStatus().id"
+    [class.bg-success]="newData()?.statusId === publicStatus().id"></div>
+
+  <div class="max-h-13">
+    @if(newData()?.statusId === publicStatus().id) {
+      <a [routerLink]="['/noticia/', newData()?.slug]" target="_blank" rel="noopener noreferrer" class="hover:underline">
+        <h2 class="text-lg font-bold line-clamp-1 text-ellipsis h-7 max-h-7 sm:text-xl">{{ newData()?.title | titlecase }}</h2>
+      </a>
+    } @else {
+      <h2 class="text-lg font-bold line-clamp-1 text-ellipsis h-7 max-h-7 sm:text-xl">{{ newData()?.title | titlecase }}</h2>
+    }
+    <span class="text-sm font-light line-clamp-1 text-ellipsis">Última edición: {{ newData()?.lastEditionDate | date }}</span>
+  </div>
+</div>
+
+<div class="hidden gap-2 sm:flex">
+  <a [routerLink]="['/admin/noticia/', newData()?.id]" class="cursor-pointer">
+    <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg>
+  </a>
+  <button (click)="onDeleteNew()" class="cursor-pointer">
+    <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg>
+  </button>
+</div>
+
+<div class="block sm:hidden">
+  <div class="dropdown dropdown-end">
+    <div tabindex="0" role="button" class="m-1">
+      <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/dots-icon.svg"></use></svg>
+    </div>
+    <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-fit py-2 px-4 shadow-sm">
+      <a [routerLink]="['/admin/noticia/', newData()?.id]" class="cursor-pointer flex gap-1 justify-start items-center">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg> Editar
+      </a>
+      <button (click)="onDeleteNew()" class="cursor-pointer flex gap-1 justify-start items-center">
+        <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg> Eliminar
+      </button>
+    </ul>
+  </div>
+</div>

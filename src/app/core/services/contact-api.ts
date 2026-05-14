@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment.development';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
+import { ContactRequest } from '@admin/interfaces/contact-request.interface';
 import { ContactResponse } from '@public/interfaces/contact-response.interface';
 import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 
@@ -16,11 +17,12 @@ export class ContactApi {
   // Inject
   private httpClient = inject(HttpClient);
 
-  // Http calls
+  // Http public calls
   public getContactInformation(): Observable<ContactResponse[]> {
     return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_CLIENT}/contactos`)
       .pipe(
         map((response: PageResponse<ContactResponse>) => response.data),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener información de contacto.')))
       );
   }
 
@@ -41,6 +43,52 @@ export class ContactApi {
       reCaptchaRequest: reCaptchdaRequest,
     }).pipe(
         catchError(() => throwError(() => new Error('Error al validar el ReCAPTCHA.')))
+      );
+  }
+
+  // Http admin calls
+  public getAdminContacts(): Observable<ContactResponse[]> {
+    const params = new HttpParams()
+      .append('take', 100)
+      .append('offset', 0)
+      .append('search', '')
+      .append('filterBy', '')
+      .append('sortBy', 'order')
+      .append('sortDirection', 'asc')
+
+    return this.httpClient.get<PageResponse<ContactResponse>>(`${this.env.API_URL_ADMIN}/contactos`, { params })
+      .pipe(
+        map((response: PageResponse<ContactResponse>) => response.data),
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener información de contacto.')))
+      );
+  }
+
+  public createOrEditContact(contactRequest: ContactRequest, id: string | undefined = undefined): Observable<ContactResponse> {
+    if(id !== null && id !== undefined) {
+      return this.httpClient.put<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos/${id}`, {
+        order: contactRequest.order,
+        value: contactRequest.value,
+        contactType: contactRequest.contactType,
+      })
+        .pipe(
+          catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al actualizar el contacto.')))
+        );
+    }
+
+    return this.httpClient.post<ContactResponse>(`${this.env.API_URL_ADMIN}/contactos`, {
+        order: contactRequest.order,
+        value: contactRequest.value,
+        contactType: contactRequest.contactType,
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el contacto.')))
+      );
+  }
+
+  public deleteContact(id: string): Observable<void> {
+    return this.httpClient.delete<void>(`${this.env.API_URL_ADMIN}/contactos/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar el contacto.')))
       );
   }
 }

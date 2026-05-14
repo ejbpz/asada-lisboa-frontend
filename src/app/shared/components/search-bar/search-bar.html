@@ -6,7 +6,7 @@
     </div>
 
     <div>
-      <select formControlName="filterBy" class="select select-md w-fit">
+      <select formControlName="filterBy" class="select select-md w-fit cursor-pointer">
         <option disabled selected value="">Filtrar</option>
         @for (filter of filterBy(); track $index) {
           <option value="{{ filter.value | lowercase }}">{{ filter.name | titlecase }}</option>
@@ -27,7 +27,7 @@
     </button>
 
     <div>
-      <select formControlName="sortBy" class="select select-md">
+      <select formControlName="sortBy" class="select select-md cursor-pointer">
         <option disabled selected value="">Ordenar</option>
         @for (sort of sortBy(); track $index) {
           <option value="{{ sort.value | lowercase }}">{{ sort.name | titlecase }}</option>

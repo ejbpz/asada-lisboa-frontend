@@ -8,7 +8,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   templateUrl: './get-back-title.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full flex flex-col justify-center items-center px-5'
+    class: 'w-full flex flex-col justify-center px-5',
+    '(class.items-center)': '!isAdmin()'
   }
 })
 export class GetBackTitle {

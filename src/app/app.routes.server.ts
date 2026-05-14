@@ -18,15 +18,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'galeria/**',
-    renderMode: RenderMode.Server
-  },
-  {
     path: 'documentos/',
-    renderMode: RenderMode.Server
-  },
-  {
-    path: 'documentos/**',
     renderMode: RenderMode.Server
   },
   {
@@ -34,7 +26,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server
   },
   {
-    path: 'noticias/**',
+    path: 'noticia/**',
     renderMode: RenderMode.Server
   },
   {

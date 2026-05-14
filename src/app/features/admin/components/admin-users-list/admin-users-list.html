@@ -1,0 +1,41 @@
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 w-full">
+  <table class="table">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cargo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="h-full">
+      @for (user of usersData(); track user.id) {
+        <tr class="h-full">
+          <td>{{ user.name | titlecase }}</td>
+          <td>{{ user.charge | titlecase }}</td>
+          <td class="flex gap-2 justify-end items-center min-h-full">
+            <a [routerLink]="['/admin/usuario/', user.id]" class="cursor-pointer flex gap-1 justify-start items-center">
+              <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/pencil-icon.svg"></use></svg> <span class="hidden sm:inline">Editar</span>
+            </a>
+            <button (click)="onDeleteUser(user.id)" class="cursor-pointer flex gap-1 justify-start items-center">
+              <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/trash-icon.svg"></use></svg> <span class="hidden sm:inline">Eliminar</span>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<dialog #deleteUserModal class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">¡Hola!</h3>
+    <p class="py-4">¿Estás seguro/a que quieres eliminar este usuario?</p>
+    <div class="modal-action">
+      <form>
+        <button (click)="closeDeleteModal()" class="btn btn-primary text-base-100">Cancelar</button>
+        <button (click)="confirmDelete()" class="ml-2 btn btn-error text-base-100">Eliminar</button>
+      </form>
+    </div>
+  </div>
+</dialog>

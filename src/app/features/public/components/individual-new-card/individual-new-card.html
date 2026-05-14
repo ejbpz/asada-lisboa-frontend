@@ -1,0 +1,38 @@
+<div class="w-full text-center">
+  <h1 class="text-3xl font-bold mb-3 leading-tight max-w-full sm:text-4xl">{{ newData().title }}</h1>
+  <div class="flex flex-col justify-evenly text-sm text-neutral sm:flex-row">
+    <span>Publicado: {{ newData().publicationDate | date }}</span>
+    @if(!sameDate()) {
+      <div class="divider divider-horizontal"></div>
+      <span>Editado: {{ newData().lastEditionDate | date }}</span>
+    }
+  </div>
+
+  <div class="w-full flex justify-center">
+    <figure class="w-full sm:max-w-[80%] mt-3 min-h-80 max-h-125 flex justify-center">
+      <img [src]="generateContent.url(newData().imageUrl)" [alt]="newData().title" class="object-cover shadow-sm rounded-sm">
+    </figure>
+  </div>
+
+  <div class="w-full flex flex-col items-center">
+    <div
+      id="newContent"
+      (click)="onContentClick($event)"
+      [innerHTML]="newData().description | breakLine"
+      class="w-full sm:max-w-[80%] lg:max-w-[50%] mt-5 flex-flex-col items-start text-start">
+    </div>
+  </div>
+</div>
+
+
+@if(showLightbox()) {
+  <div #lightbox class="fixed w-screen h-screen z-100 bg-black/75 top-0 left-0 flex justify-center items-center" tabindex="0">
+    <button
+      class="absolute top-4 right-4 text-white text-xl cursor-pointer z-20"
+      (click)="closeLightbox()" autofocus>✕</button>
+
+        <div class="absolute inset-0 flex justify-center items-center p-5 z-10">
+            <img [src]="currentImage()" class="max-w-full max-h-full object-contain">
+        </div>
+  </div>
+}

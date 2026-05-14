@@ -1,0 +1,76 @@
+<form [formGroup]="userForm" (ngSubmit)="onUserForm()" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral">
+  <section class="flex flex-col gap-2 w-full lg:flex-row">
+      <!-- First name -->
+      <fieldset class="fieldset lg:w-1/2">
+        <legend class="fieldset-legend font-normal text-sm">* Primer nombre</legend>
+        <input type="text" formControlName="firstName" placeholder="Raúl" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+        @if (!!userForm.controls['firstName'].errors && userForm.controls['firstName'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['firstName'].errors) }}</span>
+        }
+    </fieldset>
+
+    <!-- First last name -->
+    <fieldset class="fieldset lg:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Primer apellido</legend>
+      <input type="text" formControlName="firstLastName" placeholder="Brenes" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!userForm.controls['firstLastName'].errors && userForm.controls['firstLastName'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['firstLastName'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <section class="flex flex-col gap-2 w-full lg:flex-row">
+    <!-- Second last name -->
+    <fieldset class="fieldset w-full lg:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">* Segundo apellido</legend>
+      <input type="text" formControlName="secondLastName" placeholder="Ramírez" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!userForm.controls['secondLastName'].errors && userForm.controls['secondLastName'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['secondLastName'].errors) }}</span>
+      }
+    </fieldset>
+
+    <!-- Phone number -->
+    <fieldset class="fieldset lg:w-1/2">
+      <legend class="fieldset-legend font-normal text-sm">Teléfono celular</legend>
+      <input formControlName="phoneNumber" placeholder="8888-8888" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!userForm.controls['phoneNumber'].errors && userForm.controls['phoneNumber'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['phoneNumber'].errors) }}</span>
+      }
+    </fieldset>
+  </section>
+
+  <!-- Charges and roles -->
+  <section class="flex flex-col gap-2 w-full lg:flex-row">
+      <fieldset class="fieldset w-1/2 lg:w-full">
+        <legend class="fieldset-legend font-normal text-sm">* Cargo</legend>
+        <select class="select select-md cursor-pointer w-full" formControlName="chargeId">
+          <option disabled selected value="">Cargo</option>
+          @for (charge of charges(); track charge.id) {
+            <option [value]="charge.id">{{ charge.name | titlecase }}</option>
+          }
+        </select>
+        @if (!!userForm.controls['chargeId'].errors && userForm.controls['chargeId'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['chargeId'].errors) }}</span>
+        }
+      </fieldset>
+
+      <fieldset class="fieldset w-1/2 lg:w-full">
+        <legend class="fieldset-legend font-normal text-sm">* Rol</legend>
+        <select class="select select-md cursor-pointer w-full" formControlName="roleId">
+          <option disabled selected value="">Rol</option>
+          @for (role of roles(); track role.id) {
+            <option [value]="role.id">{{ role.name | titlecase }}</option>
+          }
+        </select>
+        @if (!!userForm.controls['roleId'].errors && userForm.controls['roleId'].touched) {
+          <span class="text-error text-[.75rem] font-light">{{ getErrors(userForm.controls['roleId'].errors) }}</span>
+        }
+      </fieldset>
+  </section>
+
+  <button type="submit" [disabled]="isLoading()" class="mt-1.5 btn btn-primary w-fit text-base-100 text-sm font-medium">
+    @if(isLoading()) {
+      <span class="loading loading-spinner"></span>
+    } Actualizar usuario
+  </button>
+</form>

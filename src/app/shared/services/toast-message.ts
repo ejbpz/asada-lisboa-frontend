@@ -9,7 +9,7 @@ export class ToastMessage {
   private toastService = inject(HotToastService);
 
   // Show toast message
-  public showToast(message: string | null, icon: string | null) {
+  public showToast(message: string | null | undefined, icon: string | null) {
     if(!message || !icon)
       return;
 

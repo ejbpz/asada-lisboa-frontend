@@ -55,20 +55,20 @@ import { SearchSortRequest } from '@shared/interfaces/search-sort-request.interf
         return;
       }
 
-      const searchChanged = value.search !== previousRequest.search;
-      const sortByChanged = value.sortBy !== previousRequest.sortBy;
-      const filterByChanged = value.filterBy !== previousRequest.filterBy;
-      const sortDirectionChanged = value.sortDirection !== previousRequest.sortDirection;
+      const hasSearchChanged = value.search !== previousRequest.search;
+      const hasSortByChanged = value.sortBy !== previousRequest.sortBy;
+      const hasFilterByChanged = value.filterBy !== previousRequest.filterBy;
+      const hasSortDirectionChanged = value.sortDirection !== previousRequest.sortDirection;
 
-      if(searchChanged) {
+      if(hasSearchChanged) {
         this.emitSearch.emit(value);
       }
-      else if(filterByChanged) {
+      else if(hasFilterByChanged) {
         if(value.search?.trim()) {
           this.emitSearch.emit(value);
         }
       }
-      else if(sortByChanged || sortDirectionChanged) {
+      else if(hasSortByChanged || hasSortDirectionChanged) {
         this.emitSearch.emit(value);
       }
 

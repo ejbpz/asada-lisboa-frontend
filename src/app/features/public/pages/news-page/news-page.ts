@@ -34,8 +34,8 @@ export default class NewsPage extends BaseSearchPage<NewsApi, NewMinimalResponse
 
   // Search filters
   protected filterBy = [
-    { value: 'category', name: 'Categoría' },
     { value: 'title', name: 'Título' },
+    { value: 'category', name: 'Categoría' },
   ];
 
   protected sortBy = [

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormUtils } from '@shared/utils/form-utils';
 import { AccountApi } from '@core/services/account-api';
 import { ToastMessage } from '@shared/services/toast-message';
@@ -14,7 +14,7 @@ import { ResetPasswordRequest } from '@account/interfaces/reset-password-request
   templateUrl: './reset-password-form.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'md:shadow-sm md:rounded md:py-3 md:px-7'
+    class: 'mt-5 md:shadow-sm md:rounded md:py-3 md:px-7'
   }
 })
 export class ResetPasswordForm implements AfterViewInit {

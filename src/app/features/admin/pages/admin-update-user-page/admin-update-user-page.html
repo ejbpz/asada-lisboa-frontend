@@ -1,0 +1,10 @@
+<div class="w-full sm:w-[60%] mb-5">
+  <get-back-title title="Actualización de usuario" [link]="'/admin/usuarios'" isAdmin></get-back-title>
+</div>
+<div class="w-full flex flex-col gap-5 p-5">
+  <div class="flex flex-col items-center">
+    <div class="w-full">
+      <admin-update-user-form [userToUpdate]="userResource.value()"/>
+    </div>
+  </div>
+</div>
