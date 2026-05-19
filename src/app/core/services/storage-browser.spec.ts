@@ -45,7 +45,6 @@ describe('StorageBrowser (server)', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        StorageBrowser,
         { provide: PLATFORM_ID, useValue: 'server' }
       ]
     });
