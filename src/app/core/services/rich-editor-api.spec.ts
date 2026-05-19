@@ -29,16 +29,15 @@ describe('RichEditorApi', () => {
 
     let receivedEvent: any;
 
-    service.uploadTemporalImage(file).subscribe(event => {
-      receivedEvent = event;
-    });
+    service.uploadTemporalImage(file)
+      .subscribe(event => {
+        receivedEvent = event;
+      });
 
     const req = httpMock.expectOne(
       `${environment.API_URL_ADMIN}/editor/imagen-temp`
     );
-
     expect(req.request.method).toBe('POST');
-
 
     const formData = req.request.body as FormData;
 
