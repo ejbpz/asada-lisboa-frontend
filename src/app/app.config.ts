@@ -6,7 +6,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { jwtTokenInterceptor } from '@core/interceptors/jwt-token-interceptor';
-import { apiGlobalErrorInterceptor } from '@core/interceptors/api-global-error-interceptor-interceptor';
+import { apiGlobalErrorInterceptor } from '@core/interceptors/api-global-error-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
