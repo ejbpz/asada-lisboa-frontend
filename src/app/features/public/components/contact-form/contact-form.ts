@@ -29,7 +29,7 @@ export class ContactForm {
   protected contactService = inject(ContactApi);
 
   // Form
-  protected contactForm: FormGroup = this.formBuilder.group({
+  public contactForm: FormGroup = this.formBuilder.group({
     phoneNumber: ['', [Validators.pattern(FormUtils.phonePattern)]],
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
     subject: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
@@ -52,8 +52,10 @@ export class ContactForm {
     this.contactService.recaptchaValidation(this.captchaToken)
       .subscribe({
         next: (isValid: boolean) => {
-          if(!isValid)
+          if(!isValid) {
             this.toast.error('ReCAPTCHA fallido.');
+            return;
+          }
 
           this.contactApiService(this.contactForm.value);
         },

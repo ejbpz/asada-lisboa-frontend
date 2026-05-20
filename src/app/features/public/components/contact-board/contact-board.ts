@@ -26,7 +26,7 @@ export class ContactBoard implements AfterViewInit {
   }
 
   // Calling principal API
-  protected principalApiService(): void {
+  public principalApiService(): void {
       if(this.isLoading())
         return;
 
@@ -42,7 +42,7 @@ export class ContactBoard implements AfterViewInit {
   }
 
   // Data type
-  protected contactLink(contactValue: string): string | null {
+  public contactLink(contactValue: string): string | null {
     if(contactValue.startsWith('+506') || contactValue.match(FormUtils.phonePattern))
       return `tel:${contactValue}`;
 
@@ -55,7 +55,7 @@ export class ContactBoard implements AfterViewInit {
     return null;
   }
 
-  protected contactIcon(contactValue: string): string {
+  public contactIcon(contactValue: string): string {
     const path = '/assets/icons';
 
     if(contactValue.startsWith('+506') || contactValue.match(FormUtils.phonePattern))
@@ -73,7 +73,7 @@ export class ContactBoard implements AfterViewInit {
     return `${path}/user-icon.svg`;
   }
 
-  protected contactTextMessage(contactValue: string, contactName: string) {
+  public contactTextMessage(contactValue: string, contactName: string) {
     if(contactValue.startsWith('http://') || contactValue.startsWith('https://'))
       return `Link para ${contactName}`;
 
