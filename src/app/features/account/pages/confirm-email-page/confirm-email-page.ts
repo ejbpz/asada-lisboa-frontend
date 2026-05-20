@@ -33,7 +33,7 @@ export default class ConfirmEmailPage {
   );
 
   // Calling resource
-  protected readonly confirmEmailResource = rxResource({
+  public readonly confirmEmailResource = rxResource({
     params: () => ({ validatonToken: this.validatonToken() }),
     stream: ({ params }) => {
       if(!params.validatonToken)

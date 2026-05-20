@@ -25,12 +25,12 @@ export class ForgotPasswordForm {
   private accountService = inject(AccountApi);
 
   // Form
-  protected forgotPasswordForm: FormGroup = this.formBuilder.group({
+  public forgotPasswordForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]]
   });
 
   // OnSubmit form
-  protected onForgotPasswordForm() {
+  public onForgotPasswordForm() {
     if (this.forgotPasswordForm.invalid) {
       this.forgotPasswordForm.markAllAsTouched();
       return;

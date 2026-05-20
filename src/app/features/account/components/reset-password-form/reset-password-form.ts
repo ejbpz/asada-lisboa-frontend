@@ -32,7 +32,7 @@ export class ResetPasswordForm implements AfterViewInit {
   private activatedRoute = inject(ActivatedRoute);
 
   // Form
-  protected resetPasswordForm: FormGroup = this.formBuilder.group({
+  public resetPasswordForm: FormGroup = this.formBuilder.group({
     password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(FormUtils.passwordPattern)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern(FormUtils.passwordPattern)]]
   }, {

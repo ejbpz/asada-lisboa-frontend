@@ -27,13 +27,13 @@ export class LoginForm {
   private formBuilder = inject(FormBuilder);
 
   // Form
-  protected loginForm: FormGroup = this.formBuilder.group({
+  public loginForm: FormGroup = this.formBuilder.group({
     email: ['', [Validators.required, Validators.pattern(FormUtils.emailPattern)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(FormUtils.passwordPattern)]],
   });
 
   // OnSubmit form
-  protected onLoginUser() {
+  public onLoginUser() {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
