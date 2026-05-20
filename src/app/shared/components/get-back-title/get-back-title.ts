@@ -21,6 +21,5 @@ export class GetBackTitle {
   });
 
   public link = input<string | undefined>(undefined);
-
   public title = input<string | undefined>('Volver');
 }
