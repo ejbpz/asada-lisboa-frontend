@@ -19,9 +19,9 @@ import { AboutUsResponse } from '@public/interfaces/about-us-response.interface'
 })
 export class AdminAboutUsList {
   // Init
-  protected isLoading = signal<boolean>(false);
-  protected aboutUs = signal<AboutUsResponse[]>([]);
-  protected selectedId = signal<string | null>(null);
+  public isLoading = signal<boolean>(false);
+  public aboutUs = signal<AboutUsResponse[]>([]);
+  public selectedId = signal<string | null>(null);
   protected selectedAboutUs = signal<AboutUsResponse | null>(null);
 
   // Injection
@@ -49,14 +49,14 @@ export class AdminAboutUsList {
   });
 
   // Form
-  protected aboutUsForm: FormGroup = this.formBuilder.group({
+  public aboutUsForm: FormGroup = this.formBuilder.group({
     content: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(2500)]],
     sectionType: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     order: ['', [Validators.required, Validators.min(0), Validators.max(255), Validators.pattern(FormUtils.numberPattern)]],
   });
 
   // OnSubmit form
-  protected onAboutUsForm() {
+  public onAboutUsForm() {
     if (this.aboutUsForm.invalid) {
       this.aboutUsForm.markAllAsTouched();
       return;
@@ -66,7 +66,7 @@ export class AdminAboutUsList {
   }
 
   // Delete about us section
-  protected openDeleteModal(id: string): void {
+  public openDeleteModal(id: string): void {
     this.selectedId.set(id);
     this.deleteModal().nativeElement.showModal();
   }
@@ -76,7 +76,7 @@ export class AdminAboutUsList {
     this.deleteModal().nativeElement.close();
   }
 
-  protected confirmDelete(): void {
+  public confirmDelete(): void {
     const id = this.selectedId();
     if (!id) return;
 
@@ -86,7 +86,7 @@ export class AdminAboutUsList {
   }
 
   // Create or edit contact section
-  protected openCreateEditModal(aboutUs: AboutUsResponse | null = null): void {
+  public openCreateEditModal(aboutUs: AboutUsResponse | null = null): void {
     this.selectedAboutUs.set(aboutUs);
     this.createEditModal().nativeElement.showModal();
   }
