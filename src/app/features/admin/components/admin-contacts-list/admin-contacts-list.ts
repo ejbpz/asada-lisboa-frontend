@@ -20,9 +20,9 @@ import { ContactResponse } from '@public/interfaces/contact-response.interface';
 export class AdminContactsList {
   // Init
   protected isLoading = signal<boolean>(false);
+  public selectedId = signal<string | null>(null);
   protected contacts = signal<ContactResponse[]>([]);
-  protected selectedId = signal<string | null>(null);
-  protected selectedContact = signal<ContactResponse | null>(null);
+  public selectedContact = signal<ContactResponse | null>(null);
 
   // Injections
   private toast = inject(ToastMessage);
@@ -49,14 +49,14 @@ export class AdminContactsList {
   });
 
   // Form
-  protected contactForm: FormGroup = this.formBuilder.group({
+  public contactForm: FormGroup = this.formBuilder.group({
     value: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     contactType: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     order: ['', [Validators.required, Validators.min(0), Validators.max(255), Validators.pattern(FormUtils.numberPattern)]],
   });
 
   // OnSubmit form
-  protected onContactForm() {
+  public onContactForm() {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
       return;
@@ -66,7 +66,7 @@ export class AdminContactsList {
   }
 
   // Create or edit contact section
-  protected openCreateEditModal(contact: ContactResponse | null = null): void {
+  public openCreateEditModal(contact: ContactResponse | null = null): void {
     this.selectedContact.set(contact);
     this.createEditModal().nativeElement.showModal();
   }
@@ -77,17 +77,17 @@ export class AdminContactsList {
   }
 
   // Delete contact section
-  protected openDeleteModal(id: string): void {
+  public openDeleteModal(id: string): void {
     this.selectedId.set(id);
     this.deleteModal().nativeElement.showModal();
   }
 
-  protected closeDeleteModal(): void {
+  public closeDeleteModal(): void {
     this.selectedId.set(null);
     this.deleteModal().nativeElement.close();
   }
 
-  protected confirmDelete(): void {
+  public confirmDelete(): void {
     const id = this.selectedId();
     if (!id) return;
 
