@@ -38,17 +38,17 @@ export class AdminDocumentsList implements OnInit {
   }
 
   // Delete document
-  protected openDeleteModal(id: string): void {
+  public openDeleteModal(id: string): void {
     this.selectedId.set(id);
     this.modal().nativeElement.showModal();
   }
 
-  protected closeDeleteModal(): void {
+  public closeDeleteModal(): void {
     this.selectedId.set(null);
     this.modal().nativeElement.close();
   }
 
-  protected confirmDelete(): void {
+  public confirmDelete(): void {
     const id = this.selectedId();
     if (!id) return;
 

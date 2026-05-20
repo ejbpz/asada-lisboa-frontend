@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AdminDocumentForm } from './admin-document-form';
 import { Router } from '@angular/router';
-import { ToastMessage } from '@shared/services/toast-message';
-import { DocumentsApi } from '@core/services/documents-api';
-import { StatusesApi } from '@core/services/statuses-api';
 import { FormBuilder } from '@angular/forms';
-import { of, throwError } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { of, throwError } from 'rxjs';
+import { StatusesApi } from '@core/services/statuses-api';
+import { AdminDocumentForm } from './admin-document-form';
+import { DocumentsApi } from '@core/services/documents-api';
+import { ToastMessage } from '@shared/services/toast-message';
 
 describe('AdminDocumentForm', () => {
   let fixture: ComponentFixture<AdminDocumentForm>;
