@@ -3,6 +3,7 @@ import { HttpParams } from "@angular/common/http";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { rxResource, toSignal } from "@angular/core/rxjs-interop";
 import { map, Observable } from 'rxjs';
+import { SortDirection } from "@shared/enums/sort-direction.enum";
 import { PageResponse } from "@shared/interfaces/page-response.interface";
 import { SearchSortRequest } from "@shared/interfaces/search-sort-request.interface";
 
@@ -11,7 +12,7 @@ export abstract class BaseSearchPage<TService, TItem> {
   protected filters!: Signal<SearchSortRequest>;
 
   // Constructor
-  protected constructor(protected router: Router, protected serviceApi: TService, protected activatedRoute: ActivatedRoute) {
+  public constructor(protected router: Router, protected serviceApi: TService, protected activatedRoute: ActivatedRoute) {
     this.initFilters();
   }
 
@@ -53,11 +54,11 @@ export abstract class BaseSearchPage<TService, TItem> {
 
   private toQuery(request: SearchSortRequest | undefined) {
     return {
-      search: request?.search || null,
-      sortBy: request?.sortBy || null,
-      offset: request?.offset || null,
-      filterBy: request?.filterBy || null,
-      sortDirection: request?.sortDirection || null,
+      search: request?.search || undefined,
+      sortBy: request?.sortBy || undefined,
+      offset: request?.offset ?? undefined,
+      filterBy: request?.filterBy || undefined,
+      sortDirection: request?.sortDirection || undefined,
     };
   }
 
@@ -76,9 +77,9 @@ export abstract class BaseSearchPage<TService, TItem> {
     return {
       search: params['search'] ?? '',
       sortBy: params['sortBy'] ?? '',
-      offset: params['offset'] ?? '',
+      offset: Number(params['offset'] ?? 0),
       filterBy: params['filterBy'] ?? '',
-      sortDirection: params['sortDirection'] ?? 'asc',
-    }
+      sortDirection: (params['sortDirection'] ?? 'asc') as SortDirection,
+    };
   }
 }
