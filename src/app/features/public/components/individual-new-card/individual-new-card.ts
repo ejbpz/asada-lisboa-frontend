@@ -28,7 +28,7 @@ export class IndividualNewCard {
 
   // Helper methods
   protected sameDate(): boolean {
-    return this.newData().publicationDate.getTime === this.newData().lastEditionDate.getTime;
+    return this.newData().publicationDate.getTime() === this.newData().lastEditionDate.getTime();
   }
 
   // constructor

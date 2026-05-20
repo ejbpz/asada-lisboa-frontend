@@ -1,6 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from "@angular/router";
-import { ChangeDetectionStrategy, Component, inject, signal, effect, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, computed } from '@angular/core';
 import { AuthApi } from '@core/services/auth-api';
 
 @Component({
