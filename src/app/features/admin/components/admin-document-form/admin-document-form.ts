@@ -23,8 +23,8 @@ import { DocumentResponse } from '@admin/interfaces/document-response.interface'
 })
 export class AdminDocumentForm implements AfterViewInit {
   // Init
-  protected isLoading = signal<boolean>(false);
-  protected statuses = signal<StatusResponse[]>([]);
+  public isLoading = signal<boolean>(false);
+  public statuses = signal<StatusResponse[]>([]);
   protected newResponseData = signal<DocumentResponse | undefined>(undefined);
 
   // Input signal
@@ -38,7 +38,7 @@ export class AdminDocumentForm implements AfterViewInit {
   private statusesApiService = inject(StatusesApi);
 
   // Document form
-  protected documentForm: FormGroup = this.formBuilder.group({
+  public documentForm: FormGroup = this.formBuilder.group({
     file: [null, [fileRequired, fileValidator({
       maxSizeMb: 15,
       allowedExtensions: ['application/pdf',
@@ -105,7 +105,7 @@ export class AdminDocumentForm implements AfterViewInit {
   }
 
   // On form submit
-  protected onDocumentForm() {
+  public onDocumentForm() {
     if (this.documentForm.invalid) {
       this.documentForm.markAllAsTouched();
       return;
@@ -192,7 +192,7 @@ export class AdminDocumentForm implements AfterViewInit {
   }
 
   // Document preview
-  protected documentInfo = signal<{
+  public documentInfo = signal<{
     name: string;
     size: number;
     type: string;
