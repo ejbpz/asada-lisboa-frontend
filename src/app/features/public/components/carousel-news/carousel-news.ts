@@ -76,7 +76,6 @@ export class CarouselNews {
 
     const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
 
-    // margen de tolerancia por decimales
     const tolerance = 2;
 
     this.minIndex.set(carousel.scrollLeft <= tolerance);
