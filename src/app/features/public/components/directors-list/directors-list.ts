@@ -26,7 +26,7 @@ export class DirectorsList implements AfterViewInit {
   }
 
     // Calling principal API
-  protected usersApiService(): void {
+  public usersApiService(): void {
     if(this.isLoading())
       return;
 
