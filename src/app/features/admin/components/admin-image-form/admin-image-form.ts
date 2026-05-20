@@ -59,7 +59,7 @@ export class AdminImageForm implements AfterViewInit {
   }
 
   // Image form
-  protected imagesForm: FormGroup = this.formBuilder.group({
+  public imagesForm: FormGroup = this.formBuilder.group({
     file: [null, [fileRequired, fileValidator({
       maxSizeMb: 5,
       allowedExtensions: ['image/jpg', 'image/jpeg', 'image/png', 'image/webp', 'image/jfif', 'video/mp4', 'video/quicktime', 'video/x-matroska', 'video/webm']
@@ -80,7 +80,7 @@ export class AdminImageForm implements AfterViewInit {
   });
 
   // OnSubmit form
-  protected onImageForm() {
+  public onImageForm() {
     if (this.imagesForm.invalid) {
       this.imagesForm.markAllAsTouched();
       return;
@@ -170,7 +170,7 @@ export class AdminImageForm implements AfterViewInit {
   }
 
   // Get input errors
-  protected getErrors(errors: ValidationErrors): string | undefined | null {
+  public getErrors(errors: ValidationErrors): string | undefined | null {
     return FormUtils.getErrors(errors);
   }
 
