@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, output, PLATFORM_ID, signal, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, output, PLATFORM_ID, viewChild } from '@angular/core';
 import { ToastMessage } from '@shared/services/toast-message';
 import { ReCaptchaLoader } from '@core/services/re-captcha-loader';
 import { environment } from '@environments/environment.development';
