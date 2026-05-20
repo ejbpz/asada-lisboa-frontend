@@ -35,7 +35,7 @@ export class BadgesInput implements ControlValueAccessor {
       distinctUntilChanged(),
     );
 
-  protected readonly categoriesSearchResource = rxResource({
+  protected categoriesSearchResource = rxResource({
     params: () => this.search$,
     stream: ({ params }) => {
       return params.pipe(
