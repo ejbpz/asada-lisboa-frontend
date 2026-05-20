@@ -221,7 +221,7 @@ export class AdminNewForm implements AfterViewInit {
   }
 
   // Editor configuration
-  protected config: AngularEditorConfig = {
+  public config: AngularEditorConfig = {
     editable: true,
     sanitize: true,
     spellcheck: true,
