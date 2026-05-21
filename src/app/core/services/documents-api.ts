@@ -6,6 +6,7 @@ import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { DocumentRequest } from '@admin/interfaces/document-request.interface';
 import { DocumentResponse } from '@admin/interfaces/document-response.interface';
 import { DocumentMinimalResponse } from '@public/interfaces/document-minimal-response.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

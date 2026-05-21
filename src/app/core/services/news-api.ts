@@ -6,6 +6,7 @@ import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
