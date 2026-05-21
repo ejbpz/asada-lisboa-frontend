@@ -77,14 +77,4 @@ export class GalleryApi {
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear la imagen.')))
       );
   }
-
-  public getAdminImages2(params: HttpParams): Observable<ImageMinimalResponse[]> {
-    return this.httpClient
-      .get<PageResponse<ImageMinimalResponse>>(`${this.env.API_URL_ADMIN}/imagenes`, { params })
-      .pipe(
-        
-        map(response => response.data),
-         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener las imagenes.')))
-      );
-  }
 }

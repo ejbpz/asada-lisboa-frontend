@@ -92,14 +92,4 @@ export class NewsApi {
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al eliminar la noticia.')))
       );
   }
-
-   public getAdminNews2(params: HttpParams): Observable<NewMinimalResponse[]> {
-     return this.httpClient
-      .get<PageResponse<NewMinimalResponse>>(`${this.env.API_URL_ADMIN}/noticias`, { params })
-      .pipe(
-        
-        map(response => response.data),
-        catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la noticia.')))
-      );
-    }
 }

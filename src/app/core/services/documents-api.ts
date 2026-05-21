@@ -75,13 +75,4 @@ export class DocumentsApi {
         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
       );
   }
-
-  public getAdmindocument2(params: HttpParams): Observable<DocumentMinimalResponse[]> {
-    return this.httpClient
-      .get<PageResponse<DocumentMinimalResponse>>(`${this.env.API_URL_ADMIN}/documentos`, { params })
-      .pipe(       
-        map(response => response.data),
-         catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al crear el documento.')))
-      );
-  }
 }

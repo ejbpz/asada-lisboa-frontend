@@ -14,10 +14,15 @@ export class PrincipalApi {
   // Injects
   private httpClient = inject(HttpClient);
 
-  // Http calls
+  // Http public calls
   public getPrincipalInformation(): Observable<PrincipalRequest> {
     return this.httpClient.get<PrincipalRequest>(`${this.env.API_URL_CLIENT}/principal`).pipe(
       catchError((error: HttpErrorResponse) => throwError(() => Error(error.error?.detail ?? error?.message ?? 'Error inesperado al obtener la información.')))
     );
+  }
+
+  // Http admin calls
+  public getPrincipalAdminInformation(): Observable<PrincipalRequest> {
+    return this.httpClient.get<PrincipalRequest>(`${this.env.API_URL_ADMIN}/principal`);
   }
 }
