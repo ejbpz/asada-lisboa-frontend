@@ -1,21 +1,36 @@
 <div class="container">
-  <div class="hero">
-    <div class="hero-content flex flex-col justify-between items-center gap-5 gap-y-8 md:flex-row">
-      <div class="w-full md:w-1/2">
-        <div>
-          <h1 class="text-5xl font-bold">{{ title | uppercase }}</h1>
-          <h2 class="text-3xl font-medium">{{ subtitle | titlecase }}</h2>
-        </div>
-        <p class="py-6" [innerHTML]="description"></p>
-        <a [routerLink]="cta.link" class="btn btn-primary text-base-100">{{ cta.title | titlecase }}</a>
+  <section class="flex flex-col items-center text-center">
+
+    <!-- Content -->
+    <div class="max-w-4xl flex flex-col items-center px-4">
+      <div class="space-y-2">
+        <h1 class="text-5xl lg:text-7xl font-bold tracking-tight">
+          {{ title | uppercase }}
+        </h1>
+
+        <h2 class="text-2xl lg:text-4xl font-medium text-base-content/80">
+          {{ subtitle | titlecase }}
+        </h2>
       </div>
-      <div class="grid grid-cols-2 grid-rows-5 gap-3 w-full aspect-4/5 max-h-[60vh] transform -scale-x-100 md:w-1/2 md:scale-x-100">
-        @for (image of data(); track image.id; let i = $index) {
-          <img
-          [src]="generateContent.url(image?.url)"
-          [class]="getImageClasses(i)"/>
-        }
-      </div>
+
+      <p
+        class="py-6 max-w-2xl text-base lg:text-lg text-base-content/70"
+        [innerHTML]="description">
+      </p>
+
+      <a
+        [routerLink]="cta.link"
+        class="btn btn-primary text-base-100 px-8">
+        {{ cta.title | titlecase }}
+      </a>
     </div>
-  </div>
+
+    <!-- Image -->
+    <div class="w-full mt-10 lg:mt-14">
+      <img
+        src="/placeholders/asada-hero-section.jpg"
+        alt="ASADA Hero Image"
+        class="w-full max-h-137.5 object-cover rounded-t-sm shadow-md" />
+    </div>
+  </section>
 </div>
