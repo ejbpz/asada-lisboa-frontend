@@ -4,7 +4,7 @@ import { ToastMessage } from '@shared/services/toast-message';
 import { ReCaptchaLoader } from '@core/services/re-captcha-loader';
 import { environment } from '@environments/environment.development';
 
-declare const grecaptcha: any;
+declare const turnstile: any;
 
 @Component({
   selector: 're-captcha-validator',
@@ -29,29 +29,35 @@ export class ReCaptchaValidator implements AfterViewInit {
   private reCaptchaLoader = inject(ReCaptchaLoader);
 
   async ngAfterViewInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!isPlatformBrowser(this.platformId))
+      return;
 
     await this.reCaptchaLoader.load();
 
-    if (typeof grecaptcha === 'undefined') {
-      this.toast.error('grecaptcha no está disponible');
+    if (typeof turnstile === 'undefined') {
+      this.toast.error('Turnstile no está disponible');
       return;
     }
 
-    grecaptcha.ready(() => {
-      this.widgetId = grecaptcha.render(this.container()?.nativeElement, {
+    this.widgetId = turnstile.render(
+      this.container()?.nativeElement,
+      {
         sitekey: this.env.RECAPTCHA_REQUEST,
+        size: 'flexible',
+        callback: (token: string) => {
+          this.resolved.emit(token);
+        },
         theme: 'light',
-        size: 'compact',
-        callback: (token: string) => this.resolved.emit(token),
-        'expired-callback': () => this.resolved.emit('')
-      });
-    });
+        'expired-callback': () => {
+          this.resolved.emit('');
+        }
+      }
+    );
   }
 
   reset() {
-    if(this.widgetId !== undefined && typeof grecaptcha !== 'undefined'){
-      grecaptcha.reset(this.widgetId);
+    if(this.widgetId !== undefined && typeof turnstile !== 'undefined'){
+      turnstile.reset(this.widgetId);
     }
   }
 }

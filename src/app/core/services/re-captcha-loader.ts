@@ -14,20 +14,20 @@ export class ReCaptchaLoader {
 
   // Load method
   load(): Promise<void> {
-    if(!isPlatformBrowser(this.plaformId))
+    if (!isPlatformBrowser(this.plaformId))
       return Promise.resolve();
 
-    if(this.loaded)
+    if (this.loaded)
       return Promise.resolve();
 
-    if(this.loadingPromise)
+    if (this.loadingPromise)
       return this.loadingPromise;
 
     this.loadingPromise = new Promise((resolve) => {
       const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js?render=explicit';
-      script.async = true;
-      script.defer = true;
+
+      script.src =
+        'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
       script.onload = () => {
         this.loaded = true;
