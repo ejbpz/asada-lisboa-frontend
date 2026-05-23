@@ -3,7 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpParams, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { NewsApi } from './news-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 
 describe('NewsApi', () => {

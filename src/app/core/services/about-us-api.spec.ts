@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { AboutUsApi } from './about-us-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 
 describe('AboutUsApi', () => {
   let service: AboutUsApi;

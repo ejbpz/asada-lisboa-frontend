@@ -3,7 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient, HttpParams } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { GalleryApi } from './gallery-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { ImageResponse } from '@admin/interfaces/image-response.interface';
 
 describe('GalleryApi', () => {

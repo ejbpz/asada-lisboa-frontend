@@ -3,7 +3,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient, HttpParams } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { DirectorsBoardApi } from './directors-board-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { DirectorsBoardResponse } from '@public/interfaces/directors-board-response.interface';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { DirectorBoardDetailsResponse } from '@admin/interfaces/director-board-details-response.interface';

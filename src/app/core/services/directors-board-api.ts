@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { RegisterRequest } from '@admin/interfaces/register-request.interface';
 import { UserUpdateRequest } from '@admin/interfaces/user-update-request.interface';

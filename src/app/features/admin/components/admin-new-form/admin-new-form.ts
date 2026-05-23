@@ -15,7 +15,7 @@ import { fileRequired } from '@shared/validators/file-required';
 import { AppError } from '@core/interfaces/app-error.interface';
 import { GenerateContent } from '@shared/utils/generate-content';
 import { fileValidator } from '@shared/validators/file-validator';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { NewRequest } from '@admin/interfaces/new-request.interface';
 import { NewResponse } from '@shared/interfaces/new-response.interface';
 import { StatusResponse } from '@admin/interfaces/status-response.interface';

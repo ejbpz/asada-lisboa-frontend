@@ -4,7 +4,7 @@ import { FormUtils } from '@shared/utils/form-utils';
 import { ContactApi } from '@core/services/contact-api';
 import { ToastMessage } from '@shared/services/toast-message';
 import { AppError } from '@core/interfaces/app-error.interface';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { EmailContactRequest } from '@public/interfaces/email-contact-request.interface';
 import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-captcha-validator";
 
