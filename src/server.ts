@@ -12,12 +12,6 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-const port = process.env['PORT'] || 4000;
-const host = '0.0.0.0';
-
-app.listen(port as number, host, () => {
-  console.log(`Node server listening on http://${host}:${port}`);
-});
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -63,8 +57,6 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
     if (error) {
       throw error;
     }
-
-    console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 
