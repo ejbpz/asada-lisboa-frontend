@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { finalize, map, Observable, shareReplay, throwError } from 'rxjs';
 import { StorageBrowser } from './storage-browser';
 import { AppError } from '../interfaces/app-error.interface';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { LoginRequest } from '@account/interfaces/login-request.interface';
 import { LoginResponse } from '@account/interfaces/login-response.interface';
 

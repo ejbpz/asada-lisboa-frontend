@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { AboutUsRequest } from '@admin/interfaces/about-us-request.interface';
 import { AboutUsResponse} from '@public/interfaces/about-us-response.interface';

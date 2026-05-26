@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { RolesApi } from './roles-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 
 describe('RolesApi', () => {
   let service: RolesApi;

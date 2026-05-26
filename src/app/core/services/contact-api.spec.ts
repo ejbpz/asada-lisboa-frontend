@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ContactApi } from './contact-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { ContactResponse } from '@public/interfaces/contact-response.interface';
 
 describe('ContactApi', () => {

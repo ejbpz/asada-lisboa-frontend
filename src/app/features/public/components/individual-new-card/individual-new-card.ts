@@ -28,7 +28,12 @@ export class IndividualNewCard {
 
   // Helper methods
   protected sameDate(): boolean {
-    return this.newData().publicationDate.getTime === this.newData().lastEditionDate.getTime;
+    const publication = new Date(this.newData().publicationDate).getTime();
+    const edition = new Date(this.newData().lastEditionDate).getTime();
+
+    return !Number.isNaN(publication) &&
+          !Number.isNaN(edition) &&
+          publication === edition;
   }
 
   // constructor

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpEventType, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { RichEditorApi } from './rich-editor-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 
 describe('RichEditorApi', () => {
   let service: RichEditorApi;

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { PageResponse } from '@shared/interfaces/page-response.interface';
 import { ContactRequest } from '@admin/interfaces/contact-request.interface';
 import { ContactResponse } from '@public/interfaces/contact-response.interface';

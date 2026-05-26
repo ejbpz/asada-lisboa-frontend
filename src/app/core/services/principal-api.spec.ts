@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { PrincipalApi } from './principal-api';
-import { environment } from '@environments/environment.development';
+import { environment } from '@environments/environment';
 import { PrincipalRequest } from '@public/interfaces/principal-response.interface';
 
 describe('PrincipalApi', () => {
