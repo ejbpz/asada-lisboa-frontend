@@ -20,8 +20,8 @@ export class CarouselNews {
   private carouselReference = viewChild<ElementRef<HTMLDivElement>>('carousel');
 
   // Init defaults
-  private cardWidth: number = 0;
-  private cardGap: number = 20;
+  private cardWidth: number = 280;
+  private cardGap: number = 12;
 
   // AfterViewInit
   ngAfterViewInit(): void {

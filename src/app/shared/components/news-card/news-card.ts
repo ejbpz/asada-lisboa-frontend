@@ -11,7 +11,7 @@ import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.inte
   templateUrl: './news-card.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'w-full min-w-68.5 card bg-base-100 shadow-sm md:min-w-75 sm:max-w-92'
+    class: 'block w-70 min-w-70 card bg-base-100 shadow-sm md:w-75 md:min-w-75 sm:max-w-92'
   }
 })
 export class NewsCard {
