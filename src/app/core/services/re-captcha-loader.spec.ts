@@ -41,7 +41,7 @@ describe('ReCaptchaLoader', () => {
       service = TestBed.inject(ReCaptchaLoader);
     });
 
-    it('should append recaptcha script', async () => {
+    it('should append turnstile script', async () => {
       const appendSpy = spyOn(
         document.body,
         'appendChild'
@@ -51,16 +51,17 @@ describe('ReCaptchaLoader', () => {
         const script = element as HTMLScriptElement;
 
         expect(script.src)
-          .toContain('recaptcha/api.js');
+          .toContain(
+            'challenges.cloudflare.com/turnstile/v0/api.js'
+          );
 
-        expect(script.async)
-          .toBeTrue();
-
-        expect(script.defer)
-          .toBeTrue();
+        expect(script.src)
+          .toContain('render=explicit');
 
         setTimeout(() => {
-          script.onload?.(new Event('load'));
+          script.onload?.(
+            new Event('load')
+          );
         });
 
         return element;
@@ -68,7 +69,7 @@ describe('ReCaptchaLoader', () => {
 
       await service.load();
 
-      expect(document.body.appendChild)
+      expect(appendSpy)
         .toHaveBeenCalled();
     });
 
@@ -126,6 +127,31 @@ describe('ReCaptchaLoader', () => {
       resolveLoad();
 
       await promise1;
+    });
+
+    it('should resolve immediately if already loaded', async () => {
+      const appendSpy = spyOn(
+        document.body,
+        'appendChild'
+      ) as jasmine.Spy;
+
+      appendSpy.and.callFake((element: Node) => {
+        const script = element as HTMLScriptElement;
+
+        setTimeout(() => {
+          script.onload?.(
+            new Event('load')
+          );
+        });
+
+        return element;
+      });
+
+      await service.load();
+      await service.load();
+
+      expect(appendSpy)
+        .toHaveBeenCalledTimes(1);
     });
   });
 });

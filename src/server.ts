@@ -12,7 +12,7 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-const port = process.env['PORT'] || 4200;
+const port = process.env['PORT'] || 4000;
 const host = '0.0.0.0';
 
 app.listen(port as number, host, () => {
