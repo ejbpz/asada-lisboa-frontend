@@ -1,0 +1,49 @@
+<form [formGroup]="searchForm" class="flex flex-col gap-3 w-full px-2 py-1 text-neutral sm:w-[60%]">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-normal text-sm">* Búsqueda</legend>
+      <input formControlName="query" (input)="onSearch($event)" placeholder="Importancia del reciclaje" class="input w-full placeholder:text-neutral placeholder:text-xs"/>
+      @if (!!searchForm.controls['query'].errors && searchForm.controls['query'].touched) {
+        <span class="text-error text-[.75rem] font-light">{{ getErrors(searchForm.controls['query'].errors) }}</span>
+      }
+    </fieldset>
+</form>
+
+<div class="py-5">
+  @if(searchResource.isLoading()) {
+    <div class="w-full flex justify-center">
+      <span class="loading loading-spinner"></span>
+    </div>
+  }
+
+  @if(searchResource.hasValue()) {
+  <section class="flex flex-col">
+    @for (item of searchResource.value(); track item.id) {
+      <div class="w-full flex justify-between items-center gap-3 border-y border-base-200 py-3">
+        <div class="flex items-center gap-2">
+          <div>
+            <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/search-icon.svg"></use></svg>
+          </div>
+          <div>
+            <div class="sm:hidden badge badge-soft badge-secondary">{{ item.type| titlecase }}</div>
+            <h3 class="line-clamp-1 text-ellipsis">{{ item.title | titlecase }}<div class="hidden sm:inline-flex badge badge-soft badge-secondary mx-2">{{ item.type| titlecase }}</div></h3>
+            @if(item.type.trim().toLowerCase() !== 'noticia') {
+              <p class="line-clamp-1 text-ellipsis">{{ item.description }}</p>
+            }
+          </div>
+        </div>
+        <div>
+          @if(item.type.trim().toLowerCase() === 'noticia') {
+            <a [routerLink]="[item.url]" class="btn btn-primary text-white">
+              <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/navigation-icon.svg"></use></svg>
+            </a>
+          } @else {
+            <a [href]="[item.url]" class="btn btn-primary text-white">
+              <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/navigation-icon.svg"></use></svg>
+            </a>
+          }
+        </div>
+      </div>
+    }
+  </section>
+  }
+</div>

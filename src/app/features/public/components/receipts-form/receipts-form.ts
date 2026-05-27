@@ -20,8 +20,8 @@ import { ReCaptchaValidator } from "@shared/components/re-captcha-validator/re-c
   }
 })
 export class ReceiptsForm {
-    // Init
-    private captchaToken: string | null = null;
+  // Init
+  private captchaToken: string | null = null;
   protected isLoading = signal<boolean>(false);
 
   protected keys = signal<string[]>([]);

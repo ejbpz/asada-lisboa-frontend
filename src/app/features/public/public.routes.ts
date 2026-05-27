@@ -111,7 +111,7 @@ const publicRoutes: Routes = [
   },
   {
     path: 'buscador',
-    loadComponent: () => import('@public/pages/main-page/main-page'),
+    loadComponent: () => import('@public/pages/global-search-page/global-search-page'),
     data: {
       seo: {
         title: 'Buscador',
