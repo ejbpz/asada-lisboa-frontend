@@ -23,6 +23,16 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
           return throwError(() => forbiddenError);
         }
 
+        if(error.status === 401) {
+          const authrror: AppError = {
+            status: 401,
+            isAuthError: true,
+            message: 'Usuario no autenticado.',
+          }
+
+          return throwError(() => authrror);
+        }
+
         if (error.status >= 500) {
           return throwError((): AppError => ({
             status: error.status,
@@ -35,7 +45,7 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
           const networkError: AppError = {
             status: 0,
             isNetworkError: true,
-            message: 'Error de conexión',
+            message: 'Error de conexión.',
           };
 
           return throwError(() => networkError);
