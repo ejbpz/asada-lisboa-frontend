@@ -6,7 +6,8 @@ import { AuthApi } from '@core/services/auth-api';
 export const jwtTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authApiService = inject(AuthApi);
 
-  const isAuthRequest = req.url.includes('/admin/');
+  const isAuthRequest = req.url.includes('/registrar');
+  const isAdminRequest = req.url.includes('/admin/');
   const isLogoutRequest = req.url.includes('/cuenta/cerrar-sesion');const isRefreshRequest = req.url.includes('/cuenta/refrescar-token');
 
   if(isRefreshRequest) {
@@ -19,7 +20,7 @@ export const jwtTokenInterceptor: HttpInterceptorFn = (req, next) => {
     'x-version': '1'
   };
 
-  if(!hasSession || (!isAuthRequest && !isLogoutRequest)) {
+  if(!hasSession || (!isAdminRequest && !isLogoutRequest && !isAuthRequest)) {
     const versionReq = req.clone({ setHeaders: newHeaders });
     return next(versionReq);
   }
@@ -27,7 +28,7 @@ export const jwtTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authApiService.getToken();
   newHeaders['Authorization'] = `Bearer ${token}`;
 
-  if(isLogoutRequest) {
+  if(isLogoutRequest || isAuthRequest) {
     const versionReq = req.clone({ setHeaders: newHeaders });
     return next(versionReq);
   }
