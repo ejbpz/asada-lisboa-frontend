@@ -70,11 +70,12 @@ export class AuthApi {
     const refreshToken = this.getRefreshToken();
 
     if (!token || !refreshToken) {
-      const appError: AppError = {
+      const appError = new AppError({
+        name: '',
         isAuthError: true,
         message:
           'No hay sesión activa.'
-      };
+      })
 
       return throwError(() => appError);
     }

@@ -1,7 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { DirectorsBoardApi } from '@core/services/directors-board-api';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { AdminUpdateUserForm } from "@admin/components/admin-update-user-form/admin-update-user-form";
@@ -33,7 +34,11 @@ export default class AdminUpdateUserPage {
       if(!params.id)
         return of(undefined);
 
-      return this.usersService.getAdminUser(params.id);
+      return this.usersService.getAdminUser(params.id).pipe(
+        catchError((error: AppError) => {
+          return of(undefined);
+        })
+      );
     }
   });
 }

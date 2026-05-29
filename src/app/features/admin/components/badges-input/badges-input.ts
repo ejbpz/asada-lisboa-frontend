@@ -2,8 +2,9 @@ import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 import { rxResource, toObservable } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ChangeDetectionStrategy, Component, computed, forwardRef, inject, signal } from '@angular/core';
-import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { CategoriesApi } from '@core/services/categories-api';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { CategoriesResponse } from '@shared/interfaces/categories-response.interface';
 
 @Component({
@@ -44,6 +45,9 @@ export class BadgesInput implements ControlValueAccessor {
           return q.length >= 2
             ? this.categoriesApiService.searchCategories(q)
             : of([])
+        }),
+        catchError((error: AppError) => {
+          return of(undefined);
         })
       )
     }

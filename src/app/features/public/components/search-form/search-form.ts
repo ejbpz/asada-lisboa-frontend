@@ -3,8 +3,10 @@ import { TitleCasePipe } from "@angular/common";
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { catchError, of } from "rxjs";
 import { FormUtils } from '@shared/utils/form-utils';
 import { SearchApi } from '@core/services/search-api';
+import { AppError } from "@core/interfaces/app-error.interface";
 
 @Component({
   selector: 'search-form',
@@ -44,7 +46,11 @@ export class SearchForm {
   // Resource
   public searchResource = rxResource({
     params: () => this.query(),
-    stream: ({ params }) => this.searchApi.searchPublicData(params)
+    stream: ({ params }) => this.searchApi.searchPublicData(params).pipe(
+      catchError((error: AppError) => {
+        return of(undefined);
+      })
+    )
   });
 
   // Get input errors

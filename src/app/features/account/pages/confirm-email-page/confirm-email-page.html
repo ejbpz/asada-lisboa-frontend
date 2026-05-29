@@ -16,15 +16,13 @@
       </div>
     }
 
-    @else if(confirmEmailResource.error()) {
+    @else if(resourceError(); as error) {
       <div class="flex flex-col items-center gap-3">
         <h2 class="text-lg font-medium">
-          Error al confirmar
+          Error al confirmar la cuenta
         </h2>
 
-        <p class="text-sm text-base-content/70">
-          {{ confirmEmailResource.error()?.message }}
-        </p>
+        <p class="text-sm text-base-content/70">{{ error.message }}</p>
 
         <a routerLink="/cuenta/iniciar-sesion" class="btn btn-outline btn-error btn-sm mt-2 hover:text-base-100">Ir al inicio de sesión</a>
       </div>

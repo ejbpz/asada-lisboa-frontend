@@ -6,11 +6,13 @@
     <div class="text-center w-full">
       <span class="loading loading-spinner loading-md"></span>
     </div>
-  } @else if(newResource.hasValue()) {
+  } @if(newResource.hasValue()) {
     <individual-new-card [newData]="newResource.value()"/>
   }
 </section>
 
-<section class="w-full">
-  <public-news-section [news]="relatedNewsResource.value() ?? []"/>
-</section>
+@if(newResource.hasValue()) {
+  <section class="w-full">
+    <public-news-section [news]="relatedNewsResource.value() ?? []"/>
+  </section>
+}

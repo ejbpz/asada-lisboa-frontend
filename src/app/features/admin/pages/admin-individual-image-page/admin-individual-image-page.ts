@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { GalleryApi } from '@core/services/gallery-api';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { AdminImageForm } from "@admin/components/admin-image-form/admin-image-form";
 
@@ -33,7 +34,11 @@ export default class AdminIndividualImagePage {
       if(!params.id)
         return of(undefined);
 
-      return this.imagesService.getAdminImage(params.id);
+      return this.imagesService.getAdminImage(params.id).pipe(
+        catchError((error: AppError) => {
+          return of(undefined);
+        })
+      );
     }
   });
 }

@@ -1,10 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
-import { EMPTY, map } from 'rxjs';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import { catchError, map, of } from 'rxjs';
 import { NewsApi } from '@core/services/news-api';
-import { SeoManagement } from '@core/services/seo-management';
 import { environment } from '@environments/environment';
+import { SeoManagement } from '@core/services/seo-management';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { IndividualNewCard } from "@public/components/individual-new-card/individual-new-card";
 import { PublicNewsSection } from "@public/components/public-news-section/public-news-section";
@@ -32,13 +33,21 @@ export default class IndividualNewPage {
   );
 
   // Calling service to get new with that slug
+  protected readonly resourceError = signal<AppError | null>(null);
+
   protected readonly newResource = rxResource({
     params: () => ({ slug: this.slug() }),
     stream: ({ params }) => {
       if(!params.slug)
-        return EMPTY;
+        return of(undefined);
 
-      return this.newsService.getPublicNew(params.slug);
+      return this.newsService.getPublicNew(params.slug).pipe(
+        catchError((error: AppError) => {
+          this.resourceError.set(error);
+
+          return of(undefined);
+        })
+      );
     }
   });
 
@@ -46,10 +55,10 @@ export default class IndividualNewPage {
   protected readonly relatedNewsResource = rxResource({
     params: () => ({ slug: this.slug() }),
     stream: ({ params }) => {
-      if(!params.slug)
-        return EMPTY;
+      if(!params.slug || !this.newResource.hasValue())
+        return of([]);
 
-      return this.newsService.getRecommendedNews(params.slug);
+      return this.newsService.getRecommendedNews(this.slug());
     }
   });
 
@@ -71,7 +80,7 @@ export default class IndividualNewPage {
 
   // Returns to 404 when slug doesn't exist
   private slugNotFound = effect(() => {
-    if(this.newResource.error())
+    if(this.resourceError())
       this.router.navigate(['/noticia-no-encontrada']);
   });
 }

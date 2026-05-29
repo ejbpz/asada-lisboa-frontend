@@ -7,7 +7,8 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
     .pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 429) {
-          return throwError((): AppError => ({
+          return throwError(() => new AppError({
+            name: '',
             status: 429,
             message:
               'Muchas peticiones realizadas, espere un momento.'
@@ -15,26 +16,29 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         if(error.status === 403) {
-          const forbiddenError: AppError = {
+          const forbiddenError = new AppError({
+            name: '',
             status: 403,
             message: 'No posee permisos para realizar esta acción.'
-          }
+          })
 
           return throwError(() => forbiddenError);
         }
 
         if(error.status === 401) {
-          const authrror: AppError = {
+          const authError = new AppError({
+            name: '',
             status: 401,
             isAuthError: true,
             message: 'Usuario no autenticado.',
-          }
+          })
 
-          return throwError(() => authrror);
+          return throwError(() => authError);
         }
 
         if (error.status >= 500) {
-          return throwError((): AppError => ({
+          return throwError(() => new AppError({
+            name: '',
             status: error.status,
             message:
               'Ocurrió un error interno del servidor.'
@@ -42,11 +46,12 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
         }
 
         if(error.status === 0) {
-          const networkError: AppError = {
+          const networkError = new AppError({
+            name: '',
             status: 0,
             isNetworkError: true,
             message: 'Error de conexión.',
-          };
+          })
 
           return throwError(() => networkError);
         }
@@ -54,7 +59,8 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
         // ProblemDetails (backend response)
         const problem = error.error;
 
-        const appError: AppError = {
+        const appError = new AppError({
+          name: '',
           message:
             problem?.detail ??
             problem?.title ??
@@ -72,7 +78,7 @@ export const apiGlobalErrorInterceptor: HttpInterceptorFn = (req, next) => {
             : undefined,
 
           isAuthError: error.status === 401
-        };
+        })
 
         return throwError(() => appError);
       })

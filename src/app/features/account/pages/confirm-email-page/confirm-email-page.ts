@@ -1,8 +1,9 @@
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { map, of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, Signal, signal } from '@angular/core';
+import { catchError, map, of } from 'rxjs';
 import { AccountApi } from '@core/services/account-api';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 
 @Component({
@@ -33,13 +34,21 @@ export default class ConfirmEmailPage {
   );
 
   // Calling resource
+  protected readonly resourceError = signal<AppError | null>(null);
+
   public readonly confirmEmailResource = rxResource({
     params: () => ({ validatonToken: this.validatonToken() }),
     stream: ({ params }) => {
       if(!params.validatonToken)
         return of(undefined);
 
-      return this.accountApi.confirmEmail(params.validatonToken.email, params.validatonToken.token);
+      return this.accountApi.confirmEmail(params.validatonToken.email, params.validatonToken.token).pipe(
+        catchError((error: AppError) => {
+          this.resourceError.set(error);
+
+          return of(undefined);
+        })
+      );
     }
   });
 }

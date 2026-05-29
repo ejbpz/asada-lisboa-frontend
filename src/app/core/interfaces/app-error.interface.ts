@@ -3,17 +3,23 @@ export interface ErrorDetail {
   description: string;
 }
 
-export interface AppError {
-  message: string;
+export class AppError extends Error {
+  status?: number;
 
-  status?: number | undefined;
+  type?: string;
+  title?: string;
+  detail?: string;
 
-  type?: string | undefined;
-  title?: string | undefined;
-  detail?: string | undefined;
+  errors?: ErrorDetail[];
 
-  errors?: ErrorDetail[] | undefined;
+  isAuthError?: boolean;
+  isNetworkError?: boolean;
 
-  isAuthError?: boolean | undefined;
-  isNetworkError?: boolean | undefined;
+  constructor(init?: Partial<AppError>) {
+    super(init?.message ?? 'Unknown error');
+
+    this.name = 'AppError';
+
+    Object.assign(this, init);
+  }
 }

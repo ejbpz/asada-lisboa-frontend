@@ -1,8 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { DocumentsApi } from '@core/services/documents-api';
+import { AppError } from '@core/interfaces/app-error.interface';
 import { GetBackTitle } from "@shared/components/get-back-title/get-back-title";
 import { AdminDocumentForm } from "@admin/components/admin-document-form/admin-document-form";
 
@@ -33,7 +34,11 @@ export default class AdminIndividualDocumentPage {
       if(!params.id)
         return of(undefined);
 
-      return this.documentsService.getAdminDocument(params.id);
+      return this.documentsService.getAdminDocument(params.id).pipe(
+        catchError((error: AppError) => {
+          return of(undefined);
+        })
+      );
     }
   });
 }
