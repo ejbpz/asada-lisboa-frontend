@@ -2,7 +2,6 @@ import { RouterLink } from "@angular/router";
 import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { GenerateContent } from "@shared/utils/generate-content";
-import { NewsCard } from "@shared/components/news-card/news-card";
 import { DocumentTypeIcon } from '@shared/services/document-type-icon';
 import { TitleSection } from "@public/components/title-section/title-section";
 import { DocumentsCard } from "@shared/components/documents-card/documents-card";
@@ -10,7 +9,7 @@ import { PrincipalRequest } from "@public/interfaces/principal-response.interfac
 
 @Component({
   selector: 'admin-dashboard',
-  imports: [TitleCasePipe, TitleSection, RouterLink, DocumentsCard, NewsCard],
+  imports: [TitleCasePipe, TitleSection, RouterLink, DocumentsCard],
   templateUrl: './admin-dashboard-list.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -33,6 +32,6 @@ export class AdminDashboard {
   }
 
   // Default values
-  protected title: string = '¡bienvenido al sitio administrativo!';
-  protected subtitle: string = 'resumen de actividades recientes';
+  protected title: string = '¡bienvenido/a administrador/a!';
+  protected subtitle: string = 'Resumen de actividades recientes';
 }

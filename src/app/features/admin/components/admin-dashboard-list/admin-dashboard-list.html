@@ -1,8 +1,8 @@
 <div class="min-h-screen flex flex-col items-start justify-center gap-12">
   <div class="text-left space-y-2">
     <div>
-      <h1 class="text-3xl font-bold">{{ title | titlecase }}</h1>
-      <h2 class="text-2xl font-medium">{{ subtitle | titlecase }}</h2>
+      <h1 class="text-2xl font-bold">{{ title | titlecase }}</h1>
+      <h2 class="text-xl font-medium">{{ subtitle | titlecase }}</h2>
     </div>
   </div>
 
@@ -10,14 +10,21 @@
     <section class="w-full max-w-7xl">
         <title-section>
         <a [routerLink]="['/admin/noticias']" section-title>
-            <h2 class="text-xl font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Gestiona las noticias</h2>
+            <h2 class="text-[1.125rem] font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Gestiona las noticias</h2>
         </a>
         </title-section>
 
         <!-- News -->
         <div class="flex flex-row gap-6 overflow-x-scroll overflow-y-hidden py-1">
           @for (newData of principalData()?.news; track newData.id) {
-            <news-card class="bg-base-300 min-w-[288px]" [newData]="newData"/>
+            <div class="shadow-sm rounded-xl">
+              <figure class="min-w-62.5 w-62.5 h-62.5 rounded-t-lg overflow-hidden">
+                <img class="w-full h-full object-cover" [src]="generateContent.url(newData.filePath)"/>
+              </figure>
+              <div class="overflow-hidden py-2 px-3 bg-white rounded-b-lg">
+                <h2 class="line-clamp-1 text-ellipsis">{{ newData.title }}</h2>
+              </div>
+            </div>
           }
         </div>
     </section>
@@ -26,11 +33,11 @@
     <section  class= "w-full max-w-7xl">
       <title-section>
         <a [routerLink]="['/admin/documentos']" section-title>
-        <h2 class="text-xl font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Manejá los documentos</h2>
+        <h2 class="text-[1.125rem] font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Administra los documentos</h2>
         </a>
       </title-section>
 
-      <div class="grid grid-cols-1 grid-rows-auto gap-3 sm:grid-cols-2">
+      <div class="flex gap-3 overflow-x-scroll py-1">
         @for (document of principalData()?.documents; track document.id; let i = $index) {
         <documents-card class="bg-white" [document]="document"/>
         }
@@ -41,13 +48,13 @@
     <section  class= "w-full max-w-7xl">
       <title-section>
         <a [routerLink]="['/admin/imagenes']" section-title>
-          <h2 class="text-xl font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Control de imágenes</h2>
+          <h2 class="text-[1.125rem] font-bold mb-6 px-2 flex items-center gap-2 before:content-['#'] hover:underline">Control de imágenes</h2>
         </a>
       </title-section>
 
         <div class="flex gap-3 overflow-x-scroll py-1">
           @for (image of principalData()?.images; track image.id; let i = $index) {
-            <figure class="min-w-62.5 w-62.5 h-62.5 rounded-lg shadow-md overflow-hidden">
+            <figure class="min-w-62.5 w-62.5 h-62.5 rounded-lg shadow-sm overflow-hidden">
               <img class="w-full h-full object-cover" [src]="generateContent.url(image?.url)"/>
             </figure>
           }
