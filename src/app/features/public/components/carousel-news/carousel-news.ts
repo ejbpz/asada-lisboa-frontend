@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, ElementRef, input, signal, viewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, PLATFORM_ID, signal, viewChild } from '@angular/core';
 import { NewsCard } from "@shared/components/news-card/news-card";
 import { NewMinimalResponse } from '@public/interfaces/new-minimal-response.interface';
 
@@ -12,6 +13,9 @@ export class CarouselNews {
   // Input signal
   public news = input.required<NewMinimalResponse[] | undefined>();
 
+  // Injection
+  private readonly platformId = inject(PLATFORM_ID);
+
   // Init signals
   public maxIndex = signal<boolean>(false);
   public minIndex = signal<boolean>(true);
@@ -20,24 +24,45 @@ export class CarouselNews {
   private carouselReference = viewChild<ElementRef<HTMLDivElement>>('carousel');
 
   // Init defaults
-  private cardWidth: number = 280;
   private cardGap: number = 12;
+  private cardWidth: number = 280;
+  private resizeObserver?: ResizeObserver;
 
   // AfterViewInit
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId))
+      return;
+
     const carousel = this.carouselReference()?.nativeElement;
-    if (!carousel) return;
 
-    if (!carousel.children.length) return;
+    if (!carousel)
+      return;
 
-    const firstCard = carousel.children[0] as HTMLElement;
-    this.cardWidth = firstCard.clientWidth;
+    const updateCardWidth = () => {
+      const firstCard = carousel.children[0] as HTMLElement;
+
+      if (!firstCard) return;
+
+      this.cardWidth = firstCard.getBoundingClientRect().width;
+    };
+
+    updateCardWidth();
+
+    this.resizeObserver = new ResizeObserver(() => {
+      updateCardWidth();
+    });
+
+    this.resizeObserver.observe(carousel);
 
     carousel.addEventListener('scroll', () => {
       this.updateLimits();
     });
 
     this.updateLimits();
+  }
+
+  ngOnDestroy() {
+    this.resizeObserver?.disconnect();
   }
 
   // Carousel methods

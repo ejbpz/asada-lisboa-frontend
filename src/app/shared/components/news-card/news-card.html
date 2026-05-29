@@ -6,7 +6,7 @@
 </figure>
 <div class="card-body">
   <h4 class="card-title text-md h-12.5 max-h-12.5 line-clamp-2 text-ellipsis">{{ newData()?.title | titlecase }}</h4>
-  <div class="font-light h-20 max-h-20 overflow-hidden line-clamp-4 text-ellipsis mb-2" [innerHTML]="newData()?.description"></div>
+  <div class="font-light h-20 max-h-20 overflow-hidden line-clamp-4 text-ellipsis mb-2 font-poppins text-sm">{{ newData()?.description | stripHtml }}</div>
   <div class="card-actions flex items-center justify-between">
     <div class="flex h-full justify-center items-center gap-1">
       <svg class="w-6 h-6"><use class="w-full h-full" href="assets/icons/calendar-icon.svg"></use></svg>

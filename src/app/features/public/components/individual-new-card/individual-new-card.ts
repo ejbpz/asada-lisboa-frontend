@@ -26,16 +26,6 @@ export class IndividualNewCard {
   // Input signal
   public newData = input.required<NewResponse>();
 
-  // Helper methods
-  protected sameDate(): boolean {
-    const publication = new Date(this.newData().publicationDate).getTime();
-    const edition = new Date(this.newData().lastEditionDate).getTime();
-
-    return !Number.isNaN(publication) &&
-          !Number.isNaN(edition) &&
-          publication === edition;
-  }
-
   // constructor
   constructor() {
     effect(() => {

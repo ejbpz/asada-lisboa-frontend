@@ -1,6 +1,6 @@
-<div #carousel class="w-full flex gap-3 overflow-x-scroll mb-2 text-neutral no-scrollbar">
+<div #carousel class="flex gap-3 overflow-x-auto scroll-smooth no-scrollbar text-neutral">
   @for (newData of news(); track newData.id) {
-    <news-card [newData]="newData"/>
+    <news-card [newData]="newData" />
   }
 </div>
 
