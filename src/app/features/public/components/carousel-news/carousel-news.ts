@@ -50,6 +50,7 @@ export class CarouselNews {
 
     this.resizeObserver = new ResizeObserver(() => {
       updateCardWidth();
+      this.updateLimits();
     });
 
     this.resizeObserver.observe(carousel);
@@ -76,8 +77,6 @@ export class CarouselNews {
       left: step,
       behavior: 'smooth',
     });
-
-    setTimeout(() => this.updateLimits(), 300);
   }
 
   public scrollLeft() {
@@ -90,8 +89,6 @@ export class CarouselNews {
       left: -step,
       behavior: 'smooth',
     });
-
-    setTimeout(() => this.updateLimits(), 300);
   }
 
   // Update minimum and maximum
@@ -101,9 +98,13 @@ export class CarouselNews {
 
     const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
 
-    const tolerance = 2;
+    if (maxScrollLeft <= 0) {
+      this.minIndex.set(true);
+      this.maxIndex.set(true);
+      return;
+    }
 
-    this.minIndex.set(carousel.scrollLeft <= tolerance);
-    this.maxIndex.set(carousel.scrollLeft >= maxScrollLeft - tolerance);
+    this.minIndex.set(carousel.scrollLeft <= 2);
+    this.maxIndex.set(carousel.scrollLeft >= maxScrollLeft - 2);
   }
 }
