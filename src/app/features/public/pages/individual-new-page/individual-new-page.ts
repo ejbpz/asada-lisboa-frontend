@@ -55,7 +55,7 @@ export default class IndividualNewPage {
   protected readonly relatedNewsResource = rxResource({
     params: () => ({ slug: this.slug() }),
     stream: ({ params }) => {
-      if(!params.slug || !this.newResource.hasValue())
+      if(!params.slug)
         return of([]);
 
       return this.newsService.getRecommendedNews(this.slug());
