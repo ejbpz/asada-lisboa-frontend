@@ -69,7 +69,7 @@ export default class IndividualNewPage {
     if(!news) return;
 
     this.seo.setSeo({
-      url: `${environment.APP_URL}/noticias/${news.slug}`,
+      url: `${environment.APP_URL}/noticia/${news.slug}`,
       image: `${environment.APP_URL}/${news.filePath}`,
       description: news.description,
       title: news.title,
