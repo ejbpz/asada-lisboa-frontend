@@ -13,7 +13,9 @@ const app = express();
 
 app.set('trust proxy', true);
 
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: ['asadalisboa.org', '://asadalisboa.org', '*.asadalisboa.org']
+});
 
 /**
  * Example Express Rest API endpoints can be defined here.
