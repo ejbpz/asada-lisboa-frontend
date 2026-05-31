@@ -19,7 +19,7 @@ export class SeoManagement {
   private readonly defaultDescription =
     'Sitio oficial de la ASADA de Urbanización Lisboa.';
   private readonly defaultImage =
-    `/logo/asada-logo.svg`;
+    `/logo/asada-logo.png`;
 
   // Injections
   private readonly meta = inject(Meta);
