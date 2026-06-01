@@ -1,6 +1,7 @@
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT, inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { GenerateContent } from '@shared/utils/generate-content';
 
 export interface SeoConfig {
   url?: string;
@@ -33,7 +34,7 @@ export class SeoManagement {
       ? `${config.title} - ${this.baseTitle}`
       : this.baseTitle;
     const description = config.description ?? this.defaultDescription;
-    const image = `${this.env.APP_DOMAIN}${config.image ?? this.defaultImage}`;
+    const image = `${this.env.APP_DOMAIN}${GenerateContent.url(config.image ?? this.defaultImage)}`;
 
     // TITLE
     this.title.setTitle(fullTitle);

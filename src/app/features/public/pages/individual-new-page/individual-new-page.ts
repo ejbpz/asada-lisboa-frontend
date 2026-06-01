@@ -70,7 +70,7 @@ export default class IndividualNewPage {
 
     this.seo.setSeo({
       url: `${environment.APP_DOMAIN}/noticia/${news.slug}`,
-      image: `${environment.APP_DOMAIN}/${news.filePath}`,
+      image: `/${news.filePath}`,
       description: news.description,
       title: news.title,
       type: 'article',
