@@ -10,7 +10,7 @@ const publicRoutes: Routes = [
         title: 'Inicio',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/`
+        url: `${environment.APP_DOMAIN}/`
       }
     }
   },
@@ -23,7 +23,7 @@ const publicRoutes: Routes = [
         description: 'Conoce la historia, misión y visión de la ASADA, así como nuestro compromiso con la gestión responsable del agua en la comunidad.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/nosotros`
+        url: `${environment.APP_DOMAIN}/nosotros`
       }
     }
   },
@@ -36,7 +36,7 @@ const publicRoutes: Routes = [
         description: 'Conoce a los miembros de la junta directiva, responsables de la toma de decisiones y la gestión de la ASADA.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/junta-directiva`
+        url: `${environment.APP_DOMAIN}/junta-directiva`
       }
     }
   },
@@ -49,7 +49,7 @@ const publicRoutes: Routes = [
         description: 'Galería de imágenes que muestran trabajos realizados, mejoras, reparaciones y proyectos en el sistema de agua en beneficio de la comunidad.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/galeria`
+        url: `${environment.APP_DOMAIN}/galeria`
       }
     }
   },
@@ -62,7 +62,7 @@ const publicRoutes: Routes = [
         description: 'Encuentra formularios, informes financieros y documentación técnica relacionada con el mantenimiento y operación del sistema de agua potable.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/documentos`
+        url: `${environment.APP_DOMAIN}/documentos`
       }
     }
   },
@@ -75,7 +75,7 @@ const publicRoutes: Routes = [
         description: 'Ublicación de comunicados oficiales sobre la gestión, operación y mejoras del sistema de agua potable.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/noticias`
+        url: `${environment.APP_DOMAIN}/noticias`
       }
     }
   },
@@ -92,7 +92,7 @@ const publicRoutes: Routes = [
         description: 'Formulario y medios de contacto disponibles para comunicarte con la ASADA de forma rápida y sencilla.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/contacto`
+        url: `${environment.APP_DOMAIN}/contacto`
       }
     }
   },
@@ -105,7 +105,7 @@ const publicRoutes: Routes = [
         description: 'Consulta tus recibos, conoce tu consumo y verifica el estado de tus pagos de forma rápida y segura.',
         type: 'website',
         noIndex: false,
-        url: `${environment.APP_URL}/recibos`
+        url: `${environment.APP_DOMAIN}/recibos`
       }
     }
   },
@@ -118,7 +118,7 @@ const publicRoutes: Routes = [
         description: 'Realizar búsquedas sobre piezas importantes para la ASADA, como documentos, noticias e imágenes.',
         type: 'website',
         noIndex: true,
-        url: `${environment.APP_URL}/buscador`
+        url: `${environment.APP_DOMAIN}/buscador`
       }
     }
   }

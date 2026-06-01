@@ -1,5 +1,6 @@
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT, inject, Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 
 export interface SeoConfig {
   url?: string;
@@ -15,11 +16,10 @@ export interface SeoConfig {
 })
 export class SeoManagement {
   // Init
+  private env = environment;
+  private readonly defaultImage = `/logo/asada-logo.png`;
   private readonly baseTitle = 'ASADA de Urbanización Lisboa';
-  private readonly defaultDescription =
-    'Sitio oficial de la ASADA de Urbanización Lisboa.';
-  private readonly defaultImage =
-    `/logo/asada-logo.png`;
+  private readonly defaultDescription = 'Sitio oficial de la ASADA de Urbanización Lisboa.';
 
   // Injections
   private readonly meta = inject(Meta);
@@ -32,10 +32,8 @@ export class SeoManagement {
     const fullTitle = config.title
       ? `${config.title} - ${this.baseTitle}`
       : this.baseTitle;
-    const description =
-      config.description ?? this.defaultDescription;
-    const image =
-      config.image ?? this.defaultImage;
+    const description = config.description ?? this.defaultDescription;
+    const image = `${this.env.APP_DOMAIN}${config.image ?? this.defaultImage}`;
 
     // TITLE
     this.title.setTitle(fullTitle);
